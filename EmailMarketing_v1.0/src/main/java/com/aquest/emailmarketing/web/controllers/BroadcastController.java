@@ -6,9 +6,9 @@
 
 package com.aquest.emailmarketing.web.controllers;
 
-import com.aquest.emailmarketing.web.google.EmailGoogleAnalyticsService;
 import com.aquest.emailmarketing.web.dao.Broadcast;
 import com.aquest.emailmarketing.web.dao.EmbeddedImage;
+import com.aquest.emailmarketing.web.dao.TrackingConfig;
 import com.aquest.emailmarketing.web.dao.Urls;
 import com.aquest.emailmarketing.web.service.BroadcastClientsService;
 import com.aquest.emailmarketing.web.service.BroadcastService;
@@ -16,6 +16,8 @@ import com.aquest.emailmarketing.web.service.CampClientsService;
 import com.aquest.emailmarketing.web.service.CampaignsService;
 import com.aquest.emailmarketing.web.service.EmbeddedImageService;
 import com.aquest.emailmarketing.web.service.SendEmailService;
+import com.aquest.emailmarketing.web.service.TrackingConfigService;
+import com.aquest.emailmarketing.web.tracking.EmailGoogleAnalyticsService;
 
 import java.net.MalformedURLException;
 import java.security.Principal;
@@ -53,6 +55,7 @@ public class BroadcastController {
     private BroadcastService broadcastService;
     private SendEmailService sendEmailService;
     private EmbeddedImageService embeddedImageService;
+    private TrackingConfigService trackingConfigService;
     EmailGoogleAnalyticsService emailGoogle = new EmailGoogleAnalyticsService();
 
     @Autowired
@@ -63,6 +66,11 @@ public class BroadcastController {
     @Autowired
     public void setSendEmailService(SendEmailService sendEmailService) {
     	this.sendEmailService = sendEmailService;
+    }
+    
+    @Autowired
+    public void setTrackingConfigService(TrackingConfigService trackingConfigService) {
+    	this.trackingConfigService = trackingConfigService;
     }
     
     @Autowired
@@ -135,11 +143,50 @@ public class BroadcastController {
     
     @RequestMapping(value= "/generateUrls", method = RequestMethod.POST)
     public String addTracking(Model model, Urls urls, Principal principal,
-    							@RequestParam(value = "id") int id){
+    							@RequestParam(value = "id") int id,
+    							@RequestParam(value = "trackingFlg", required = false) boolean trackingFlg,
+    							@RequestParam(value = "openGAflg", required = false) boolean openGAflg,
+    							@RequestParam(value = "openPixelFlg", required = false) boolean openPixelFlg,
+    							@RequestParam(value = "trackingType", required = false) String trackingType){
+    	TrackingConfig trackingConfig = new TrackingConfig();
     	Broadcast broadcast = broadcastService.getBroadcastById(id);
     	broadcast.setHtmlbody(emailGoogle.addTrackingToUrl(broadcast.getHtmlbody(), urls));
     	System.out.println(broadcast.getHtmlbody());
-    	broadcastService.SaveOrUpdate(broadcast);
+    	String confirm = broadcastService.SaveOrUpdate(broadcast);
+    	System.out.println(confirm);
+    	System.out.println(trackingFlg);
+    	System.out.println(openGAflg);
+    	System.out.println(openPixelFlg);
+    	System.out.println(trackingType);
+    	if(confirm == broadcast.getBroadcast_id()){
+    		trackingConfig.setBroadcast_id(broadcast.getBroadcast_id());
+    		// taking care of tracking flg
+    		int tracking_flg = 0;
+    		if(trackingFlg == true) {
+    			tracking_flg = 1;
+    		}
+    		trackingConfig.setTracking_flg(tracking_flg);
+    		// taking care of openGAflg
+    		int open_ga_flg = 0;
+    		if (openGAflg == true) {
+    			open_ga_flg = 1;
+    		}
+    		trackingConfig.setOpen_ga_flg(open_ga_flg);
+    		// taking care of openPixelFlg
+    		int open_pixel_flg = 0;
+    		if (openPixelFlg == true) {
+    			open_pixel_flg = 1;
+    		}
+    		trackingConfig.setOpen_pixel_flg(open_pixel_flg);
+    		// set tracking type
+    		trackingConfig.setTracking_type(trackingType);
+    		// seting utm's
+    		trackingConfig.setUtm_campaign(urls.getUtmCampaign());
+    		trackingConfig.setUtm_content(urls.getUtmContent());
+    		trackingConfig.setUtm_medium(urls.getUtmMedium());
+    		trackingConfig.setUtm_source(urls.getUtmSource());
+    		trackingConfigService.SaveOrUpdate(trackingConfig);
+    	}
     	// find images in html to be able to embed images in email as in-line attachments
     	EmbeddedImage embeddedImage = new EmbeddedImage();
     	List<String> imgList = new ArrayList<String>();

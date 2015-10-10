@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.aquest.emailmarketing.web.google;
+package com.aquest.emailmarketing.web.tracking;
 
 import com.google.gdata.client.analytics.AnalyticsService;
 import com.google.gdata.data.analytics.AccountEntry;

@@ -59,20 +59,20 @@ $(document).ready(function () {
 <div class="sadrzaj">
 <sf:form method="POST" action="${pageContext.request.contextPath}/generateUrls" commandName="urls">
 <input type="hidden" id="id" name="id" value="${broadcast.id}"/>
-	<p><input type="checkbox" id="trackingFlg"><spring:message code="broadcast.trackingFlg"/></p> 
+	<p><input type="checkbox" id="trackingFlg" name="trackingFlg"><spring:message code="broadcast.trackingFlg"/></p> 
 	<div id="accordion">
-	<h3>Open Email Tracking Config</h3>
+	<h3><spring:message code="broadcast.opentracking"/></h3>
 	<div>
-	<input type="checkbox" id="openGAflg"><spring:message code="broadcast.openGaFlg"/><br/>
-	<input type="checkbox" id="openPixelflg"><spring:message code="broadcast.openPixelFlg"/><br/>
+	<input type="checkbox" id="openGAflg" name="openGAflg"><spring:message code="broadcast.openGaFlg"/><br/>
+	<input type="checkbox" id="openPixelFlg" name="openPixelFlg"><spring:message code="broadcast.openPixelFlg"/><br/>
 	</div>
-	<h3>Url Click Tracking Config</h3>
+	<h3><spring:message code="broadcast.clicktracking"/></h3>
 	<div>
 	<p><spring:message code="broadcast.trackingType"/>
-		<select>
-  			<option value="intTrack">Internal Tracking</option>
-  			<option value="ga">Google Analytics</option>
-  			<option value="both">Both</option>
+		<select id="trackingType" name="trackingType">
+  			<option value="intTrack"><spring:message code="broadcast.intTrack"/></option>
+  			<option value="ga"><spring:message code="broadcast.gaTrack"/></option>
+  			<option value="both"><spring:message code="broadcast.both"/></option>
 		</select>
 	</p>
 	<table class="kampanja_broadcast">
