@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:jdbc-user-service data-source-ref="dataSource"
+				authorities-by-username-query='select username, authority from users where username = ?'
+				users-by-username-query='select username, password, enabled from users where username = ?'
+				id="jdbcUserService" />
+			<security:password-encoder ref="passwordEncoder"></security:password-encoder>
+		</security:authentication-provider>
+	</security:authentication-manager>
+<!--        <security:authentication-manager erase-credentials="true">
+            <security:authentication-provider ref="ldapActiveDirectoryAuthProvider"/>
+        </security:authentication-manager>-->
+
+	<security:http use-expressions="true">
+				<security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
+				<security:intercept-url pattern="/usermanagement" access="hasRole('ROLE_ADMIN')" />
+				<security:intercept-url pattern="/emailconfiguration" access="hasRole('ROLE_ADMIN')" />
+				<security:intercept-url pattern="/emailconfig" access="hasRole('ROLE_ADMIN')" />
+				<security:intercept-url pattern="/saveEmailConfig" access="hasRole('ROLE_ADMIN')" />
+				<security:intercept-url pattern="/userconfig" access="hasRole('ROLE_ADMIN')" />
+				<security:intercept-url pattern="/" access="isAuthenticated()" />
+                <security:intercept-url pattern="/denied" access="permitAll" />
+				<security:intercept-url pattern="/loggedout" access="permitAll" />
+                <security:intercept-url pattern="/newaccount" access="hasRole('ROLE_ADMIN')" />
+				<security:intercept-url pattern="/createaccount" access="hasRole('ROLE_ADMIN')" />
+				<security:intercept-url pattern="/accountcreated" access="hasRole('ROLE_ADMIN')" />
+				<security:intercept-url pattern="/editaccount" access="hasRole('ROLE_ADMIN')" />
+				<security:intercept-url pattern="/editAccount" access="hasRole('ROLE_ADMIN')" />
+				<security:intercept-url pattern="/defineBroadcast" access="isAuthenticated()" />
+                <security:intercept-url pattern="/definebroadcast" access="isAuthenticated()" />
+                <security:intercept-url pattern="/definelist" access="isAuthenticated()" />
+                <security:intercept-url pattern="/importList" access="isAuthenticated()" />
+                <security:intercept-url pattern="/generateBroadcastFlow" access="isAuthenticated()" />
+                <security:intercept-url pattern="/pickCampaignAction" access="isAuthenticated()" />
+                <security:intercept-url pattern="/broadcastgenerated" access="isAuthenticated()" />
+                <security:intercept-url pattern="/showbroadcast" access="isAuthenticated()" />
+                <security:intercept-url pattern="/showbroadcasts" access="isAuthenticated()" />
+                <security:intercept-url pattern="/deletedbroadcast" access="isAuthenticated()" />
+                <security:intercept-url pattern="/manageBroadcast" access="isAuthenticated()" />
+                <security:intercept-url pattern="/definecontent" access="isAuthenticated()" />
+                <security:intercept-url pattern="/defineContent" access="isAuthenticated()" />
+                <security:intercept-url pattern="/tracking" access="isAuthenticated()" />
+                <security:intercept-url pattern="/embeddedimage" access="isAuthenticated()" />
+                <security:intercept-url pattern="/embedImages" access="isAuthenticated()" />
+                <security:intercept-url pattern="/generateUrls" access="isAuthenticated()" />
+                <security:intercept-url pattern="/createcampaign" access="isAuthenticated()" />
+                <security:intercept-url pattern="/editcampaign" access="isAuthenticated()" />
+                <security:intercept-url pattern="/opencampaign" access="isAuthenticated()" />
+                <security:intercept-url pattern="/deleteflow" access="isAuthenticated()" />
+                <security:intercept-url pattern="/createCampaign" access="isAuthenticated()" />
+                <security:intercept-url pattern="/campaigncreated" access="isAuthenticated()" />
+                <security:intercept-url pattern="/sendbroadcast" access="isAuthenticated()" />
+                <security:intercept-url pattern="/sendBroadcast" access="isAuthenticated()" />
+                <security:intercept-url pattern="/sentbroadcast" access="isAuthenticated()" />
+                <security:intercept-url pattern="/campaigndeleted" access="isAuthenticated()" />
+                <security:intercept-url pattern="/confirmation" access="isAuthenticated()" />
+                <security:intercept-url pattern="/goReports" access="isAuthenticated()" />
+                <security:intercept-url pattern="/reports" access="isAuthenticated()" />
+		<security:intercept-url pattern="/static/**" access="permitAll" />	
+                <security:intercept-url pattern="/login" access="permitAll" />	
+		<security:intercept-url pattern="/**" access="denyAll" />
+		<security:form-login login-page="/login"
+			authentication-failure-url="/login?error=true" />
+		<security:logout logout-success-url="/loggedout" />
+		<security:access-denied-handler error-page="/denied" />
+                <security:remember-me key="offersAppKey"
+			user-service-ref="jdbcUserService" />                
+	</security:http>
+	
+	<security:global-method-security secured-annotations="enabled"></security:global-method-security>
+	
+	<bean id="passwordEncoder"
+		class="org.springframework.security.crypto.password.StandardPasswordEncoder">
+	</bean>
+<!--        
+        <bean id="ldapActiveDirectoryAuthProvider"
+              class="org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider">
+            <constructor-arg value="hvbyu.com" />
+            <constructor-arg value="ldap://dcucb01" />   
+        </bean>-->
+</beans>

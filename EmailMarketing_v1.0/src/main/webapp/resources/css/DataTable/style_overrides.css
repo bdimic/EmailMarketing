@@ -1,0 +1,71 @@
+.dataTable
+{
+    border-left: 1px solid #c0c0c0;
+    border-right: 1px solid #c0c0c0;
+}
+
+.dataTables_scrollBody
+{
+    border-bottom: 1px solid #c0c0c0;
+}
+
+.dataTables_length, .dataTables_filter
+{
+    margin-bottom: 10px;
+}
+
+.dataTables_info
+{
+    margin: 10px 0px;
+    width: auto;
+    background: #e8e8e8;
+    border: 1px solid #AAAAAA;
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    padding:2px 5px;
+    font-size: 1em;
+    /* Enable CSS3 effects in IE8 using CSS3PIE */
+    position: relative;
+    zoom: 1;
+    behavior: url(/PIE.htc);    
+}
+
+.dataTables_paginate
+{
+    margin: 10px 0px;
+}
+
+.dataTable thead tr
+{
+    background-color: #3B5E87;
+}
+
+.dataTable th
+{
+    color: #ffffff;
+    font-weight: normal !important;
+    font-size: 0.9em;
+    border-right: 1px solid #678AB2;
+}
+
+.dataTable th:last-child
+{
+    border-right: none;
+}
+
+.dataTable tbody tr td
+{
+    cursor: default;
+}
+
+.paging_full_numbers a.paginate_button, .paging_full_numbers a.paginate_active 
+{
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    /* Enable CSS3 effects in IE8 using CSS3PIE */
+    position: relative;
+    zoom: 1;
+    behavior: url(/PIE.htc);    
+}

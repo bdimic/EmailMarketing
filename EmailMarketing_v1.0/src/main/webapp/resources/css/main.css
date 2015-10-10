@@ -1,0 +1,401 @@
+@CHARSET "US-ASCII";
+
+html {
+        height:100%; 
+}
+
+body {
+        font: 80% arial, sans-serif;
+        margin: 0px 0px 0px 0px;
+        padding: 0;
+        height: 100%;
+        background: white;
+}
+
+.formtable {
+	width: 600px;
+	padding: 10px;
+	border: 1px solid blue;
+}
+
+input[type=text] {
+	width: 250px;
+	
+}
+
+input[type=password] {
+	width: 250px;
+	
+}
+
+#menulist li {
+    list-style: none;
+}
+
+a {
+    color: black;
+}
+
+#htmlbody {
+    width: 620px;
+    height: 400px;
+}
+
+textarea {
+    width: 620px;
+}
+
+.kampanja_broadcast {
+    width: 70%;
+}
+
+.label {
+	text-align: right;
+	vertical-align: top;
+        width: 50%;
+        padding: 10px;
+}
+
+.control {
+	margin-left: 10px;
+}
+
+.error {
+	font-size: small;
+	color: red;
+	margin-left: 10px;
+}
+
+.valid {
+	font-size: small;
+	color: green;
+	margin-left: 10px;
+}
+
+table.offers {
+	padding: 20px;
+	border: 1px solid gray;
+}
+
+p.error {
+	font-size: medium;
+}
+
+div.footer {
+        position: relative;
+	font-size: small;
+	color: gray;
+        height: 40px;
+        background: gainsboro;
+}
+
+div.content {
+	position: relative;
+        min-height:80%;
+        margin-left: 250px;
+        padding: 20px;
+        background: white;
+}
+
+div.sadrzaj {
+    position: relative;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+div.dugme {
+    position: relative;
+    float: right;
+    margin-right: 20px;
+}
+
+div.prazno {
+    position: relative;
+    height: 20px;
+}
+
+div.crveno {
+    height: 20px;
+    position: relative;
+    background: red;
+}
+
+div.header {
+	position: relative;
+	width: 100%;
+	height: 70px;
+        background: white;
+}
+
+div.menu {
+    	position: relative;
+	width: 100%;
+	height: 30px;
+}
+
+div.banka {
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+        width: 90%;
+        border: 1px solid black;
+        padding: 10px;
+}
+
+div.lizing {
+        position: relative;
+        border: 1px solid black;
+        padding: 20px;
+}
+
+div.sumarni {
+        position: relative;
+        border: 1px solid black;
+        padding: 20px;
+}
+
+a.login {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+        font-size: small;
+	color: black;
+}
+
+a.title {
+	color: white;
+	font-size: 35px;
+}
+
+input.delete {
+	border: 1px solid red;
+}
+
+table {
+    width: 100%;
+}
+
+.customer {
+    border-collapse: collapse;
+}
+
+.linija {
+    border: 1px solid black;
+}
+
+td.polja {
+    border: 1px solid black;
+}
+
+th {
+    background-color: red;
+    color: white;
+}
+
+table.total {
+    width: 30%;
+}
+
+td.header {
+    padding: 10px;    
+}
+
+/* THIS IS MENU CSS */
+
+#cssmenu {
+  width: auto;
+  border: 1px solid #3B5E87;
+  background: #3B5E87;
+}
+#cssmenu > ul {
+  padding: 1px 0;
+  margin: 0px;
+  list-style: none;
+  width: 100%;
+  height: 21px;
+  border-top: 1px solid #FFFFFF;
+  border-bottom: 1px solid #FFFFFF;
+  font: normal 8pt verdana, arial, helvetica;
+}
+#cssmenu > ul li {
+  margin: 0;
+  padding: 0;
+  display: block;
+  float: left;
+  position: relative;
+  width: 148px;
+}
+#cssmenu > ul li a:link,
+#cssmenu > ul li a:visited {
+  padding: 4px 0;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  background: #3B5E87;
+  color: #ffffff;
+  width: 148px;
+}
+#cssmenu > ul li:hover a,
+#cssmenu > ul li a:hover,
+#cssmenu > ul li a:active {
+  padding: 4px 0;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  background: #678AB2;
+  color: #ffffff;
+  width: 146px;
+  border-left: 1px solid #ffffff;
+  border-right: 1px solid #ffffff;
+}
+#cssmenu > ul li ul {
+  margin: 0;
+  padding: 1px 1px 0;
+  list-style: none;
+  display: none;
+  background: #ffffff;
+  width: 146px;
+  position: absolute;
+  top: 21px;
+  left: -1px;
+  border: 1px solid #3B5E87;
+  border-top: none;
+}
+#cssmenu > ul li:hover ul {
+  display: block;
+}
+#cssmenu > ul li ul li {
+  clear: left;
+  width: 146px;
+}
+#cssmenu > ul li ul li a:link,
+#cssmenu > ul li ul li a:visited {
+  clear: left;
+  background: #3B5E87;
+  padding: 4px 0;
+  width: 146px;
+  border: none;
+  border-bottom: 1px solid #ffffff;
+  position: relative;
+  z-index: 1000;
+}
+#cssmenu > ul li ul li:hover a,
+#cssmenu > ul li ul li a:active,
+#cssmenu > ul li ul li a:hover {
+  clear: left;
+  background: #678AB2;
+  padding: 4px 0;
+  width: 146px;
+  border: none;
+  border-bottom: 1px solid #ffffff;
+  position: relative;
+  z-index: 1000;
+}
+#cssmenu > ul li ul li ul.navigation-3 {
+  display: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: absolute;
+  left: 145px;
+  top: -2px;
+  padding: 1px 1px 0 1px;
+  border: 1px solid #3B5E87;
+  border-left: 1px solid #3B5E87;
+  background: #ffffff;
+  z-index: 900;
+}
+#cssmenu > ul li ul li:hover ul.navigation-3 {
+  display: block;
+}
+#cssmenu > ul li ul li ul.navigation-3 li a:link,
+#cssmenu > ul li ul li ul.navigation-3 li a:visited {
+  background: #3B5E87;
+}
+
+/* MENU CSS ENDS HERE */
+
+/* THIS IS PROGRESS BAR CSS */
+
+div.progressbar {
+	position: relative;
+	width: 100%;
+	height: 70px;
+}
+
+ol.progtrckr {
+    margin: 0;
+    padding: 0;
+    list-style-type none;
+}
+
+ol.progtrckr li {
+    display: inline-block;
+    text-align: center;
+    line-height: 3em;
+}
+
+ol.progtrckr[data-progtrckr-steps="2"] li { width: 49%; }
+ol.progtrckr[data-progtrckr-steps="3"] li { width: 33%; }
+ol.progtrckr[data-progtrckr-steps="4"] li { width: 24%; }
+ol.progtrckr[data-progtrckr-steps="5"] li { width: 19%; }
+ol.progtrckr[data-progtrckr-steps="6"] li { width: 16%; }
+ol.progtrckr[data-progtrckr-steps="7"] li { width: 14%; }
+ol.progtrckr[data-progtrckr-steps="8"] li { width: 12%; }
+ol.progtrckr[data-progtrckr-steps="9"] li { width: 11%; }
+
+ol.progtrckr li.progtrckr-done {
+    color: black;
+    border-bottom: 4px solid yellowgreen;
+}
+
+ol.progtrckr li.progtrckr-doing {
+    color: #3B5E87;
+    border-bottom: 4px solid #3B5E87;
+}
+
+ol.progtrckr li.progtrckr-todo {
+    color: silver; 
+    border-bottom: 4px solid silver;
+}
+
+ol.progtrckr li:after {
+    content: "\00a0\00a0";
+}
+ol.progtrckr li:before {
+    position: relative;
+    bottom: -2.5em;
+    float: left;
+    left: 50%;
+    line-height: 1em;
+}
+
+ol.progtrckr li.progtrckr-doing:before {
+    content: "\1F527";
+    color: white;
+    background-color: #3B5E87;
+    height: 1.2em;
+    width: 1.2em;
+    line-height: 1.2em;
+    border: none;
+    border-radius: 1.2em;
+}
+ol.progtrckr li.progtrckr-done:before {
+    content: "\2713";
+    color: white;
+    background-color: yellowgreen;
+    height: 1.2em;
+    width: 1.2em;
+    line-height: 1.2em;
+    border: none;
+    border-radius: 1.2em;
+}
+ol.progtrckr li.progtrckr-todo:before {
+    content: "\039F";
+    color: silver;
+    background-color: white;
+    font-size: 1.5em;
+    bottom: -1.6em;
+}
+
+/* PROGRESS BAR CSS ENDS HERE */
