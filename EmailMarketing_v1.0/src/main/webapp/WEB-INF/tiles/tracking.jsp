@@ -37,6 +37,13 @@ $(document).ready(function () {
     });
 });
 </script>
+<script>
+	$(function() {
+		$( "#accordion" ).accordion({
+			heightStyle: "content"
+		});
+	});
+</script>
 
 <div class="progressbar">
     	<ol class="progtrckr" data-progtrckr-steps="7">
@@ -52,6 +59,22 @@ $(document).ready(function () {
 <div class="sadrzaj">
 <sf:form method="POST" action="${pageContext.request.contextPath}/generateUrls" commandName="urls">
 <input type="hidden" id="id" name="id" value="${broadcast.id}"/>
+	<p><input type="checkbox" id="trackingFlg"><spring:message code="broadcast.trackingFlg"/></p> 
+	<div id="accordion">
+	<h3>Open Email Tracking Config</h3>
+	<div>
+	<input type="checkbox" id="openGAflg"><spring:message code="broadcast.openGaFlg"/><br/>
+	<input type="checkbox" id="openPixelflg"><spring:message code="broadcast.openPixelFlg"/><br/>
+	</div>
+	<h3>Url Click Tracking Config</h3>
+	<div>
+	<p><spring:message code="broadcast.trackingType"/>
+		<select>
+  			<option value="intTrack">Internal Tracking</option>
+  			<option value="ga">Google Analytics</option>
+  			<option value="both">Both</option>
+		</select>
+	</p>
 	<table class="kampanja_broadcast">
     	<tr>
             <td class="label"><spring:message code="broadcast.utmCampaign"/>:</td>            
@@ -92,6 +115,8 @@ $(document).ready(function () {
 			</tr>
 		</c:forEach>
 	</table>
+	</div>
+	</div>
 	<table>
 		<tr>
 			<td><input type="submit" value="<spring:message code="broadcast.button.save"/>" /></td>
