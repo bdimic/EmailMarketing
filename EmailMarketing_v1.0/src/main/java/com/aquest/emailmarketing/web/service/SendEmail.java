@@ -15,10 +15,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,6 +88,19 @@ public class SendEmail {
         	newHtml = newHtml.replace("[IMAGE:"+i+"]", "cid:"+id);
         }
         
+        final String SERVER_URL = "http://localhost:8080/EmailMarketing/";
+        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+        textEncryptor.setPassword("bg181076");
+        Pattern pattern = Pattern.compile("<%tracking=(.*?)=tracking%>");
+        Matcher matcher = pattern.matcher(newHtml);
+        while (matcher.find()) {
+            String url = matcher.group(1);      
+            String myEncryptedUrl = textEncryptor.encrypt(url);
+            String oldurl = "<%tracking="+url+"=tracking%>";
+            String newurl = SERVER_URL+"tracking?id="+myEncryptedUrl;
+            System.out.println(newurl);
+            newHtml = newHtml.replace(oldurl, newurl);
+        }
 //        System.out.println(newHtml);
         
         email.setHtmlMsg(newHtml);

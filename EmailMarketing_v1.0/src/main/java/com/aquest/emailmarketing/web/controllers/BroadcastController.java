@@ -10,28 +10,20 @@ import com.aquest.emailmarketing.web.dao.Broadcast;
 import com.aquest.emailmarketing.web.dao.EmbeddedImage;
 import com.aquest.emailmarketing.web.dao.TrackingConfig;
 import com.aquest.emailmarketing.web.dao.Urls;
-import com.aquest.emailmarketing.web.service.BroadcastClientsService;
 import com.aquest.emailmarketing.web.service.BroadcastService;
-import com.aquest.emailmarketing.web.service.CampClientsService;
-import com.aquest.emailmarketing.web.service.CampaignsService;
 import com.aquest.emailmarketing.web.service.EmbeddedImageService;
 import com.aquest.emailmarketing.web.service.SendEmailService;
 import com.aquest.emailmarketing.web.service.TrackingConfigService;
-import com.aquest.emailmarketing.web.tracking.EmailGoogleAnalyticsService;
+import com.aquest.emailmarketing.web.tracking.EmailTrackingService;
 
-import java.net.MalformedURLException;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.apache.commons.mail.EmailException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -56,7 +48,7 @@ public class BroadcastController {
     private SendEmailService sendEmailService;
     private EmbeddedImageService embeddedImageService;
     private TrackingConfigService trackingConfigService;
-    EmailGoogleAnalyticsService emailGoogle = new EmailGoogleAnalyticsService();
+    EmailTrackingService emailTracking = new EmailTrackingService();
 
     @Autowired
     public void setBroadcastService(BroadcastService broadcastService) {
@@ -150,7 +142,30 @@ public class BroadcastController {
     							@RequestParam(value = "trackingType", required = false) String trackingType){
     	TrackingConfig trackingConfig = new TrackingConfig();
     	Broadcast broadcast = broadcastService.getBroadcastById(id);
-    	broadcast.setHtmlbody(emailGoogle.addTrackingToUrl(broadcast.getHtmlbody(), urls));
+    	String workingHtml = broadcast.getHtmlbody();
+    	if(trackingFlg == true) {
+    		if(openGAflg == true) {
+    			workingHtml = emailTracking.addGaOpenEmailTracking(workingHtml, urls);
+    			System.out.println("GA Open: "+workingHtml);
+    		}
+    		if(openPixelFlg == true) {
+    			workingHtml = emailTracking.addPixelOpenEmailTracking(workingHtml);
+    			System.out.println("Pixel Open: "+workingHtml);
+    		}
+    		if(trackingType.equals("ga")) {
+    			workingHtml = emailTracking.addGaTrackingToUrl(workingHtml, urls);
+    			System.out.println("GA Click added: "+workingHtml);
+    		} else if (trackingType.equals("intTrack")) {
+    			workingHtml = emailTracking.addIntTrackingToUrl(workingHtml, urls);
+    			System.out.println("Internal Tracking: "+workingHtml);
+    		} else {
+    			// ubaciti logiku za both
+    		}
+    		
+    	}
+    	//workingHtml = emailTracking.addGaTrackingToUrl(workingHtml, urls);
+    	//broadcast.setHtmlbody(emailTracking.addGaTrackingToUrl(workingHtml, urls));
+    	broadcast.setHtmlbody(workingHtml);
     	System.out.println(broadcast.getHtmlbody());
     	String confirm = broadcastService.SaveOrUpdate(broadcast);
     	System.out.println(confirm);
