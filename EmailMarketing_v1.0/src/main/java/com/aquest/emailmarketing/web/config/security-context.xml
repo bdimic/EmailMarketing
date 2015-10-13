@@ -18,9 +18,10 @@
 <!--        <security:authentication-manager erase-credentials="true">
             <security:authentication-provider ref="ldapActiveDirectoryAuthProvider"/>
         </security:authentication-manager>-->
-
+	
+	<security:http pattern="/tracking" security="none"></security:http>
 	<security:http use-expressions="true">
-				<security:intercept-url pattern="/openTrack" access="permitAll" />
+				<security:intercept-url pattern="/openTrack" access="permitAll" />				
 				<security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
 				<security:intercept-url pattern="/usermanagement" access="hasRole('ROLE_ADMIN')" />
 				<security:intercept-url pattern="/emailconfiguration" access="hasRole('ROLE_ADMIN')" />
@@ -65,12 +66,12 @@
                 <security:intercept-url pattern="/confirmation" access="isAuthenticated()" />
                 <security:intercept-url pattern="/goReports" access="isAuthenticated()" />
                 <security:intercept-url pattern="/reports" access="isAuthenticated()" />
-		<security:intercept-url pattern="/static/**" access="permitAll" />	
+				<security:intercept-url pattern="/static/**" access="permitAll" />	
                 <security:intercept-url pattern="/login" access="permitAll" />	
-		<security:intercept-url pattern="/**" access="denyAll" />
-		<security:form-login login-page="/login"
+				<security:intercept-url pattern="/**" access="denyAll" />
+				<security:form-login login-page="/login"
 			authentication-failure-url="/login?error=true" />
-		<security:logout logout-success-url="/loggedout" />
+				<security:logout logout-success-url="/loggedout" />
 		<security:access-denied-handler error-page="/denied" />
                 <security:remember-me key="offersAppKey"
 			user-service-ref="jdbcUserService" />                

@@ -39,6 +39,13 @@ public class EmailListDao {
         return crit.list();
     }
     
+    public EmailList getEmailListById(String id) {
+    	Criteria crit = session().createCriteria(EmailList.class);
+    	long b_id = Long.parseLong(id);
+        crit.add(Restrictions.eq("id", b_id));
+        return (EmailList)crit.uniqueResult();
+    }
+    
     public String saveOrUpdate(EmailList emailList) {
 	session().saveOrUpdate(emailList);
         return String.valueOf(emailList.getId());

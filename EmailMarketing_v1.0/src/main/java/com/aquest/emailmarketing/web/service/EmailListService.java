@@ -34,6 +34,10 @@ public class EmailListService {
     public List<EmailList> getAllEmailList(String broadcast_id) {
     	return emailListDao.getAllEmailList(broadcast_id);
     }
+    
+    public EmailList getEmailListById(String id) {
+    	return emailListDao.getEmailListById(id);
+    }
 
     public void importEmailfromFile(InputStream filename, String separator, String broadcast_id) throws IOException {
     	CSVReader reader = new CSVReader(new InputStreamReader(filename), separator.charAt(0));

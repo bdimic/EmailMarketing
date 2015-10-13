@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
@@ -89,13 +90,13 @@ public class SendEmail {
         }
         
         final String SERVER_URL = "http://localhost:8080/EmailMarketing/";
-        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-        textEncryptor.setPassword("bg181076");
+        Base64 base64 = new Base64(true);
+        
         Pattern pattern = Pattern.compile("<%tracking=(.*?)=tracking%>");
         Matcher matcher = pattern.matcher(newHtml);
         while (matcher.find()) {
             String url = matcher.group(1);      
-            String myEncryptedUrl = textEncryptor.encrypt(url);
+            String myEncryptedUrl = new String(base64.encode(url.getBytes()));
             String oldurl = "<%tracking="+url+"=tracking%>";
             String newurl = SERVER_URL+"tracking?id="+myEncryptedUrl;
             System.out.println(newurl);

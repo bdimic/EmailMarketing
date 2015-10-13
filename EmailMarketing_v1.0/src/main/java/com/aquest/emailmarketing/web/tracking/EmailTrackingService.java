@@ -71,4 +71,26 @@ public class EmailTrackingService {
     System.out.println(addedTracking);
     return addedTracking;
     }
+    
+    //Both (GA and Internal Tracking) Tracking
+    public String addBothTrackingToUrl(String text, Urls urls) {
+        String addedTracking = text;
+        for(int j= 0; j<urls.getUrl().length;j++) {
+        	System.out.println(urls.getUrl()[j]);
+        }
+        
+        for(int i= 0; i<urls.getUrl().length;i++) {
+        	String url = "href=\""+urls.getUrl()[i];
+        	String start = "?";
+        	if(url.contains("?")) {
+        		start = "&";
+        	}
+        	String urlGa = url+start+"utm_campaign="+urls.getUtmCampaign()+"&utm_medium="+urls.getUtmMedium()+"&utm_source="+urls.getUtmSource()+"&utm_content="+urls.getUtmContent();
+        	String urlnew = "<%tracking="+urlGa+"&trackingId=[UNIQUE_ID]=tracking%>";
+        	addedTracking = addedTracking.replace(url+"\"", urlnew+"\"");
+        }
+        
+        System.out.println(addedTracking);
+        return addedTracking;
+    }
 }

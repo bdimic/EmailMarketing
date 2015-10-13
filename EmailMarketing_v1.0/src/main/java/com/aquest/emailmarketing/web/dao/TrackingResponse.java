@@ -16,8 +16,8 @@ public class TrackingResponse {
 	@Id 
     @GeneratedValue
     @Column(name = "id")
-	private int id;
-	private int unique_id;
+	private long id;
+	private long unique_id;
 	private String broadcast_id;
 	private String email;
 	private String response_type;
@@ -32,7 +32,7 @@ public class TrackingResponse {
 	}
 
 
-	public TrackingResponse(int id, int unique_id, String broadcast_id, String email, String response_type,
+	public TrackingResponse(long id, long unique_id, String broadcast_id, String email, String response_type,
 			String response_source, String response_url, Timestamp response_time, Timestamp processed_dttm) {
 		this.id = id;
 		this.unique_id = unique_id;
@@ -46,22 +46,22 @@ public class TrackingResponse {
 	}
 
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
 
-	public int getUnique_id() {
+	public long getUnique_id() {
 		return unique_id;
 	}
 
 
-	public void setUnique_id(int unique_id) {
+	public void setUnique_id(long unique_id) {
 		this.unique_id = unique_id;
 	}
 
@@ -134,10 +134,13 @@ public class TrackingResponse {
 	public void setProcessed_dttm(Timestamp processed_dttm) {
 		this.processed_dttm = processed_dttm;
 	}
-	
-	
-	
-	
-	
-	
+
+
+	@Override
+	public String toString() {
+		return "TrackingResponse [id=" + id + ", unique_id=" + unique_id + ", broadcast_id=" + broadcast_id + ", email="
+				+ email + ", response_type=" + response_type + ", response_source=" + response_source
+				+ ", response_url=" + response_url + ", response_time=" + response_time + ", processed_dttm="
+				+ processed_dttm + "]";
+	}
 }
