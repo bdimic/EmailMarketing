@@ -71,7 +71,8 @@
             </tr>
 </table>
 
-<sf:form method="POST" action="${pageContext.request.contextPath}/generateBroadcast" commandName="BroadcastData">
+<sf:form method="POST" action="${pageContext.request.contextPath}/pickBroadcastAction" commandName="broadcast">
+<input type="hidden" name="campaign_id" id="campaign_id" value="${campaign.campaign_id}"/>
 <div class="sadrzaj">   
 <table id="broadcast_table" cellpadding="0" cellspacing="0" border="0"  class="display">
     <thead>

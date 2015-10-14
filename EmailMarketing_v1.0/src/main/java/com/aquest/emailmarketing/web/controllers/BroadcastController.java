@@ -7,10 +7,15 @@
 package com.aquest.emailmarketing.web.controllers;
 
 import com.aquest.emailmarketing.web.dao.Broadcast;
+import com.aquest.emailmarketing.web.dao.CampaignCategory;
+import com.aquest.emailmarketing.web.dao.Campaigns;
+import com.aquest.emailmarketing.web.dao.EmailConfig;
 import com.aquest.emailmarketing.web.dao.EmbeddedImage;
 import com.aquest.emailmarketing.web.dao.TrackingConfig;
 import com.aquest.emailmarketing.web.dao.Urls;
 import com.aquest.emailmarketing.web.service.BroadcastService;
+import com.aquest.emailmarketing.web.service.CampaignsService;
+import com.aquest.emailmarketing.web.service.EmailConfigService;
 import com.aquest.emailmarketing.web.service.EmbeddedImageService;
 import com.aquest.emailmarketing.web.service.SendEmailService;
 import com.aquest.emailmarketing.web.service.TrackingConfigService;
@@ -45,11 +50,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BroadcastController {
     
     private BroadcastService broadcastService;
+    private CampaignsService campaignsService;
     private SendEmailService sendEmailService;
+    private EmailConfigService emailConfigService;
     private EmbeddedImageService embeddedImageService;
     private TrackingConfigService trackingConfigService;
     EmailTrackingService emailTracking = new EmailTrackingService();
 
+    @Autowired
+    public void setCampaignsService(CampaignsService campaignsService) {
+        this.campaignsService = campaignsService;
+    }
+    
     @Autowired
     public void setBroadcastService(BroadcastService broadcastService) {
         this.broadcastService = broadcastService;
@@ -59,6 +71,11 @@ public class BroadcastController {
     public void setSendEmailService(SendEmailService sendEmailService) {
     	this.sendEmailService = sendEmailService;
     }
+    
+    @Autowired
+    public void setEmailConfigService(EmailConfigService emailConfigService) {
+		this.emailConfigService = emailConfigService;
+	}
     
     @Autowired
     public void setTrackingConfigService(TrackingConfigService trackingConfigService) {
@@ -159,12 +176,11 @@ public class BroadcastController {
     			workingHtml = emailTracking.addIntTrackingToUrl(workingHtml, urls);
     			System.out.println("Internal Tracking: "+workingHtml);
     		} else {
-    			// ubaciti logiku za both
+    			workingHtml = emailTracking.addBothTrackingToUrl(workingHtml, urls);
     		}
     		
     	}
-    	//workingHtml = emailTracking.addGaTrackingToUrl(workingHtml, urls);
-    	//broadcast.setHtmlbody(emailTracking.addGaTrackingToUrl(workingHtml, urls));
+    	
     	broadcast.setHtmlbody(workingHtml);
     	System.out.println(broadcast.getHtmlbody());
     	String confirm = broadcastService.SaveOrUpdate(broadcast);
@@ -223,37 +239,40 @@ public class BroadcastController {
     public String embedImage(Model model, Principal principal,
 			@RequestParam(value = "id") int id,
 			@RequestParam(value = "url", required = false) String[] url){
-    	for(int j= 0; j<url.length;j++) {
-        	System.out.println(url[j]);
-        }
+    	
+    	System.out.println(url.toString());
     	Broadcast broadcast = broadcastService.getBroadcastById(id);
     	System.out.println(broadcast.toString());
-    	EmbeddedImage embeddedImage = new EmbeddedImage();
-    	embeddedImage.setBroadcast_id(broadcast.getBroadcast_id());
-    	System.out.println(embeddedImage.getBroadcast_id());
-    	// iz array u string sa ; kao separatorom
-    	StringBuilder sb = new StringBuilder();
-    	for(int i=0;i<url.length;i++){
-    		sb.append(url[i]);
-    		sb.append(";");
-    	}
-    	System.out.println(sb.toString());
-    	
-    	String urls = sb.toString();
-    	System.out.println(urls);
-    	if (urls.charAt(urls.length()-1)==';')
-        {
-    		urls = urls.substring(0,urls.length()-1);
-        }
-    	System.out.println(urls);
-    	
-    	embeddedImage.setUrl(urls);
-    	embeddedImageService.SaveOrUpdate(embeddedImage);
     	String addedTracking = broadcast.getHtmlbody();
-    	for(int k=0;k<url.length;k++) {
-    		addedTracking = addedTracking.replace(url[k], "[IMAGE:"+k+"]");
+    	
+    	if(url.length > 0) {
+	    	EmbeddedImage embeddedImage = new EmbeddedImage();
+	    	embeddedImage.setBroadcast_id(broadcast.getBroadcast_id());
+	    	System.out.println(embeddedImage.getBroadcast_id());
+	    	// iz array u string sa ; kao separatorom
+	    	StringBuilder sb = new StringBuilder();
+	    	for(int i=0;i<url.length;i++){
+	    		sb.append(url[i]);
+	    		sb.append(";");
+	    	}
+	    	System.out.println(sb.toString());
+	    	
+	    	String urls = sb.toString();
+	    	System.out.println(urls);
+	    	if (urls.charAt(urls.length()-1)==';')
+	        {
+	    		urls = urls.substring(0,urls.length()-1);
+	        }
+	    	System.out.println(urls);
+	    	
+	    	embeddedImage.setUrl(urls);
+	    	embeddedImageService.SaveOrUpdate(embeddedImage);
+	    	
+	    	for(int k=0;k<url.length;k++) {
+	    		addedTracking = addedTracking.replace(url[k], "[IMAGE:"+k+"]");
+	    	}
+	    	System.out.println(addedTracking);
     	}
-    	System.out.println(addedTracking);
     	broadcast.setHtmlbody_embed(addedTracking);
     	broadcast.setStatus("DEFINED");
 		broadcastService.SaveOrUpdate(broadcast);
@@ -276,5 +295,84 @@ public class BroadcastController {
     	broadcast.setExecution_dttm(curTimestamp);
     	broadcastService.SaveOrUpdate(broadcast);
     	return "sentbroadcast";
+    }
+    
+    
+    @RequestMapping(value="/pickBroadcastAction", method = RequestMethod.POST)
+    public String createNewBroadcast(Model model, 
+    		@RequestParam(value = "newBroadcast", required = false) String newBroadcast,
+    		@RequestParam(value = "copyBroadcast", required = false) String copyBroadcast,
+    		@RequestParam(value = "editBroadcast", required = false) String editBroadcast,
+    		@RequestParam(value = "showBroadcast", required = false) String showBroadcast,
+    		@RequestParam(value = "deleteBroadcast", required = false) String deleteBroadcast,
+    		@RequestParam(value = "campaign_id", required = false) String campaign_id,
+    		Principal principal, HttpServletRequest request) {
+        
+    	List<Broadcast> broadcast = broadcastService.getBroadcastsByCampaignId(campaign_id);
+    	
+        if(newBroadcast != null) {
+        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
+        	Broadcast broadcast1 = new Broadcast();
+        	List<EmailConfig> emailconfig = emailConfigService.getAllProfiles();
+        	model.addAttribute("campaign", campaign);
+        	model.addAttribute("broadcast", broadcast1);
+        	model.addAttribute("emailconfig", emailconfig);
+        	return "definebroadcast";
+        }
+        
+        if(deleteBroadcast != null) {
+        	// ubaciti logiku koja proverava dali za kampanju za brisanje postoji definisan broadcast. ukoliko postoji
+        	// kampanju moze obrisati samo administrator. ukoliko postoji broadcast koji je u statusu sent nije moguce brisanje
+        	// ni administratoru
+        	if(broadcast != null) {
+        		int sentBroadcast = 0;
+        		for(int i=0; i<broadcast.size();i++) {
+        			if(broadcast.get(i).getStatus().equals("SENT")) {
+        				sentBroadcast++;
+        			}
+        		}
+        		if(sentBroadcast > 0) {
+        			String message = "confirmation.campaign.status.nodelete";
+        			model.addAttribute("message", message);
+        			return "confirmation";
+        		} else {
+        			Campaigns campaign = campaignsService.getCampaign(campaign_id);
+                	model.addAttribute("broadcast", broadcast);
+                	model.addAttribute("campaign", campaign);
+            		return "deleteflow";
+        		}
+        		
+        	} else {
+        	boolean isDeleted = campaignsService.delete(campaign_id);
+        		if(isDeleted) {
+        			String message = "confirmation.campaign.status.deleted";
+        			model.addAttribute("message", message);
+        			return "confirmation";
+        		} else {
+        			return "error";
+        		}
+        	}
+        }
+        
+        if(editBroadcast != null) {
+//        	List<CampaignCategory> campcat = campaignCategoryService.getCategories();        	
+//        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
+//        	model.addAttribute("campaign", campaign);
+//        	model.addAttribute("campcat", campcat);
+        	return "editcampaign";
+        }
+        
+        if(showBroadcast != null) {
+//        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
+//        	model.addAttribute("broadcast", broadcast);
+//        	model.addAttribute("campaign", campaign);
+//        	System.out.println(campaign.getCampaignCategory().getCategory_id());
+//        	CampaignCategory campcat = campaignCategoryService.getCategoryById(campaign.getCampaignCategory().getCategory_id());
+//        	model.addAttribute("campcat", campcat);
+        	
+        	return "opencampaign";
+        }
+                
+        return "home";
     }
 }
