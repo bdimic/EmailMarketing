@@ -12,7 +12,7 @@
            "DisplayLength": 10,
            "scrollCollapse": true,
            "drawCallback": function (settings) {
-        	   		$("#copy_into_new_broadcast").attr('disabled', 'disabled');
+        	   		$("#copy_broadcast").attr('disabled', 'disabled');
         	   		$("#edit_broadcast").attr('disabled', 'disabled');
         	   		$("#show_broadcast").attr('disabled', 'disabled');
                     $("#delete_broadcast").attr('disabled', 'disabled');
@@ -31,7 +31,7 @@
           $(this).addClass('row_selected');
           var row = $(this).find('td:first').text();
           $("#MainContent_Main_hfRowId").val(row);
-          $("#copy_into_new_broadcast").removeAttr("disabled");
+          $("#copy_broadcast").removeAttr("disabled");
           $("#edit_broadcast").removeAttr("disabled");
           $("#show_broadcast").removeAttr("disabled");
           $("#delete_broadcast").removeAttr("disabled");
@@ -96,7 +96,7 @@
 <div class="prazno"></div>
 <div class="dugme">
 <input type="submit" name="newBroadcast" value="New Broadcast" id="new_broadcast" />
-<input type="submit" name="copyIntoNewBroadcast" value="Copy into new Broadcast" id="copy_into_new_broadcast" disabled="disabled" />
+<input type="submit" name="copyBroadcast" value="Copy into new Broadcast" id="copy_broadcast" disabled="disabled" />
 <input type="submit" name="editBroadcast" value="Edit Broadcast" id="edit_broadcast" disabled="disabled" />
 <input type="submit" name="showBroadcast" value="Show Broadcast" id="show_broadcast" disabled="disabled" />
 <input type="submit" name="deleteBroadcast" value="Delete Broadcast" id="delete_broadcast" disabled="disabled" />

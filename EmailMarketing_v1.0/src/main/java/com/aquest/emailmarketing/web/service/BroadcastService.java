@@ -68,7 +68,7 @@ public class BroadcastService {
             return true;
     }
     
-    public void delete(String id) {
-        broadcastDao.delete(id);
+    public boolean delete(int id) {
+        return broadcastDao.delete(id);
     }
 }

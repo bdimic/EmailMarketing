@@ -58,6 +58,7 @@ public class ImportController {
             String listfilename = "";
             String separator = "";
             String broadcast_id = "";
+            String old_broadcast_id = "";
             InputStream fileContent = null;
             List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
             for (FileItem item : items) {
@@ -71,6 +72,8 @@ public class ImportController {
                         separator = fieldValue;
                     } else if(fieldName.equals("broadcast_id")) {
                     	broadcast_id = fieldValue;
+                    } else if(fieldName.equals("old_broadcast_id")) {
+                    	old_broadcast_id = fieldValue;
                     }
                     // ... (do your job here)
                 } else {
@@ -85,6 +88,8 @@ public class ImportController {
             }   
             emailListService.importEmailfromFile(fileContent, separator, broadcast_id);
             Broadcast broadcast = broadcastService.getBroadcast(broadcast_id);
+            Broadcast old_broadcast = broadcastService.getBroadcast(old_broadcast_id);
+            model.addAttribute("old_broadcast", old_broadcast);
             model.addAttribute("broadcast", broadcast);
 		return "definecontent";
 	}

@@ -90,7 +90,8 @@ public class BroadcastController {
     @RequestMapping(value = "/generateBroadcastFlow", method = RequestMethod.POST)
     public String doGenerate(Model model,@Valid @ModelAttribute("broadcast") Broadcast broadcast,BindingResult result, Principal principal,
     						 @RequestParam(value = "profile_id") int profile_id,
-    						 @RequestParam(value = "campaign_id") String campaign_id) {
+    						 @RequestParam(value = "campaign_id") String campaign_id,
+    						 @RequestParam(value = "old_broadcast_id") String old_broadcast_id) {
     	Timestamp curTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
     	broadcast.setCreation_user(principal.getName());
         broadcast.setCreation_dttm(curTimestamp);
@@ -104,6 +105,7 @@ public class BroadcastController {
         } else {
         	broadcast.setBroadcast_id(broadcast_id);
         	String bcast_id = broadcastService.SaveOrUpdate(broadcast);
+        	model.addAttribute("old_broadcast_id", old_broadcast_id);
         	model.addAttribute("broadcast",broadcast);
         	return "definelist";
         }
@@ -306,9 +308,10 @@ public class BroadcastController {
     		@RequestParam(value = "showBroadcast", required = false) String showBroadcast,
     		@RequestParam(value = "deleteBroadcast", required = false) String deleteBroadcast,
     		@RequestParam(value = "campaign_id", required = false) String campaign_id,
+    		@RequestParam(value = "broadcast_id", required = false) String broadcast_id,
     		Principal principal, HttpServletRequest request) {
         
-    	List<Broadcast> broadcast = broadcastService.getBroadcastsByCampaignId(campaign_id);
+    	Broadcast broadcast = broadcastService.getBroadcast(broadcast_id);
     	
         if(newBroadcast != null) {
         	Campaigns campaign = campaignsService.getCampaign(campaign_id);
@@ -320,37 +323,35 @@ public class BroadcastController {
         	return "definebroadcast";
         }
         
+        if(copyBroadcast != null) {
+        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
+        	List<EmailConfig> emailconfig = emailConfigService.getAllProfiles();
+        	model.addAttribute("campaign", campaign);
+        	model.addAttribute("broadcast", broadcast);
+        	model.addAttribute("emailconfig", emailconfig);
+        	return "definebroadcast";
+        }
+        
         if(deleteBroadcast != null) {
-        	// ubaciti logiku koja proverava dali za kampanju za brisanje postoji definisan broadcast. ukoliko postoji
-        	// kampanju moze obrisati samo administrator. ukoliko postoji broadcast koji je u statusu sent nije moguce brisanje
-        	// ni administratoru
+        	
         	if(broadcast != null) {
-        		int sentBroadcast = 0;
-        		for(int i=0; i<broadcast.size();i++) {
-        			if(broadcast.get(i).getStatus().equals("SENT")) {
-        				sentBroadcast++;
-        			}
-        		}
-        		if(sentBroadcast > 0) {
-        			String message = "confirmation.campaign.status.nodelete";
+        		if(broadcast.getStatus().equals("SENT")) {
+        			String message = "confirmation.broadcast.status.nodelete";
         			model.addAttribute("message", message);
         			return "confirmation";
         		} else {
-        			Campaigns campaign = campaignsService.getCampaign(campaign_id);
-                	model.addAttribute("broadcast", broadcast);
-                	model.addAttribute("campaign", campaign);
-            		return "deleteflow";
+        			boolean isDeleted = broadcastService.delete(broadcast.getId());
+            		if(isDeleted) {
+            			String message = "confirmation.broadcast.status.deleted";
+            			model.addAttribute("message", message);
+            			return "confirmation";
+            		} else {
+            			return "error";
+            		}
         		}
         		
         	} else {
-        	boolean isDeleted = campaignsService.delete(campaign_id);
-        		if(isDeleted) {
-        			String message = "confirmation.campaign.status.deleted";
-        			model.addAttribute("message", message);
-        			return "confirmation";
-        		} else {
-        			return "error";
-        		}
+        		return "error";
         	}
         }
         

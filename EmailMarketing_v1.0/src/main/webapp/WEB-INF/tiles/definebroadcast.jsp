@@ -20,6 +20,7 @@
 <sf:form method="POST" action="${pageContext.request.contextPath}/generateBroadcastFlow" commandName="broadcast">
 <h3><spring:message code="broadcast.title"/></h3>
 <sf:input type="hidden" path="campaign_id" id="campaign_id" value="${campaign.campaign_id}"/>
+<input type="hidden" name="old_broadcast_id" id="old_broadcast_id" value="${broadcast.broadcast_id}"/>
     <table class="kampanja_broadcast">
     	<tr>
             <td class="label"><spring:message code="broadcast.name"/>:</td>

@@ -18,9 +18,9 @@
 </div>
 <form method="POST" action="${pageContext.request.contextPath}/importList" enctype="multipart/form-data">
 <input type="hidden" id="broadcast_id" name="broadcast_id" value="${broadcast.broadcast_id}"/>
-
+<input type="hidden" id="old_broadcast_id" name="old_broadcast_id" value="${old_broadcast_id}" />
 <div class="sadrzaj">
-    <input type="file" name="filename"/></br>
+    <input type="file" name="filename"/><br/>
     <select name="separator">
         <option value="t"><spring:message code="list.separator.tab"/></option>
         <option value=","><spring:message code="list.separator.comma"/></option>

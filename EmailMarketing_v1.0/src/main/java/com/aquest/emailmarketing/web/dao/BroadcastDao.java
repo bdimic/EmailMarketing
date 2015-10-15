@@ -82,10 +82,9 @@ public class BroadcastDao {
         return String.valueOf(broadcast.getBroadcast_id());
     }
     
-    public boolean delete(String id) {
-        long b_id = Long.parseLong(id);
-        Query query = session().createQuery("delete Broadcast b where b.broadcast_id=:id");
-        query.setParameter("id", b_id);
+    public boolean delete(int id) {
+        Query query = session().createQuery("delete Broadcast b where b.id=:id");
+        query.setParameter("id", id);
         return query.executeUpdate() == 1;
     }
 }
