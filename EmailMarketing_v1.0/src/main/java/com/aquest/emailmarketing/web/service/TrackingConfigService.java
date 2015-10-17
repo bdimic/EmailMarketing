@@ -47,7 +47,7 @@ public class TrackingConfigService {
         return trackingConfigDao.saveOrUpdate(trackingConfig);
     }
         
-    public void delete(String id) {
-    	trackingConfigDao.delete(id);
+    public boolean delete(String id) {
+    	return trackingConfigDao.delete(id);
     }
 }

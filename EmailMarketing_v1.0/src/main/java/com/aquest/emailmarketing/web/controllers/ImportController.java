@@ -88,8 +88,18 @@ public class ImportController {
             }   
             emailListService.importEmailfromFile(fileContent, separator, broadcast_id);
             Broadcast broadcast = broadcastService.getBroadcast(broadcast_id);
-            Broadcast old_broadcast = broadcastService.getBroadcast(old_broadcast_id);
-            model.addAttribute("old_broadcast", old_broadcast);
+            System.out.println("Old broadcast: "+old_broadcast_id);
+            if(!old_broadcast_id.isEmpty()) {
+	            try {
+					Broadcast old_broadcast = broadcastService.getBroadcast(old_broadcast_id);
+					broadcast.setHtmlbody(old_broadcast.getHtmlbody());
+					broadcast.setPlaintext(old_broadcast.getPlaintext());
+					model.addAttribute("old_broadcast", old_broadcast);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
             model.addAttribute("broadcast", broadcast);
 		return "definecontent";
 	}

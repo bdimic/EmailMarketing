@@ -115,7 +115,9 @@ public class CampaignsController {
         			Campaigns campaign = campaignsService.getCampaign(campaign_id);
                 	model.addAttribute("broadcast", broadcast);
                 	model.addAttribute("campaign", campaign);
-            		return "deleteflow";
+                	CampaignCategory campcat = campaignCategoryService.getCategoryById(campaign.getCampaignCategory().getCategory_id());
+                	model.addAttribute("campcat", campcat);
+            		return "opencampaign";
         		}
         		
         	} else {

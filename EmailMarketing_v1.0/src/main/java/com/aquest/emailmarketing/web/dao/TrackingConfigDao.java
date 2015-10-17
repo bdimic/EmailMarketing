@@ -56,9 +56,8 @@ public class TrackingConfigDao {
     }
     
     public boolean delete(String id) {
-        int b_id = Integer.parseInt(id);
         Query query = session().createQuery("delete TrackingConfig b where b.broadcast_id=:id");
-        query.setParameter("id", b_id);
+        query.setParameter("id", id);
         return query.executeUpdate() == 1;
     }
 }

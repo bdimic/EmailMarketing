@@ -38,6 +38,7 @@ public class Broadcast implements Serializable {
     private String campaign_id;
     private String subject;
     private String htmlbody;
+    private String htmlbody_tracking;
     private String htmlbody_embed;
     private String plaintext;
     private String status;    
@@ -56,7 +57,7 @@ public class Broadcast implements Serializable {
     	this.emailConfig = new EmailConfig();
     }
 
-    public Broadcast(EmailConfig emailConfig, int id, String broadcast_id, String broadcast_name, String campaign_id, String subject, String baseurl, String htmlbody, String htmlbody_embed, String plaintext, String status, Timestamp creation_dttm, String creation_user, Timestamp last_change_dttm, String last_change_user, Timestamp execution_dttm, String execution_user) {
+    public Broadcast(EmailConfig emailConfig, int id, String broadcast_id, String broadcast_name, String campaign_id, String subject, String baseurl, String htmlbody, String htmlbody_tracking, String htmlbody_embed, String plaintext, String status, Timestamp creation_dttm, String creation_user, Timestamp last_change_dttm, String last_change_user, Timestamp execution_dttm, String execution_user) {
         this.emailConfig = emailConfig;
         this.id = id;
     	this.broadcast_id = broadcast_id;
@@ -64,6 +65,7 @@ public class Broadcast implements Serializable {
         this.campaign_id = campaign_id;
         this.subject = subject;
         this.htmlbody = htmlbody;
+        this.htmlbody_tracking = htmlbody_tracking;
         this.htmlbody_embed = htmlbody_embed;
         this.plaintext = plaintext;
         this.status = status;
@@ -130,8 +132,16 @@ public class Broadcast implements Serializable {
     public void setHtmlbody(String htmlbody) {
         this.htmlbody = htmlbody;
     }
+       
+    public String getHtmlbody_tracking() {
+		return htmlbody_tracking;
+	}
 
-    public String getHtmlbody_embed() {
+	public void setHtmlbody_tracking(String htmlbody_tracking) {
+		this.htmlbody_tracking = htmlbody_tracking;
+	}
+
+	public String getHtmlbody_embed() {
 		return htmlbody_embed;
 	}
 
@@ -216,7 +226,15 @@ public class Broadcast implements Serializable {
 	}
 
 	@Override
-    public String toString() {
-        return "Broadcast{" + "id=" + id + "broadcast_id=" + broadcast_id + ", broadcast_name=" + broadcast_name + ", campaign_id=" + campaign_id + ", subject=" + subject + ", htmlbody=" + htmlbody + ", htmlbody_embed=" + htmlbody_embed + ", plaintext=" + plaintext + ", status=" + status + ", creation_dttm=" + creation_dttm + ", creation_user=" + creation_user + ", last_change_dttm=" + last_change_dttm + ", last_change_user=" + last_change_user + ", execution_dttm=" + execution_dttm + ", execution_user=" + execution_user + '}';
-    } 
+	public String toString() {
+		return "Broadcast [id=" + id + ", broadcast_id=" + broadcast_id + ", broadcast_source=" + broadcast_source
+				+ ", broadcast_name=" + broadcast_name + ", campaign_id=" + campaign_id + ", subject=" + subject
+				+ ", htmlbody=" + htmlbody + ", htmlbody_tracking=" + htmlbody_tracking + ", htmlbody_embed="
+				+ htmlbody_embed + ", plaintext=" + plaintext + ", status=" + status + ", emailConfig=" + emailConfig
+				+ ", creation_dttm=" + creation_dttm + ", creation_user=" + creation_user + ", last_change_dttm="
+				+ last_change_dttm + ", last_change_user=" + last_change_user + ", execution_dttm=" + execution_dttm
+				+ ", execution_user=" + execution_user + "]";
+	}
+
+	 
 }

@@ -183,8 +183,8 @@ public class BroadcastController {
     		
     	}
     	
-    	broadcast.setHtmlbody(workingHtml);
-    	System.out.println(broadcast.getHtmlbody());
+    	broadcast.setHtmlbody_tracking(workingHtml);
+    	System.out.println(broadcast.getHtmlbody_tracking());
     	String confirm = broadcastService.SaveOrUpdate(broadcast);
     	System.out.println(confirm);
     	System.out.println(trackingFlg);
@@ -245,7 +245,7 @@ public class BroadcastController {
     	System.out.println(url.toString());
     	Broadcast broadcast = broadcastService.getBroadcastById(id);
     	System.out.println(broadcast.toString());
-    	String addedTracking = broadcast.getHtmlbody();
+    	String addedTracking = broadcast.getHtmlbody_tracking();
     	
     	if(url.length > 0) {
 	    	EmbeddedImage embeddedImage = new EmbeddedImage();
@@ -342,9 +342,14 @@ public class BroadcastController {
         		} else {
         			boolean isDeleted = broadcastService.delete(broadcast.getId());
             		if(isDeleted) {
-            			String message = "confirmation.broadcast.status.deleted";
-            			model.addAttribute("message", message);
-            			return "confirmation";
+            			boolean trackingDeleted = trackingConfigService.delete(broadcast_id);
+            			if(trackingDeleted) {
+	            			String message = "confirmation.broadcast.status.deleted";
+	            			model.addAttribute("message", message);
+	            			return "confirmation";
+            			} else {
+            				return "error";
+            			}
             		} else {
             			return "error";
             		}
