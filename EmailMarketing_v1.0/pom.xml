@@ -222,6 +222,11 @@
 		<artifactId>commons-codec</artifactId>
 		<version>1.10</version>
 	</dependency>
+	<dependency>
+      <groupId>com.google.apis</groupId>
+      <artifactId>google-api-services-analytics</artifactId>
+      <version>v3-rev118-1.20.0</version>
+    </dependency>
         </dependencies> 
         <build>
             <finalName>EmailMarketing</finalName>  
