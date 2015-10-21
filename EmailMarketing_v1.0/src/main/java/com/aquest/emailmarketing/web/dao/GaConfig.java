@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 
 @Entity
 @Table(name="cm_ga_config")
@@ -15,9 +17,13 @@ public class GaConfig {
     @GeneratedValue
     @Column(name = "id")
 	private int id;
+	@NotBlank()
 	private String application_name;
+	@NotBlank()
 	private String table_id;
+	@NotBlank()
 	private String P12_key_file_name;
+	@NotBlank()
 	private String api_email;
 	
 	public GaConfig() {

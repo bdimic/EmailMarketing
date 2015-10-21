@@ -30,7 +30,7 @@ public class GaConfigService {
         return gaConfig;
     }
         
-    public String SaveOrUpdate(GaConfig gaConfig) {
+    public String saveOrUpdate(GaConfig gaConfig) {
         return gaConfigDao.saveOrUpdate(gaConfig);
     }
 }

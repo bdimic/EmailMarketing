@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.aquest.emailmarketing.web.dao.EmailConfig;
+import com.aquest.emailmarketing.web.dao.GaConfig;
 import com.aquest.emailmarketing.web.dao.User;
 import com.aquest.emailmarketing.web.service.EmailConfigService;
+import com.aquest.emailmarketing.web.service.GaConfigService;
 import com.aquest.emailmarketing.web.service.UsersService;
 
 @Controller
@@ -25,6 +27,7 @@ public class AdminController {
 	
 	private UsersService usersService;
 	private EmailConfigService emailConfigService;
+	private GaConfigService gaConfigService;
 	
 	@Autowired
 	public void setUsersService(UsersService usersService) {
@@ -36,6 +39,11 @@ public class AdminController {
 		this.emailConfigService = emailConfigService;
 	}
 	
+	@Autowired
+	public void setGaConfigService(GaConfigService gaConfigService) {
+		this.gaConfigService = gaConfigService;
+	}
+
 	@RequestMapping("/admin")
 	public String showAdmin(Model model) {
 		
@@ -110,5 +118,29 @@ public class AdminController {
 		model.addAttribute("emailconfig", emailConf);
 		
 		return "emailconfig";
+	}
+	
+	@RequestMapping("/gaconfiguration")
+	public String showGaConfig(Model model,
+    		Principal principal, HttpServletRequest request) {
+		
+		GaConfig gaConfig = gaConfigService.getGaConfig();
+		if(gaConfig == null) {
+			gaConfig = new GaConfig();
+		}
+		model.addAttribute("gaConfig", gaConfig);		
+		return "gaconfiguration";
+	}
+	
+	@RequestMapping(value="/saveGaConfig", method = RequestMethod.POST)
+	public String saveGaConfig(@Valid @ModelAttribute("gaConfig") GaConfig gaConfig, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+    		return "gaconfiguration";
+    	}		
+		gaConfigService.saveOrUpdate(gaConfig);
+		
+		String message = "confirmation.gaconfig.status.saved";
+		model.addAttribute("message", message);
+		return "confirmation";
 	}
 }

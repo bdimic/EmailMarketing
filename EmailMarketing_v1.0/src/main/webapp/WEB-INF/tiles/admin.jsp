@@ -7,4 +7,5 @@
 
 <a href="<c:url value='/usermanagement'/>"><spring:message code="menu.usermanagement"/></a>
 <a href="<c:url value='/emailconfig'/>"><spring:message code="menu.emailconfiguration"/></a>
+<a href="<c:url value='/gaconfiguration'/>"><spring:message code="menu.gaconfiguration"/></a>
 

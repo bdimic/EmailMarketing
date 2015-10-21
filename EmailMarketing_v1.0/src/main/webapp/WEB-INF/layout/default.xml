@@ -155,4 +155,8 @@
 		<put-attribute name="title" value="Broadcast Sent!"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/sentbroadcast.jsp"></put-attribute>
 	</definition>
+	<definition name="gaconfiguration" extends="base.definition">
+		<put-attribute name="title" value="Google Analytics Configuration!"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/gaconfiguration.jsp"></put-attribute>
+	</definition>
 </tiles-definitions>
