@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -28,6 +29,7 @@ import com.aquest.emailmarketing.web.dao.GaConfig;
 import com.aquest.emailmarketing.web.dao.User;
 import com.aquest.emailmarketing.web.service.EmailConfigService;
 import com.aquest.emailmarketing.web.service.GaConfigService;
+import com.aquest.emailmarketing.web.service.GoogleAnalyticsService;
 import com.aquest.emailmarketing.web.service.UsersService;
 
 @Controller
@@ -36,8 +38,9 @@ public class AdminController {
 	private UsersService usersService;
 	private EmailConfigService emailConfigService;
 	private GaConfigService gaConfigService;
+	private GoogleAnalyticsService googleAnalyticsService;
 	
-	private final String filePath = "C:\\Users\\Dimich\\Documents";
+	private final String filePath = "C:\\Users\\bdimic\\Documents";
 	
 	@Autowired
 	public void setUsersService(UsersService usersService) {
@@ -52,6 +55,11 @@ public class AdminController {
 	@Autowired
 	public void setGaConfigService(GaConfigService gaConfigService) {
 		this.gaConfigService = gaConfigService;
+	}
+	
+	@Autowired
+	public void setGoogleAnalyticsService(GoogleAnalyticsService googleAnalyticsService) {
+		this.googleAnalyticsService = googleAnalyticsService;
 	}
 
 	@RequestMapping("/admin")
@@ -166,30 +174,35 @@ public class AdminController {
 				String fieldName = item.getFieldName();
                 String fieldValue = item.getString();
                 if (fieldName.equals("application_name")) {
-                	applicationName = fieldValue;
-                	gaConfig.setApplication_name(applicationName);
-                } else if(fieldName.equals("table_id")) {
-                    tableId = fieldValue;
-                    gaConfig.setTable_id(tableId);
+                	applicationName = fieldValue;                	
                 } else if(fieldName.equals("api_email")) {
-                	apiEmail = fieldValue;
-                	gaConfig.setApi_email(apiEmail);
+                	apiEmail = fieldValue;                	
                 }
 			} else {
 				//String fieldName = item.getFieldName();
                 String fileName = FilenameUtils.getName(item.getName());
                 uploadPath = filePath+File.separator+fileName;
                 File storeFile = new File(uploadPath);
-                item.write(storeFile);
-                gaConfig.setP12_key_file_name(uploadPath);
+                item.write(storeFile);                
 			}
 		}
 		
-		System.out.println(gaConfig.toString());
-				
-		gaConfigService.saveOrUpdate(gaConfig);		
-		String message = "confirmation.gaconfig.status.saved";
-		model.addAttribute("message", message);
-		return "confirmation";
+		Map<String, String> result = googleAnalyticsService.checkGaConfig(applicationName, apiEmail, uploadPath);
+		
+		if(result.get("result").equals("success")){
+			gaConfig.setApplication_name(applicationName);
+			gaConfig.setApi_email(apiEmail);
+			gaConfig.setP12_key_file_name(uploadPath);
+			gaConfig.setTable_id(result.get("profileId"));
+			System.out.println(gaConfig.toString());
+			gaConfigService.saveOrUpdate(gaConfig);		
+			String message = "confirmation.gaconfig.status.saved";
+			model.addAttribute("message", message);
+			return "confirmation";
+		} else {
+			String message = result.get("result");
+			model.addAttribute("message", message);
+			return "confirmation";
+		}
 	}
 }
