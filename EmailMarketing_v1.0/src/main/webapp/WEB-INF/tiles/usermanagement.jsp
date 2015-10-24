@@ -37,7 +37,7 @@
 </script>
 <h3>Authorised Users Only!</h3>
 
-<a href="<c:url value='/newaccount'/>"><spring:message code="menu.newaccount"/></a>
+
 </br>
 
 <sf:form method="POST" action="${pageContext.request.contextPath}/userconfig" commandName="user">

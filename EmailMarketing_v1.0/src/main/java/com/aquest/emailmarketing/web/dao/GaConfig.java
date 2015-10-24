@@ -21,7 +21,6 @@ public class GaConfig {
 	private String application_name;
 	@NotBlank()
 	private String table_id;
-	@NotBlank()
 	private String P12_key_file_name;
 	@NotBlank()
 	private String api_email;

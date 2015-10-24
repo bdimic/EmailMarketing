@@ -1,11 +1,19 @@
 package com.aquest.emailmarketing.web.controllers;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +36,8 @@ public class AdminController {
 	private UsersService usersService;
 	private EmailConfigService emailConfigService;
 	private GaConfigService gaConfigService;
+	
+	private final String filePath = "C:\\Users\\Dimich\\Documents";
 	
 	@Autowired
 	public void setUsersService(UsersService usersService) {
@@ -133,12 +143,51 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/saveGaConfig", method = RequestMethod.POST)
-	public String saveGaConfig(@Valid @ModelAttribute("gaConfig") GaConfig gaConfig, BindingResult result, Model model) {
-		if(result.hasErrors()) {
-    		return "gaconfiguration";
-    	}		
-		gaConfigService.saveOrUpdate(gaConfig);
+	public String saveGaConfig(Model model, HttpServletRequest request) throws Exception {
 		
+		String applicationName = "";
+		String tableId = "";
+		String apiEmail = "";
+		String uploadPath = "";
+		
+		GaConfig gaConfig = gaConfigService.getGaConfig();
+		if(gaConfig == null) {
+			gaConfig = new GaConfig();
+		}
+		
+		//GaConfig gaConfig = new GaConfig();
+				
+		DiskFileItemFactory factory = new DiskFileItemFactory();
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		List<FileItem> items = upload.parseRequest(request);
+		//List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		for (FileItem item : items) {
+			if (item.isFormField()){
+				String fieldName = item.getFieldName();
+                String fieldValue = item.getString();
+                if (fieldName.equals("application_name")) {
+                	applicationName = fieldValue;
+                	gaConfig.setApplication_name(applicationName);
+                } else if(fieldName.equals("table_id")) {
+                    tableId = fieldValue;
+                    gaConfig.setTable_id(tableId);
+                } else if(fieldName.equals("api_email")) {
+                	apiEmail = fieldValue;
+                	gaConfig.setApi_email(apiEmail);
+                }
+			} else {
+				//String fieldName = item.getFieldName();
+                String fileName = FilenameUtils.getName(item.getName());
+                uploadPath = filePath+File.separator+fileName;
+                File storeFile = new File(uploadPath);
+                item.write(storeFile);
+                gaConfig.setP12_key_file_name(uploadPath);
+			}
+		}
+		
+		System.out.println(gaConfig.toString());
+				
+		gaConfigService.saveOrUpdate(gaConfig);		
 		String message = "confirmation.gaconfig.status.saved";
 		model.addAttribute("message", message);
 		return "confirmation";

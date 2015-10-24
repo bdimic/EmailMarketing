@@ -7,26 +7,27 @@
 
 <h3>Authorised Users Only!</h3>
 
-<sf:form method="POST" action="${pageContext.request.contextPath}/saveGaConfig" commandName="gaConfig">
+<sf:form method="POST" action="${pageContext.request.contextPath}/saveGaConfig" enctype="multipart/form-data" commandName="gaConfig">
+<sf:input type="hidden" id="id" name="id" path="id" />
 <table class="formtable">
 			<tr>
                 <td class="label"><spring:message code="gaconfig.appname"/>:</td>
-                <td><sf:input type="text" name="appname" path="application_name" />
+                <td><sf:input type="text" id="appname" name="appname" path="application_name" />
                 <br/><sf:errors path="application_name" cssClass="error"/></td>
             </tr>
  			<tr>
                 <td class="label"><spring:message code="gaconfig.tableid"/>:</td>
-                <td><sf:input type="text" name="tableid" path="table_id" />
+                <td><sf:input type="text" id="tableid" name="tableid" path="table_id" />
                 <br/><sf:errors path="table_id" cssClass="error"/></td>
             </tr>
             <tr>
                 <td class="label"><spring:message code="gaconfig.keyfile"/>:</td>
-                <td><sf:input type="text" name="keyfile" path="P12_key_file_name" />
-                <br/><sf:errors path="P12_key_file_name" cssClass="error"/></td>
+                <td><input type="file" name="filename"/>
+                </td>
             </tr>
             <tr>
                 <td class="label"><spring:message code="gaconfig.apimail"/>:</td>
-                <td><sf:input type="text" name="apimail" path="api_email" />
+                <td><sf:input type="text" id="apimail" name="apimail" path="api_email"/>
                 <br/><sf:errors path="api_email" cssClass="error"/></td>
             </tr>
 </table>

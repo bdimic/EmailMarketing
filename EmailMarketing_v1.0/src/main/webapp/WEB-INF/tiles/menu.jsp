@@ -21,8 +21,14 @@
       </ul>
    </li>
    <li class='active'><a href='#'><span>Contact</span></a></li>
-   <li class='last'><sec:authorize access="hasRole('ROLE_ADMIN')">
+   <li class='last has-sub'>
+   		<sec:authorize access="hasRole('ROLE_ADMIN')">
 				<a href="<c:url value='/admin'/>"><spring:message code="menu.admin"/></a>
+				<ul>
+			         <li><a href='usermanagement'><span><spring:message code="menu.usermanagement"/></span></a></li>
+			         <li><a href='emailconfig'><span><spring:message code="menu.emailconfiguration"/></span></a></li>
+			         <li class='last'><a href='gaconfiguration'><span><spring:message code="menu.gaconfiguration"/></span></a></li>
+      			</ul>
 		</sec:authorize></li>
 </ul>
 </div>
