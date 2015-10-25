@@ -12,44 +12,44 @@
     </definition>
     
     <definition name="home" extends="base.definition">
-            <put-attribute name="title" value="Email Marketing Homepage"></put-attribute>
+            <put-attribute name="title" value="home.title"></put-attribute>
             <put-attribute name="content" value="/WEB-INF/tiles/home.jsp"></put-attribute>
     </definition>
     
     <definition name="login" extends="base.definition">
-            <put-attribute name="title" value="Login"></put-attribute>
+            <put-attribute name="title" value="login.title"></put-attribute>
             <put-attribute name="content" value="/WEB-INF/tiles/login.jsp"></put-attribute>
     </definition>
 
     <definition name="loggedout" extends="base.definition">
-            <put-attribute name="title" value="Logged Out"></put-attribute>
+            <put-attribute name="title" value="loggedout.title"></put-attribute>
             <put-attribute name="content" value="/WEB-INF/tiles/loggedout.jsp"></put-attribute>
     </definition>
 
     <definition name="denied" extends="base.definition">
-            <put-attribute name="title" value="Access Denied"></put-attribute>
+            <put-attribute name="title" value="denied.title"></put-attribute>
             <put-attribute name="content" value="/WEB-INF/tiles/denied.jsp"></put-attribute>
     </definition>
     
     <definition name="newaccount" extends="base.definition">
             <put-attribute name="includes"
                     value="/WEB-INF/tiles/newaccountscript.jsp"></put-attribute>
-            <put-attribute name="title" value="Create Account"></put-attribute>
+            <put-attribute name="title" value="newaccount.title"></put-attribute>
             <put-attribute name="content" value="/WEB-INF/tiles/newaccount.jsp"></put-attribute>
     </definition>
 
     <definition name="accountcreated" extends="base.definition">
-            <put-attribute name="title" value="Account Created"></put-attribute>
+            <put-attribute name="title" value="accountcreated.title"></put-attribute>
             <put-attribute name="content" value="/WEB-INF/tiles/accountcreated.jsp"></put-attribute>
     </definition>
     
     <definition name="definebroadcast" extends="base.definition">
-		<put-attribute name="title" value="Define Broadcast"></put-attribute>
+		<put-attribute name="title" value="definebroadcast.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/definebroadcast.jsp"></put-attribute>
 	</definition>
         
         <definition name="broadcastgenerated" extends="base.definition">
-		<put-attribute name="title" value="Define Broadcast"></put-attribute>
+		<put-attribute name="title" value="broadcastgenerated.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/broadcastgenerated.jsp"></put-attribute>
 	</definition>
         

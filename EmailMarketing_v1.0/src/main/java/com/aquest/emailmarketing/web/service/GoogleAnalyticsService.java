@@ -7,8 +7,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.aquest.emailmarketing.web.dao.GaConfig;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -16,6 +18,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.analytics.Analytics;
 import com.google.api.services.analytics.AnalyticsScopes;
+import com.google.api.services.analytics.Analytics.Data.Ga.Get;
 import com.google.api.services.analytics.model.Accounts;
 import com.google.api.services.analytics.model.GaData;
 import com.google.api.services.analytics.model.Profiles;
@@ -29,6 +32,13 @@ public class GoogleAnalyticsService {
 	private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 	
+	private GaConfigService gaConfigService;
+	
+	@Autowired	
+	public void setGaConfigService(GaConfigService gaConfigService) {
+		this.gaConfigService = gaConfigService;
+	}
+
 	public Map<String, String> checkGaConfig(String applicationName, String apiEmail, String KeyFileLocation) {
 		 Map<String, String> result = new HashMap<String, String>();
 		
@@ -102,5 +112,40 @@ public class GoogleAnalyticsService {
 	        }
 	    }
 	    return profileId;
+	}
+	
+	public void getGaResponses() throws IOException {
+		GaConfig gaConfig = gaConfigService.getGaConfig();
+		
+		GoogleCredential credential = null;
+		 try {
+			credential = new GoogleCredential.Builder()
+			        .setTransport(HTTP_TRANSPORT)
+			        .setJsonFactory(JSON_FACTORY)
+			        .setServiceAccountId(gaConfig.getApi_email())
+			        .setServiceAccountScopes(Arrays.asList(AnalyticsScopes.ANALYTICS_READONLY))
+			        .setServiceAccountPrivateKeyFromP12File(new File(gaConfig.getP12_key_file_name())).build();
+
+		 } catch (GeneralSecurityException e) {
+	         e.printStackTrace();
+	     } catch (IOException e) {
+	         e.printStackTrace();  
+	     }	
+	     // Set up and return Google Analytics API client.
+	     Analytics analytics = new Analytics.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName(
+	    		 gaConfig.getApplication_name()).build();
+	     
+	     String startDate = "2015-10-01";
+	     String endDate = "2015-10-24";
+	     String mertrics = "ga:sessions,ga:timeOnPage";
+
+	     // Use the analytics object build a query
+	     Get get = analytics.data().ga().get("ga:"+gaConfig.getTable_id(), startDate, endDate, mertrics);
+	     get.setDimensions("ga:city");
+	     //get.setFilters("ga:country==Serbia");
+	     get.setSort("-ga:sessions");
+
+	     // Run the query
+	     GaData data = get.execute();
 	}
 }

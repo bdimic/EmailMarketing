@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class LoginController {
     
         private UsersService usersService;
+        private String[] roles = {"ROLE_ADMIN", "ROLE_USER"};
 	
 	@Autowired
 	public void setUsersService(UsersService usersService) {
@@ -50,13 +51,14 @@ public class LoginController {
 	}
         
     @RequestMapping(value="/createaccount", method=RequestMethod.POST)
-	public String createAccount(@Valid User user, BindingResult result) {
+	public String createAccount(Model model, @Valid User user, BindingResult result) {
 		
 		if(result.hasErrors()) {
+			model.addAttribute("roles", roles);
 			return "newaccount";
 		}
 		
-		user.setAuthority("ROLE_USER");
+		//user.setAuthority("ROLE_USER");
 		user.setEnabled(true);
 		
 		if(usersService.exists(user.getUsername())) {
@@ -83,12 +85,14 @@ public class LoginController {
     		@RequestParam(value = "username", required = false) String username) {
     	
     	if(createUser != null) {
+    		model.addAttribute("roles", roles);
     		model.addAttribute("user", new User());
     		return "newaccount";
     	}
     	
     	if(editUser != null) {
     		User user = usersService.getUser(username);
+    		model.addAttribute("roles", roles);
     		model.addAttribute("user", user);
     		return "editaccount";
     	}

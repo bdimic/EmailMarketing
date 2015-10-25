@@ -31,6 +31,7 @@ public class User {
 	private String name;
 	
 	private boolean enabled = false;
+	@NotBlank()
 	private String authority;
 	
 	
