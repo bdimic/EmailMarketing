@@ -7,7 +7,6 @@
 package com.aquest.emailmarketing.web.controllers;
 
 import com.aquest.emailmarketing.web.dao.Broadcast;
-import com.aquest.emailmarketing.web.dao.CampaignCategory;
 import com.aquest.emailmarketing.web.dao.Campaigns;
 import com.aquest.emailmarketing.web.dao.EmailConfig;
 import com.aquest.emailmarketing.web.dao.EmbeddedImage;
@@ -104,7 +103,8 @@ public class BroadcastController {
         	return "error";
         } else {
         	broadcast.setBroadcast_id(broadcast_id);
-        	String bcast_id = broadcastService.SaveOrUpdate(broadcast);
+        	@SuppressWarnings("unused")
+			String bcast_id = broadcastService.SaveOrUpdate(broadcast);
         	model.addAttribute("old_broadcast_id", old_broadcast_id);
         	model.addAttribute("broadcast",broadcast);
         	return "definelist";

@@ -6,6 +6,7 @@
 
 package com.aquest.emailmarketing.web.dao;
 
+
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -57,16 +58,19 @@ public class TrackingResponseDao {
         return (TrackingResponse)crit.uniqueResult();
     }
     
-    public List<TrackingResponse> checkResponseExists(String unique_id, String broadcast_id, String response_type, String response_source, String response_url, String response_time) {
+    public List<TrackingResponse> checkResponseExists(String unique_id, String broadcast_id, String response_type, String response_source, String response_url, Timestamp response_time) {
     	Criteria crit = session().createCriteria(TrackingResponse.class);
     	long u_id = Long.parseLong(unique_id);
-    	Timestamp r_time = Timestamp.valueOf(response_time);
+    	System.out.println(u_id+" "+response_time+" "+broadcast_id+" "+response_type+" "+response_source+" "+response_url);
     	crit.add(Restrictions.eq("unique_id", u_id));
     	crit.add(Restrictions.eq("broadcast_id", broadcast_id));
     	crit.add(Restrictions.eq("response_type", response_type));
     	crit.add(Restrictions.eq("response_source", response_source));
-    	crit.add(Restrictions.eq("response_url", response_url));
-    	crit.add(Restrictions.eq("response_time", r_time));
+    	if(response_type.equals("Click")) {
+    	   crit.add(Restrictions.eq("response_url", response_url));
+    	}
+    	crit.add(Restrictions.eq("response_time", response_time));
+    	System.out.println(crit.list());
     	return crit.list();
     }
     

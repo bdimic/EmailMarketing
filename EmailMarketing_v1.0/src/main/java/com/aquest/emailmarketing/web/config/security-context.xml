@@ -28,6 +28,7 @@
 				<security:intercept-url pattern="/gaconfiguration" access="hasRole('ROLE_ADMIN')" />
 				<security:intercept-url pattern="/saveGaConfig" access="hasRole('ROLE_ADMIN')" />
 				<security:intercept-url pattern="/emailconfig" access="hasRole('ROLE_ADMIN')" />
+				<security:intercept-url pattern="/garesponse" access="hasRole('ROLE_ADMIN')" />
 				<security:intercept-url pattern="/saveEmailConfig" access="hasRole('ROLE_ADMIN')" />
 				<security:intercept-url pattern="/userconfig" access="hasRole('ROLE_ADMIN')" />
 				<security:intercept-url pattern="/" access="isAuthenticated()" />

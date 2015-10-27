@@ -1,8 +1,6 @@
 package com.aquest.emailmarketing.web.controllers;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
@@ -154,7 +151,6 @@ public class AdminController {
 	public String saveGaConfig(Model model, HttpServletRequest request) throws Exception {
 		
 		String applicationName = "";
-		String tableId = "";
 		String apiEmail = "";
 		String uploadPath = "";
 		

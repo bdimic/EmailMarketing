@@ -14,7 +14,7 @@ import java.util.Properties;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
 public class PropertiesUtil extends PropertyPlaceholderConfigurer {
-	private static Map properties = new HashMap();
+	private static Map<String, String> properties = new HashMap<String, String>();
 	
 	@Override
 	protected void loadProperties(final Properties props) throws IOException {

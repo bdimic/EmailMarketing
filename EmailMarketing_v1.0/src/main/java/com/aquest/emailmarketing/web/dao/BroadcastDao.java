@@ -6,7 +6,6 @@
 
 package com.aquest.emailmarketing.web.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;

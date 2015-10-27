@@ -13,6 +13,7 @@ import com.aquest.emailmarketing.web.dao.TrackingConfigDao;
 import com.aquest.emailmarketing.web.dao.TrackingResponse;
 import com.aquest.emailmarketing.web.dao.TrackingResponseDao;
 
+import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,7 @@ public class TrackingResponseService {
         return trackingResponse;
     }
     
-    public List<TrackingResponse> checkResponseExists(String unique_id, String broadcast_id, String response_type, String response_source, String response_url, String response_time) {
+    public List<TrackingResponse> checkResponseExists(String unique_id, String broadcast_id, String response_type, String response_source, String response_url, Timestamp response_time) {
     	List<TrackingResponse> trackingResponse = trackingResponseDao.checkResponseExists(unique_id, broadcast_id, response_type, response_source, response_url, response_time);
     	return trackingResponse;
     }	
