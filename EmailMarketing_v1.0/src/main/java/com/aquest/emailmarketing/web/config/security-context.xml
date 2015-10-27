@@ -70,7 +70,8 @@
                 <security:intercept-url pattern="/goReports" access="isAuthenticated()" />
                 <security:intercept-url pattern="/reports" access="isAuthenticated()" />
 				<security:intercept-url pattern="/static/**" access="permitAll" />	
-                <security:intercept-url pattern="/login" access="permitAll" />	
+                <security:intercept-url pattern="/login" access="permitAll" />
+                <security:intercept-url pattern="/test" access="permitAll" />	
 				<security:intercept-url pattern="/**" access="denyAll" />
 				<security:form-login login-page="/login"
 			authentication-failure-url="/login?error=true" />

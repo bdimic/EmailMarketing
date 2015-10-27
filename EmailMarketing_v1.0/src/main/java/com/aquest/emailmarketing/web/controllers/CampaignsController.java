@@ -74,6 +74,11 @@ public class CampaignsController {
         model.addAttribute("campaigns", campaigns);
         return "home";
     }
+	
+	@RequestMapping(value="/test")
+	public String test() {
+		return "test";
+	}
     
     @RequestMapping(value="/pickCampaignAction", method = RequestMethod.POST)
     public String createNewCampaign(Model model, 

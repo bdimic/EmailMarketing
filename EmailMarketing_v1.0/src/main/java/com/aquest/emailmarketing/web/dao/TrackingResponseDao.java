@@ -6,6 +6,7 @@
 
 package com.aquest.emailmarketing.web.dao;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -54,6 +55,19 @@ public class TrackingResponseDao {
         Criteria crit = session().createCriteria(TrackingResponse.class);
         crit.add(Restrictions.eq("id", id));
         return (TrackingResponse)crit.uniqueResult();
+    }
+    
+    public List<TrackingResponse> checkResponseExists(String unique_id, String broadcast_id, String response_type, String response_source, String response_url, String response_time) {
+    	Criteria crit = session().createCriteria(TrackingResponse.class);
+    	long u_id = Long.parseLong(unique_id);
+    	Timestamp r_time = Timestamp.valueOf(response_time);
+    	crit.add(Restrictions.eq("unique_id", u_id));
+    	crit.add(Restrictions.eq("broadcast_id", broadcast_id));
+    	crit.add(Restrictions.eq("response_type", response_type));
+    	crit.add(Restrictions.eq("response_source", response_source));
+    	crit.add(Restrictions.eq("response_url", response_url));
+    	crit.add(Restrictions.eq("response_time", r_time));
+    	return crit.list();
     }
     
     public String saveOrUpdate(TrackingResponse trackingResponse) {

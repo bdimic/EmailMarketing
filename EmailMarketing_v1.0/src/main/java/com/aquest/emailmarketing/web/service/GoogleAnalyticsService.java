@@ -3,14 +3,23 @@ package com.aquest.emailmarketing.web.service;
 import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.aquest.emailmarketing.web.dao.EmailList;
 import com.aquest.emailmarketing.web.dao.GaConfig;
+import com.aquest.emailmarketing.web.dao.TrackingResponse;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -33,10 +42,22 @@ public class GoogleAnalyticsService {
 	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 	
 	private GaConfigService gaConfigService;
+	private TrackingResponseService trackingResponseSevice;
+	private EmailListService emailListService;
 	
 	@Autowired	
 	public void setGaConfigService(GaConfigService gaConfigService) {
 		this.gaConfigService = gaConfigService;
+	}
+	
+	@Autowired
+	public void setTrackingResponseSevice(TrackingResponseService trackingResponseSevice) {
+		this.trackingResponseSevice = trackingResponseSevice;
+	}
+	
+	@Autowired
+	public void setEmailListService(EmailListService emailListService) {
+		this.emailListService = emailListService;
 	}
 
 	public Map<String, String> checkGaConfig(String applicationName, String apiEmail, String KeyFileLocation) {
@@ -117,6 +138,8 @@ public class GoogleAnalyticsService {
 	public void getGaClickResponses() throws IOException {
 		GaConfig gaConfig = gaConfigService.getGaConfig();
 		
+		Timestamp curTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+		
 		GoogleCredential credential = null;
 		 try {
 			credential = new GoogleCredential.Builder()
@@ -141,20 +164,60 @@ public class GoogleAnalyticsService {
 
 	     // Use the analytics object build a query
 	     Get get = analytics.data().ga().get("ga:"+gaConfig.getTable_id(), startDate, endDate, mertrics);
-	     get.setDimensions("ga:date");
-	     get.setDimensions("ga:campaign");
-	     get.setDimensions("ga:source");
-	     get.setDimensions("ga:adContent");
-	     get.setDimensions("ga:pageTitle");
+	     get.setDimensions("ga:date, ga:campaign, ga:source, ga:adContent, ga:pageTitle");
+//	     get.setDimensions("ga:campaign");
+//	     get.setDimensions("ga:source");
+//	     get.setDimensions("ga:adContent");
+//	     get.setDimensions("ga:pageTitle");
 	     get.setFilters("ga:medium==email");
-	     get.setSort("-ga:sessions");
 
 	     // Run the query
 	     GaData data = get.execute();
+	     
+
+	     if (data.getRows() != null) {
+	     	
+	     	// Print column headers.
+	         for (GaData.ColumnHeaders header : data.getColumnHeaders()) {
+	             System.out.println(header.getName());
+	         }
+	     	
+	         for (List<String> row : data.getRows()) {
+	             System.out.println(row);
+	             try {
+	 				Timestamp tradeDate = (Timestamp) new SimpleDateFormat("yyyymmdd", Locale.ENGLISH).parse(row.get(0));
+	 				String krwtrDate = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").format(tradeDate);
+	 				List<TrackingResponse> ifResponseExists = trackingResponseSevice.checkResponseExists(row.get(1), row.get(3), "Open", "Google Analytics", "", krwtrDate);
+	 				System.out.println(ifResponseExists);
+	 				if(ifResponseExists==null) {
+	 					EmailList emailList = emailListService.getEmailListById(row.get(1));
+	 					
+	 					if(emailList != null) {
+		 					TrackingResponse trackingResponse = new TrackingResponse();
+		 					trackingResponse.setUnique_id(Long.parseLong(row.get(1)));
+		 					trackingResponse.setBroadcast_id(row.get(3));
+		 					trackingResponse.setEmail(emailList.getEmail());
+		 					trackingResponse.setResponse_type("Open");
+		 					trackingResponse.setResponse_source("Goggle Analytics");
+		 					trackingResponse.setResponse_time(Timestamp.valueOf(krwtrDate));
+		 					trackingResponse.setProcessed_dttm(curTimestamp);
+		 					trackingResponseSevice.SaveOrUpdate(trackingResponse);
+	 					}
+	 				}
+	 			} catch (ParseException e) {
+	 				// TODO Auto-generated catch block
+	 				e.printStackTrace();
+	 			}
+	         }
+	     } else {
+	     	System.out.println("Nema podataka!");
+	     }
 	}
 	
 	public void getGaOpenResponses() throws IOException {
 		GaConfig gaConfig = gaConfigService.getGaConfig();
+		
+		Timestamp curTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
 		
 		GoogleCredential credential = null;
 		 try {
@@ -180,13 +243,52 @@ public class GoogleAnalyticsService {
 
 	     // Use the analytics object build a query
 	     Get get = analytics.data().ga().get("ga:"+gaConfig.getTable_id(), startDate, endDate, mertrics);
-	     get.setDimensions("ga:date");
-	     get.setDimensions("ga:eventLabel");
-	     get.setDimensions("ga:source");
-	     get.setDimensions("ga:campaign");
-	     get.setFilters("ga:eventCategory==email AND ga:eventAction==open");
+	     get.setDimensions("ga:date, ga:eventLabel,ga:source,ga:campaign");
+//	     get.setDimensions("ga:eventLabel");
+//	     get.setDimensions("ga:source");
+//	     get.setDimensions("ga:campaign");
+	     get.setFilters("ga:eventCategory==email");
+	     get.setFilters("ga:eventAction==open");
 
 	     // Run the query
 	     GaData data = get.execute();
+	     
+	     if (data.getRows() != null) {
+	     	
+	     	// Print column headers.
+	         for (GaData.ColumnHeaders header : data.getColumnHeaders()) {
+	             System.out.println(header.getName());
+	         }
+	     	
+	         for (List<String> row : data.getRows()) {
+	             System.out.println(row);
+	             try {
+	 				Timestamp tradeDate = (Timestamp) new SimpleDateFormat("yyyymmdd", Locale.ENGLISH).parse(row.get(0));
+	 				String krwtrDate = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").format(tradeDate);
+	 				List<TrackingResponse> ifResponseExists = trackingResponseSevice.checkResponseExists(row.get(1), row.get(3), "Open", "Google Analytics", "", krwtrDate);
+	 				System.out.println(ifResponseExists);
+	 				if(ifResponseExists==null) {
+	 					EmailList emailList = emailListService.getEmailListById(row.get(1));
+	 					
+	 					if(emailList != null) {
+		 					TrackingResponse trackingResponse = new TrackingResponse();
+		 					trackingResponse.setUnique_id(Long.parseLong(row.get(1)));
+		 					trackingResponse.setBroadcast_id(row.get(3));
+		 					trackingResponse.setEmail(emailList.getEmail());
+		 					trackingResponse.setResponse_type("Open");
+		 					trackingResponse.setResponse_source("Goggle Analytics");
+		 					trackingResponse.setResponse_time(Timestamp.valueOf(krwtrDate));
+		 					trackingResponse.setProcessed_dttm(curTimestamp);
+		 					trackingResponseSevice.SaveOrUpdate(trackingResponse);
+	 					}
+	 				}
+	 			} catch (ParseException e) {
+	 				// TODO Auto-generated catch block
+	 				e.printStackTrace();
+	 			}
+	         }
+	     } else {
+	     	System.out.println("Nema podataka!");
+	     }
 	}
 }

@@ -54,109 +54,113 @@
 	</definition>
         
         <definition name="showbroadcast" extends="base.definition">
-		<put-attribute name="title" value="Define Broadcast"></put-attribute>
+		<put-attribute name="title" value="showbroadcast.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/showbroadcast.jsp"></put-attribute>
 	</definition>
         
         <definition name="showbroadcasts" extends="base.definition">
-		<put-attribute name="title" value="Define Broadcast"></put-attribute>
+		<put-attribute name="title" value="showbroadcasts.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/showbroadcasts.jsp"></put-attribute>
 	</definition>
         
         <definition name="deletedbroadcast" extends="base.definition">
-		<put-attribute name="title" value="Deleted Broadcast"></put-attribute>
+		<put-attribute name="title" value="deletedbroadcast.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/deletedbroadcast.jsp"></put-attribute>
 	</definition>
 	<definition name="newaccount" extends="base.definition">
 		<put-attribute name="includes"
 			value="/WEB-INF/tiles/newaccountscript.jsp"></put-attribute>
-		<put-attribute name="title" value="Create Account"></put-attribute>
+		<put-attribute name="title" value="newaccount.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/newaccount.jsp"></put-attribute>
 	</definition>
 
 	<definition name="accountcreated" extends="base.definition">
-		<put-attribute name="title" value="Account Created"></put-attribute>
+		<put-attribute name="title" value="accountcreated.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/accountcreated.jsp"></put-attribute>
 	</definition>
 	
 	<definition name="editaccount" extends="base.definition">
-		<put-attribute name="title" value="Edit Account"></put-attribute>
+		<put-attribute name="title" value="editaccount.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/editaccount.jsp"></put-attribute>
 	</definition>
 
 	<definition name="admin" extends="base.definition">
-		<put-attribute name="title" value="Authorised Users Only!"></put-attribute>
+		<put-attribute name="title" value="admin.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/admin.jsp"></put-attribute>
 	</definition>
 	
 	<definition name="usermanagement" extends="base.definition">
-		<put-attribute name="title" value="Authorised Users Only!"></put-attribute>
+		<put-attribute name="title" value="usermanagement.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/usermanagement.jsp"></put-attribute>
 	</definition>
 	
 	<definition name="emailconfiguration" extends="base.definition">
-		<put-attribute name="title" value="Authorised Users Only!"></put-attribute>
+		<put-attribute name="title" value="emailconfiguration.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/emailconfiguration.jsp"></put-attribute>
 	</definition>
 	
 	<definition name="emailconfig" extends="base.definition">
-		<put-attribute name="title" value="Authorised Users Only!"></put-attribute>
+		<put-attribute name="title" value="emailconfiguration.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/emailconfig.jsp"></put-attribute>
 	</definition>
 	<definition name="definelist" extends="base.definition">
-		<put-attribute name="title" value="Define List!"></put-attribute>
+		<put-attribute name="title" value="definelist.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/definelist.jsp"></put-attribute>
 	</definition>
 	<definition name="createcampaign" extends="base.definition">
-		<put-attribute name="title" value="Create Campaign!"></put-attribute>
+		<put-attribute name="title" value="createcampaign.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/createcampaign.jsp"></put-attribute>
 	</definition>
 	<definition name="campaigncreated" extends="base.definition">
-		<put-attribute name="title" value="Campaign Created!"></put-attribute>
+		<put-attribute name="title" value="campaigncreated.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/campaigncreated.jsp"></put-attribute>
 	</definition>
 	<definition name="campaigndeleted" extends="base.definition">
-		<put-attribute name="title" value="Campaign Deleted!"></put-attribute>
+		<put-attribute name="title" value="campaigndeleted.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/campaigndeleted.jsp"></put-attribute>
 	</definition>
 	<definition name="confirmation" extends="base.definition">
-		<put-attribute name="title" value="Confirmation"></put-attribute>
+		<put-attribute name="title" value="confirmation.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/confirmation.jsp"></put-attribute>
 	</definition>
 	<definition name="editcampaign" extends="base.definition">
-		<put-attribute name="title" value="Edit Campaign"></put-attribute>
+		<put-attribute name="title" value="editcampaign.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/editcampaign.jsp"></put-attribute>
 	</definition>
 	<definition name="opencampaign" extends="base.definition">
-		<put-attribute name="title" value="Open Campaign"></put-attribute>
+		<put-attribute name="title" value="opencampaign.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/opencampaign.jsp"></put-attribute>
 	</definition>
 	<definition name="definecontent" extends="base.definition">
-		<put-attribute name="title" value="Open Campaign"></put-attribute>
+		<put-attribute name="title" value="definecontent.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/definecontent.jsp"></put-attribute>
 	</definition>
 	<definition name="deleteflow" extends="base.definition">
-		<put-attribute name="title" value="Delete Campaign"></put-attribute>
+		<put-attribute name="title" value="deleteflow.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/deleteflow.jsp"></put-attribute>
 	</definition>
 	<definition name="tracking" extends="base.definition">
-		<put-attribute name="title" value="Define tracking"></put-attribute>
+		<put-attribute name="title" value="tracking.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/tracking.jsp"></put-attribute>
 	</definition>
 	<definition name="embeddedimage" extends="base.definition">
-		<put-attribute name="title" value="Embed Image!"></put-attribute>
+		<put-attribute name="title" value="embeddedimage.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/embeddedimage.jsp"></put-attribute>
 	</definition>
 	<definition name="sendbroadcast" extends="base.definition">
-		<put-attribute name="title" value="Send Broadcast!"></put-attribute>
+		<put-attribute name="title" value="sendbroadcast.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/sendbroadcast.jsp"></put-attribute>
 	</definition>
 	<definition name="sentbroadcast" extends="base.definition">
-		<put-attribute name="title" value="Broadcast Sent!"></put-attribute>
+		<put-attribute name="title" value="sentbroadcast.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/sentbroadcast.jsp"></put-attribute>
 	</definition>
 	<definition name="gaconfiguration" extends="base.definition">
-		<put-attribute name="title" value="Google Analytics Configuration!"></put-attribute>
+		<put-attribute name="title" value="gaconfiguration.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/gaconfiguration.jsp"></put-attribute>
+	</definition>
+	<definition name="test" extends="base.definition">
+		<put-attribute name="title" value="gaconfiguration.title"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/test.jsp"></put-attribute>
 	</definition>
 </tiles-definitions>

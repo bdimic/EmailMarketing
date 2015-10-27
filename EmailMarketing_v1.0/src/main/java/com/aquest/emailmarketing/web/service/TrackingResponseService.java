@@ -49,7 +49,12 @@ public class TrackingResponseService {
     	TrackingResponse trackingResponse = trackingResponseDao.getResponseById(id);
         return trackingResponse;
     }
-        
+    
+    public List<TrackingResponse> checkResponseExists(String unique_id, String broadcast_id, String response_type, String response_source, String response_url, String response_time) {
+    	List<TrackingResponse> trackingResponse = trackingResponseDao.checkResponseExists(unique_id, broadcast_id, response_type, response_source, response_url, response_time);
+    	return trackingResponse;
+    }	
+    	
     public String SaveOrUpdate(TrackingResponse trackingResponse) {
         return trackingResponseDao.saveOrUpdate(trackingResponse);
     }
