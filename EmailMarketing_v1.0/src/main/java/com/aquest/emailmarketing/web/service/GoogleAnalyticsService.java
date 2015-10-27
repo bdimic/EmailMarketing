@@ -114,7 +114,7 @@ public class GoogleAnalyticsService {
 	    return profileId;
 	}
 	
-	public void getGaResponses() throws IOException {
+	public void getGaClickResponses() throws IOException {
 		GaConfig gaConfig = gaConfigService.getGaConfig();
 		
 		GoogleCredential credential = null;
@@ -137,13 +137,54 @@ public class GoogleAnalyticsService {
 	     
 	     String startDate = "2015-10-01";
 	     String endDate = "2015-10-24";
-	     String mertrics = "ga:sessions,ga:timeOnPage";
+	     String mertrics = "ga:pageviews";
 
 	     // Use the analytics object build a query
 	     Get get = analytics.data().ga().get("ga:"+gaConfig.getTable_id(), startDate, endDate, mertrics);
-	     get.setDimensions("ga:city");
-	     //get.setFilters("ga:country==Serbia");
+	     get.setDimensions("ga:date");
+	     get.setDimensions("ga:campaign");
+	     get.setDimensions("ga:source");
+	     get.setDimensions("ga:adContent");
+	     get.setDimensions("ga:pageTitle");
+	     get.setFilters("ga:medium==email");
 	     get.setSort("-ga:sessions");
+
+	     // Run the query
+	     GaData data = get.execute();
+	}
+	
+	public void getGaOpenResponses() throws IOException {
+		GaConfig gaConfig = gaConfigService.getGaConfig();
+		
+		GoogleCredential credential = null;
+		 try {
+			credential = new GoogleCredential.Builder()
+			        .setTransport(HTTP_TRANSPORT)
+			        .setJsonFactory(JSON_FACTORY)
+			        .setServiceAccountId(gaConfig.getApi_email())
+			        .setServiceAccountScopes(Arrays.asList(AnalyticsScopes.ANALYTICS_READONLY))
+			        .setServiceAccountPrivateKeyFromP12File(new File(gaConfig.getP12_key_file_name())).build();
+
+		 } catch (GeneralSecurityException e) {
+	         e.printStackTrace();
+	     } catch (IOException e) {
+	         e.printStackTrace();  
+	     }	
+	     // Set up and return Google Analytics API client.
+	     Analytics analytics = new Analytics.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName(
+	    		 gaConfig.getApplication_name()).build();
+	     
+	     String startDate = "2015-10-01";
+	     String endDate = "2015-10-24";
+	     String mertrics = "ga:totalEvents, ga:uniqueEvents";
+
+	     // Use the analytics object build a query
+	     Get get = analytics.data().ga().get("ga:"+gaConfig.getTable_id(), startDate, endDate, mertrics);
+	     get.setDimensions("ga:date");
+	     get.setDimensions("ga:eventLabel");
+	     get.setDimensions("ga:source");
+	     get.setDimensions("ga:campaign");
+	     get.setFilters("ga:eventCategory==email AND ga:eventAction==open");
 
 	     // Run the query
 	     GaData data = get.execute();
