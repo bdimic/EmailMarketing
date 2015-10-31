@@ -15,6 +15,7 @@ import com.aquest.emailmarketing.web.dao.Urls;
 import com.aquest.emailmarketing.web.service.BroadcastService;
 import com.aquest.emailmarketing.web.service.CampaignsService;
 import com.aquest.emailmarketing.web.service.EmailConfigService;
+import com.aquest.emailmarketing.web.service.EmailListService;
 import com.aquest.emailmarketing.web.service.EmbeddedImageService;
 import com.aquest.emailmarketing.web.service.SendEmailService;
 import com.aquest.emailmarketing.web.service.TrackingConfigService;
@@ -50,6 +51,7 @@ public class BroadcastController {
     
     private BroadcastService broadcastService;
     private CampaignsService campaignsService;
+    private EmailListService emailListService;
     private SendEmailService sendEmailService;
     private EmailConfigService emailConfigService;
     private EmbeddedImageService embeddedImageService;
@@ -85,8 +87,13 @@ public class BroadcastController {
     public void setEmbeddedImageService(EmbeddedImageService embeddedImageService) {
     	this.embeddedImageService = embeddedImageService;
     }
-    
-    @RequestMapping(value = "/generateBroadcastFlow", method = RequestMethod.POST)
+        
+    @Autowired
+    public void setEmailListService(EmailListService emailListService) {
+		this.emailListService = emailListService;
+	}
+
+	@RequestMapping(value = "/generateBroadcastFlow", method = RequestMethod.POST)
     public String doGenerate(Model model,@Valid @ModelAttribute("broadcast") Broadcast broadcast,BindingResult result, Principal principal,
     						 @RequestParam(value = "profile_id") int profile_id,
     						 @RequestParam(value = "campaign_id") String campaign_id,

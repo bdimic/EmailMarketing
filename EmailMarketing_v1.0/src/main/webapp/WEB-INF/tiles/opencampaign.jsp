@@ -8,7 +8,7 @@
 <script type="text/javascript">
     
     $(document).ready( function () {
-        $('#broadcast_table').DataTable({"scrollY": "200px",
+        $('#broadcast_table').DataTable({"scrollY": "250px",
            "DisplayLength": 10,
            "scrollCollapse": true,
            "drawCallback": function (settings) {
@@ -22,7 +22,7 @@
   });
   
   
-  $('#broadcast_table tbody tr').click(function (event) {
+  $('body').on("click", '#broadcast_table tbody tr', function (event) {
       if ($(this).hasClass('row_selected')) {
 
       }
@@ -40,36 +40,21 @@
 });    
 </script>
 
-<table class="kampanja_broadcast">
-            <tr>
-                <td class="label"><spring:message code="broadcast.campaign.id"/>:</td>
-                <td><b>${campaign.campaign_id}</b></td>
-            </tr>
-            <tr>
-                <td class="label"><spring:message code="broadcast.campaign.name"/>:</td>
-                <td><b>${campaign.campaign_name}</b></td>
-            </tr>
-            <tr>
-                <td class="label"><spring:message code="broadcast.campaign.start.date"/>:</td>
-                <td><b>${campaign.campaign_start_date}</b></td>
-            </tr>
-            <tr>
-                <td class="label"><spring:message code="broadcast.campaign.end.date"/>:</td>
-                <td><b>${campaign.campaign_end_date}</b></td>
-            </tr>
-            <tr>
-                <td class="label"><spring:message code="broadcast.campaign.description"/>:</td>
-                <td><b>${campaign.campaign_description}</b></td>
-            </tr>
-            <tr>
-                <td class="label"><spring:message code="broadcast.campaign.status"/>:</td>
-                <td><b>${campaign.campaign_status}</b></td>
-            </tr>
-            <tr>
-                <td class="label"><spring:message code="broadcast.campaign.category"/>:</td>
-                <td><b>${campcat.category_description}</b></td>
-            </tr>
-</table>
+
+                <p><spring:message code="broadcast.campaign.id"/>:
+                <b>${campaign.campaign_id}</b><br/>
+                <spring:message code="broadcast.campaign.name"/>:
+                <b>${campaign.campaign_name}</b></p>
+                <p><spring:message code="broadcast.campaign.start.date"/>:
+                <b>${campaign.campaign_start_date}</b><br/>
+                <spring:message code="broadcast.campaign.end.date"/>:
+                <b>${campaign.campaign_end_date}</b></p>
+                <p><spring:message code="broadcast.campaign.description"/>:
+                <b>${campaign.campaign_description}</b><br/>
+                <spring:message code="broadcast.campaign.status"/>:
+                <b>${campaign.campaign_status}</b><br/>
+                <spring:message code="broadcast.campaign.category"/>:
+                <b>${campcat.category_description}</b></p>
 
 <sf:form method="POST" action="${pageContext.request.contextPath}/pickBroadcastAction" commandName="broadcast">
 <input type="hidden" name="campaign_id" id="campaign_id" value="${campaign.campaign_id}"/>

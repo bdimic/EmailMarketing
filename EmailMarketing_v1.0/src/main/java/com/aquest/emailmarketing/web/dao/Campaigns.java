@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -45,6 +46,8 @@ public class Campaigns {
     private Timestamp creation_dttm;
     private String last_change_user;
     private Timestamp last_change_dttm;
+    @Transient
+    private int broadcast_number;
     @ManyToOne
     @JoinColumn(name="category_id")
     private CampaignCategory campaignCategory;
@@ -174,8 +177,16 @@ public class Campaigns {
 
 	public void setLast_change_dttm(Timestamp last_change_dttm) {
 		this.last_change_dttm = last_change_dttm;
-	}
+	}	
 	
+	public int getBroadcast_number() {
+		return broadcast_number;
+	}
+
+	public void setBroadcast_number(int broadcast_number) {
+		this.broadcast_number = broadcast_number;
+	}
+
 	public CampaignCategory getCampaignCategory() {
 		return campaignCategory;
 	}

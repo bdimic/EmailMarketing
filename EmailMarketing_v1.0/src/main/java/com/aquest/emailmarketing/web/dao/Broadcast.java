@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -51,7 +52,12 @@ public class Broadcast implements Serializable {
     private String last_change_user;
     private Timestamp execution_dttm;
     private String execution_user;
-        
+    @Transient
+    private int lead_number;
+    @Transient
+    private int open_number;
+    @Transient
+    private int click_number;
 
     public Broadcast() {
     	this.emailConfig = new EmailConfig();
@@ -223,6 +229,30 @@ public class Broadcast implements Serializable {
 	
 	public int getProfile_id() {
 		return emailConfig.getProfile_id();
+	}	
+
+	public int getLead_number() {
+		return lead_number;
+	}
+
+	public void setLead_number(int lead_number) {
+		this.lead_number = lead_number;
+	}
+
+	public int getOpen_number() {
+		return open_number;
+	}
+
+	public void setOpen_number(int open_number) {
+		this.open_number = open_number;
+	}
+
+	public int getClick_number() {
+		return click_number;
+	}
+
+	public void setClick_number(int click_number) {
+		this.click_number = click_number;
 	}
 
 	@Override
@@ -234,7 +264,5 @@ public class Broadcast implements Serializable {
 				+ ", creation_dttm=" + creation_dttm + ", creation_user=" + creation_user + ", last_change_dttm="
 				+ last_change_dttm + ", last_change_user=" + last_change_user + ", execution_dttm=" + execution_dttm
 				+ ", execution_user=" + execution_user + "]";
-	}
-
-	 
+	}	 
 }

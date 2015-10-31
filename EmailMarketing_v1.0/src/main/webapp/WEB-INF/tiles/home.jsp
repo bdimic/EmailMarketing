@@ -23,7 +23,7 @@
   });
   
   
-  $('#campaigns_table tbody tr').click(function (event) {
+  $('body').on("click", '#campaigns_table tbody tr', function (event) {
       if ($(this).hasClass('row_selected')) {
 
       }
@@ -53,6 +53,7 @@
             <th><spring:message code="campaign.status" /></th>
             <th><spring:message code="campaign.start.date" /></th>
             <th><spring:message code="campaign.end.date" /></th>
+            <th><spring:message code="campaign.broadcast.number" /></th>
         </tr>
     </thead>
     <tbody>
@@ -64,6 +65,7 @@
             <td>${campaigns.campaign_status}</td>
             <td>${campaigns.campaign_start_date}</td>
             <td>${campaigns.campaign_end_date}</td>
+            <td>${campaigns.broadcast_number}</td>
         </tr>
         </c:forEach>
     </tbody>

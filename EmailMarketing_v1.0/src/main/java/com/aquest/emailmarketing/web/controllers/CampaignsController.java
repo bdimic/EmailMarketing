@@ -28,10 +28,12 @@ import com.aquest.emailmarketing.web.dao.Broadcast;
 import com.aquest.emailmarketing.web.dao.CampaignCategory;
 import com.aquest.emailmarketing.web.dao.Campaigns;
 import com.aquest.emailmarketing.web.dao.EmailConfig;
+import com.aquest.emailmarketing.web.dao.EmailList;
 import com.aquest.emailmarketing.web.service.BroadcastService;
 import com.aquest.emailmarketing.web.service.CampaignCategoryService;
 import com.aquest.emailmarketing.web.service.CampaignsService;
 import com.aquest.emailmarketing.web.service.EmailConfigService;
+import com.aquest.emailmarketing.web.service.EmailListService;
 
 /**
  *
@@ -42,6 +44,7 @@ public class CampaignsController {
 
     private CampaignsService campaignsService;
     private BroadcastService broadcastService;
+    private EmailListService emailListService;
     private EmailConfigService emailConfigService;
     private CampaignCategoryService campaignCategoryService;
     
@@ -65,11 +68,20 @@ public class CampaignsController {
 			CampaignCategoryService campaignCategoryService) {
 		this.campaignCategoryService = campaignCategoryService;
 	}
+        
+    @Autowired
+	public void setEmailListService(EmailListService emailListService) {
+		this.emailListService = emailListService;
+	}
 
 	@RequestMapping("/")
     public String showHome(Model model, Principal principal, Locale locale) {
         String username = principal.getName();        
         List<Campaigns> campaigns = campaignsService.getCampaigns();
+        for(Campaigns camp: campaigns) {
+        	List<Broadcast> broadcasts = broadcastService.getBroadcastsByCampaignId(camp.getCampaign_id());
+        	camp.setBroadcast_number(broadcasts.size());
+        }
         model.addAttribute("username", username);
         model.addAttribute("campaigns", campaigns);
         return "home";
@@ -147,6 +159,12 @@ public class CampaignsController {
         
         if(openCampaign != null) {
         	Campaigns campaign = campaignsService.getCampaign(campaign_id);
+        	for(Broadcast bcast: broadcast) {
+        		if(bcast.getStatus().equals("SENT")) {
+        			List<EmailList> eList = emailListService.getAllEmailList(bcast.getBroadcast_id());
+        			
+        		}
+        	}
         	model.addAttribute("broadcast", broadcast);
         	model.addAttribute("campaign", campaign);
         	System.out.println(campaign.getCampaignCategory().getCategory_id());
