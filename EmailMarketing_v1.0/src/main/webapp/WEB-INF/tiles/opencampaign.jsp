@@ -65,6 +65,9 @@
             <th>Broadcast Id</th>
             <th>Broadcast Name</th>
             <th>Status</th>
+            <th>Lead Number</th>
+            <th>Open Number</th>
+            <th>Click Number</th>
         </tr>
     </thead>
     <tbody>
@@ -73,6 +76,9 @@
             <td>${broadcast.broadcast_id}</td>
             <td>${broadcast.broadcast_name}</td>
             <td>${broadcast.status}</td>
+            <td>${broadcast.leadNumber}</td>
+            <td><a href="/statistic?broadcast_id=${broadcast.broadcast_id}&type=open">${broadcast.openNumber}</a></td>
+            <td><a href="/statistic?broadcast_id=${broadcast.broadcast_id}&type=click">${broadcast.clickNumber}</a></td>
         </tr>
         </c:forEach>
     </tbody>

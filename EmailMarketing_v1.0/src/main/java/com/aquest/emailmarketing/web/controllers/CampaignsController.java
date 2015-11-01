@@ -29,11 +29,13 @@ import com.aquest.emailmarketing.web.dao.CampaignCategory;
 import com.aquest.emailmarketing.web.dao.Campaigns;
 import com.aquest.emailmarketing.web.dao.EmailConfig;
 import com.aquest.emailmarketing.web.dao.EmailList;
+import com.aquest.emailmarketing.web.dao.TrackingResponse;
 import com.aquest.emailmarketing.web.service.BroadcastService;
 import com.aquest.emailmarketing.web.service.CampaignCategoryService;
 import com.aquest.emailmarketing.web.service.CampaignsService;
 import com.aquest.emailmarketing.web.service.EmailConfigService;
 import com.aquest.emailmarketing.web.service.EmailListService;
+import com.aquest.emailmarketing.web.service.TrackingResponseService;
 
 /**
  *
@@ -47,6 +49,7 @@ public class CampaignsController {
     private EmailListService emailListService;
     private EmailConfigService emailConfigService;
     private CampaignCategoryService campaignCategoryService;
+    private TrackingResponseService trackingResponseService;
     
     @Autowired
     public void setCampaignsService(CampaignsService campaignsService) {
@@ -72,6 +75,11 @@ public class CampaignsController {
     @Autowired
 	public void setEmailListService(EmailListService emailListService) {
 		this.emailListService = emailListService;
+	}    
+    
+    @Autowired
+	public void setTrackingResponseService(TrackingResponseService trackingResponseService) {
+		this.trackingResponseService = trackingResponseService;
 	}
 
 	@RequestMapping("/")
@@ -114,9 +122,6 @@ public class CampaignsController {
         }
         
         if(deleteCampaign != null) {
-        	// ubaciti logiku koja proverava dali za kampanju za brisanje postoji definisan broadcast. ukoliko postoji
-        	// kampanju moze obrisati samo administrator. ukoliko postoji broadcast koji je u statusu sent nije moguce brisanje
-        	// ni administratoru
         	if(broadcast != null) {
         		int sentBroadcast = 0;
         		for(int i=0; i<broadcast.size();i++) {
@@ -160,9 +165,21 @@ public class CampaignsController {
         if(openCampaign != null) {
         	Campaigns campaign = campaignsService.getCampaign(campaign_id);
         	for(Broadcast bcast: broadcast) {
+        		List<EmailList> eList = emailListService.getAllEmailList(bcast.getBroadcast_id());
+        		bcast.setLeadNumber(eList.size());
         		if(bcast.getStatus().equals("SENT")) {
-        			List<EmailList> eList = emailListService.getAllEmailList(bcast.getBroadcast_id());
-        			
+        			List<TrackingResponse> trackingResponse = trackingResponseService.getTrackingResponseByBroadcastId(bcast.getBroadcast_id());
+        			int openCount = 0;
+        			int clickCount = 0;
+        			for(TrackingResponse tresp: trackingResponse) {
+        				if(tresp.getResponse_type().equals("Open")){
+        					openCount++;
+        				} else if(tresp.getResponse_type().equals("Click")) {
+        					clickCount++;
+        				}
+        			}
+        			bcast.setOpenNumber(openCount);
+        			bcast.setClickNumber(clickCount);
         		}
         	}
         	model.addAttribute("broadcast", broadcast);

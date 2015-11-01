@@ -288,4 +288,19 @@ public class GoogleAnalyticsService {
 	     	System.out.println("Nema podataka!");
 	     }
 	}
+	
+	public void getGaResponses() {
+		try {
+			getGaOpenResponses();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			getGaClickResponses();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

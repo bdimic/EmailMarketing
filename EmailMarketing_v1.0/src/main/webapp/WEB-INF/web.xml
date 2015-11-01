@@ -28,6 +28,7 @@
                     classpath:com/aquest/emailmarketing/web/config/dao-context.xml
                     classpath:com/aquest/emailmarketing/web/config/service-context.xml
                     classpath:com/aquest/emailmarketing/web/config/security-context.xml
+                    classpath:com/aquest/emailmarketing/web/config/quartz-context.xml
         </param-value>
     </context-param>
     <context-param>
