@@ -15,6 +15,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +35,7 @@ import com.aquest.emailmarketing.web.service.CampaignCategoryService;
 import com.aquest.emailmarketing.web.service.CampaignsService;
 import com.aquest.emailmarketing.web.service.EmailConfigService;
 import com.aquest.emailmarketing.web.service.EmailListService;
+import com.aquest.emailmarketing.web.service.TrackingResponseService;
 
 /**
  *
@@ -41,12 +43,15 @@ import com.aquest.emailmarketing.web.service.EmailListService;
  */
 @Controller
 public class CampaignsController {
+	
+	final static Logger logger = Logger.getLogger(com.aquest.emailmarketing.web.controllers.CampaignsController.class);
 
     private CampaignsService campaignsService;
     private BroadcastService broadcastService;
     private EmailListService emailListService;
     private EmailConfigService emailConfigService;
     private CampaignCategoryService campaignCategoryService;
+    private TrackingResponseService trackingResponseService;
     
     @Autowired
     public void setCampaignsService(CampaignsService campaignsService) {
@@ -72,6 +77,11 @@ public class CampaignsController {
     @Autowired
 	public void setEmailListService(EmailListService emailListService) {
 		this.emailListService = emailListService;
+	}    
+    
+    @Autowired
+	public void setTrackingResponseService(TrackingResponseService trackingResponseService) {
+		this.trackingResponseService = trackingResponseService;
 	}
 
 	@RequestMapping("/")
@@ -162,7 +172,15 @@ public class CampaignsController {
         	for(Broadcast bcast: broadcast) {
         		if(bcast.getStatus().equals("SENT")) {
         			List<EmailList> eList = emailListService.getAllEmailList(bcast.getBroadcast_id());
-        			
+        			bcast.setLead_number(eList.size());
+        			int openNum = trackingResponseService.getNoOfOpensByBroadcast(bcast.getBroadcast_id());
+        			bcast.setOpen_number(openNum);
+        			int clickNum = trackingResponseService.getNoOfClickByBroadcast(bcast.getBroadcast_id());
+        			bcast.setClick_number(clickNum);
+        		} else {
+        			bcast.setLead_number(0);
+        			bcast.setOpen_number(0);
+        			bcast.setClick_number(0);
         		}
         	}
         	model.addAttribute("broadcast", broadcast);
@@ -195,7 +213,16 @@ public class CampaignsController {
         }
         
         return "home";
-    }    
+    }
+    
+    @RequestMapping(value = "/createCamp")
+    public String showCreate(Model model, Principal principal) {
+    	List<CampaignCategory> campcat = campaignCategoryService.getCategories();
+    	model.addAttribute("campcat", campcat);
+    	Campaigns campaign = new Campaigns();
+    	model.addAttribute("campaign", campaign);
+    	return "createcampaign";
+    }
     
     @RequestMapping(value = "/createCampaign", method = RequestMethod.POST)
     public String doCreate(@Valid @ModelAttribute("campaign") Campaigns campaign, BindingResult result, Principal principal, Model model,

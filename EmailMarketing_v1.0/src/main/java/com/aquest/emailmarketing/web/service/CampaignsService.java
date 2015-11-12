@@ -10,6 +10,7 @@ import com.aquest.emailmarketing.web.dao.CampaignsDao;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,9 @@ import org.springframework.stereotype.Service;
  */
 @Service("campaignsService")
 public class CampaignsService {
+	
+	final static Logger logger = Logger.getLogger(com.aquest.emailmarketing.web.service.CampaignsService.class);
+	
     private CampaignsDao campaignsDao;
     
     @Autowired
@@ -31,9 +35,9 @@ public class CampaignsService {
     }
     
     public List<Campaigns> getCampaigns() {
-        System.out.println("Ovo se pokrenulo");
+        logger.debug("Ovo se pokrenulo");;
         List<Campaigns> campaigns = campaignsDao.getCampaigns();
-        System.out.println(campaigns.toString());
+        logger.debug(campaigns.toString());
         return campaigns;
     }
     

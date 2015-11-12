@@ -7,11 +7,10 @@
 <div id='cssmenu'>
 <ul>
    <li class='active'><a href='<c:url value='/'/>'><span><spring:message code="menu.home"/></span></a></li>
-   <li class='has-sub'><a href='#'><span>Products</span></a>
+   <li class='has-sub'><a href='#'><span>Campaigns</span></a>
       <ul>
-         <li><a href='#'><span>Product 1</span></a></li>
-         <li><a href='#'><span>Product 2</span></a></li>
-         <li class='last'><a href='#'><span>Product 3</span></a></li>
+         <li><a href='<c:url value='/'/>'><span>Show Campaigns</span></a></li>
+         <li class='last'><a href='createCamp'><span>Create Campaign</span></a></li>
       </ul>
    </li>
    <li class='has-sub'><a href='#'><span>About</span></a>

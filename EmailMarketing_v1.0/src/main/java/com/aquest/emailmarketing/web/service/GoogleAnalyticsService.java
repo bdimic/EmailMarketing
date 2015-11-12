@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,8 @@ import com.google.api.services.analytics.model.Webproperties;
 
 @Service("googleAnalyticsService")
 public class GoogleAnalyticsService {
+	
+	final static Logger logger = Logger.getLogger(com.aquest.emailmarketing.web.service.GoogleAnalyticsService.class);
 	
 	private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
@@ -73,9 +76,9 @@ public class GoogleAnalyticsService {
 			        .setServiceAccountPrivateKeyFromP12File(new File(KeyFileLocation)).build();
 
 		 } catch (GeneralSecurityException e) {
-	         e.printStackTrace();
+	         logger.error(e);
 	     } catch (IOException e) {
-	         e.printStackTrace();  
+	    	 logger.error(e);  
 	     }	
 	     // Set up and return Google Analytics API client.
 	     Analytics analytics = new Analytics.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName(
@@ -85,7 +88,7 @@ public class GoogleAnalyticsService {
 	     try {
 	         profileId = getFirstProfileId(analytics);
 	     } catch (IOException e) {
-	        e.printStackTrace(); 
+	    	 logger.error(e); 
 	     }
 	     
 	     if(profileId.equals("1")) {
@@ -150,9 +153,9 @@ public class GoogleAnalyticsService {
 			        .setServiceAccountPrivateKeyFromP12File(new File(gaConfig.getP12_key_file_name())).build();
 
 		 } catch (GeneralSecurityException e) {
-	         e.printStackTrace();
+			 logger.error(e);
 	     } catch (IOException e) {
-	         e.printStackTrace();  
+	    	 logger.error(e);  
 	     }	
 	     // Set up and return Google Analytics API client.
 	     Analytics analytics = new Analytics.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName(
@@ -205,7 +208,7 @@ public class GoogleAnalyticsService {
 	 				}
 	 			} catch (ParseException e) {
 	 				// TODO Auto-generated catch block
-	 				e.printStackTrace();
+	 				logger.error(e);
 	 			}
 	         }
 	     } else {
@@ -228,9 +231,9 @@ public class GoogleAnalyticsService {
 			        .setServiceAccountPrivateKeyFromP12File(new File(gaConfig.getP12_key_file_name())).build();
 
 		 } catch (GeneralSecurityException e) {
-	         e.printStackTrace();
+			 logger.error(e);
 	     } catch (IOException e) {
-	         e.printStackTrace();  
+	    	 logger.error(e);  
 	     }	
 	     // Set up and return Google Analytics API client.
 	     Analytics analytics = new Analytics.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName(
@@ -281,11 +284,11 @@ public class GoogleAnalyticsService {
 	 				}
 	 			} catch (ParseException e) {
 	 				// TODO Auto-generated catch block
-	 				e.printStackTrace();
+	 				logger.error(e);
 	 			}
 	         }
 	     } else {
-	     	System.out.println("Nema podataka!");
+	     	logger.debug("No data available");
 	     }
 	}
 }

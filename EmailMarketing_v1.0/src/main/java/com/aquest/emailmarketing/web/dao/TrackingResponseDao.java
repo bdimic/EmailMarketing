@@ -14,6 +14,8 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -56,6 +58,22 @@ public class TrackingResponseDao {
         Criteria crit = session().createCriteria(TrackingResponse.class);
         crit.add(Restrictions.eq("id", id));
         return (TrackingResponse)crit.uniqueResult();
+    }
+    
+    public int getNoOfOpensByBroadcast(String broadcast_id) {
+    	Criteria crit = session().createCriteria(TrackingResponse.class);
+        crit.add(Restrictions.eq("broadcast_id", broadcast_id));
+        crit.add(Restrictions.eq("response_type", "Open"));
+        List result = crit.setProjection(Projections.projectionList().add(Projections.groupProperty("unique_id"))).list();
+        return result.size();
+    }
+    
+    public int getNoOfClickByBroadcast(String broadcast_id) {
+    	Criteria crit = session().createCriteria(TrackingResponse.class);
+        crit.add(Restrictions.eq("broadcast_id", broadcast_id));
+        crit.add(Restrictions.eq("response_type", "Click"));
+        List result = crit.setProjection(Projections.projectionList().add(Projections.groupProperty("unique_id"))).list();
+        return result.size();
     }
     
     public List<TrackingResponse> checkResponseExists(String unique_id, String broadcast_id, String response_type, String response_source, String response_url, Timestamp response_time) {

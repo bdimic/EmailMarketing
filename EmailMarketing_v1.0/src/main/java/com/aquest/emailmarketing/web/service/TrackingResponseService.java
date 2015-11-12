@@ -54,7 +54,15 @@ public class TrackingResponseService {
     public List<TrackingResponse> checkResponseExists(String unique_id, String broadcast_id, String response_type, String response_source, String response_url, Timestamp response_time) {
     	List<TrackingResponse> trackingResponse = trackingResponseDao.checkResponseExists(unique_id, broadcast_id, response_type, response_source, response_url, response_time);
     	return trackingResponse;
-    }	
+    }
+    
+    public int getNoOfOpensByBroadcast(String broadcast_id) {
+    	return trackingResponseDao.getNoOfOpensByBroadcast(broadcast_id);
+    }
+    
+    public int getNoOfClickByBroadcast(String broadcast_id) {
+    	return trackingResponseDao.getNoOfClickByBroadcast(broadcast_id);
+    }
     	
     public String SaveOrUpdate(TrackingResponse trackingResponse) {
         return trackingResponseDao.saveOrUpdate(trackingResponse);

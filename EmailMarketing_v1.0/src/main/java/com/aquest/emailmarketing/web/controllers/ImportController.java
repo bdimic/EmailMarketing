@@ -7,6 +7,7 @@
 package com.aquest.emailmarketing.web.controllers;
 
 import com.aquest.emailmarketing.web.dao.Broadcast;
+import com.aquest.emailmarketing.web.dao.EmailList;
 import com.aquest.emailmarketing.web.service.BroadcastService;
 import com.aquest.emailmarketing.web.service.EmailListService;
 import java.io.FileNotFoundException;
@@ -83,21 +84,37 @@ public class ImportController {
                 System.out.println(listfilename);
                 System.out.println(separator);
             }   
-            emailListService.importEmailfromFile(fileContent, separator, broadcast_id);
-            Broadcast broadcast = broadcastService.getBroadcast(broadcast_id);
+            int importCount = emailListService.importEmailfromFile(fileContent, separator, broadcast_id);
+            model.addAttribute("importCount", importCount);
+            List<EmailList> eList =  emailListService.getAllEmailList(broadcast_id);
+            model.addAttribute("eList", eList);
+            //Broadcast broadcast = broadcastService.getBroadcast(broadcast_id);
             System.out.println("Old broadcast: "+old_broadcast_id);
             if(!old_broadcast_id.isEmpty()) {
-	            try {
-					Broadcast old_broadcast = broadcastService.getBroadcast(old_broadcast_id);
-					broadcast.setHtmlbody(old_broadcast.getHtmlbody());
-					broadcast.setPlaintext(old_broadcast.getPlaintext());
-					model.addAttribute("old_broadcast", old_broadcast);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					model.addAttribute("old_broadcast_id", old_broadcast_id);
             }
-            model.addAttribute("broadcast", broadcast);
+            		model.addAttribute("broadcast_id", broadcast_id);
+		return "importlistreport";
+	}
+	
+	@RequestMapping(value="/importListReport", method = RequestMethod.POST)        
+	public String ImportListReport(Model model, HttpServletRequest request) {
+		String broadcast_id = "";
+		String old_broadcast_id = "";
+		Broadcast broadcast = broadcastService.getBroadcast(broadcast_id);
+        System.out.println("Old broadcast: "+old_broadcast_id);
+        if(!old_broadcast_id.isEmpty()) {
+            try {
+				Broadcast old_broadcast = broadcastService.getBroadcast(old_broadcast_id);
+				broadcast.setHtmlbody(old_broadcast.getHtmlbody());
+				broadcast.setPlaintext(old_broadcast.getPlaintext());
+				model.addAttribute("old_broadcast", old_broadcast);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        model.addAttribute("broadcast", broadcast);
 		return "definecontent";
 	}
 }

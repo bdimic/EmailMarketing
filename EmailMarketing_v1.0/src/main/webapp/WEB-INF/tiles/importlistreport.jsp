@@ -8,7 +8,7 @@
 <script type="text/javascript">
     
     $(document).ready( function () {
-        $('#campaigns_table').DataTable({"scrollY": "250px",
+        $('#importlist_table').DataTable({"scrollY": "250px",
            "DisplayLength": 10,
            "scrollCollapse": true,
            "drawCallback": function (settings) {
@@ -23,12 +23,12 @@
   });
   
   
-  $('body').on("click", '#campaigns_table tbody tr', function (event) {
+  $('body').on("click", '#importlist_table tbody tr', function (event) {
       if ($(this).hasClass('row_selected')) {
 
       }
       else {
-          $('#campaigns_table tbody tr.row_selected').removeClass('row_selected');
+          $('#importlist_table tbody tr.row_selected').removeClass('row_selected');
           $(this).addClass('row_selected');
           var row = $(this).find('td:first').text();
           $("#MainContent_Main_hfRowId").val(row);
@@ -42,30 +42,38 @@
 });    
 </script>
 
-<sf:form method="POST" action="${pageContext.request.contextPath}/pickCampaignAction" commandName="campaignData">
+<sf:form method="POST" action="${pageContext.request.contextPath}/importListReport" commandName="importListData">
 <div class="sadrzaj">
 <table id="campaigns_table" cellpadding="0" cellspacing="0" border="0"  class="display">
     <thead>
         <tr>
-            <th><spring:message code="campaign.campaign_id" /></th>
-            <th><spring:message code="campaign.name" /></th>
-            <th><spring:message code="campaign.category" /></th>
-            <th><spring:message code="campaign.status" /></th>
-            <th><spring:message code="campaign.start.date" /></th>
-            <th><spring:message code="campaign.end.date" /></th>
-            <th><spring:message code="campaign.broadcast.number" /></th>
+            <th><spring:message code="elist.email" /></th>
+            <th>${eList.name1}</th>
+            <th>${eList.name2}</th>
+            <th>${eList.name3}</th>
+            <th>${eList.name4}</th>
+            <th>${eList.name5}</th>
+            <th>${eList.name6}</th>
+            <th>${eList.name7}</th>
+            <th>${eList.name8}</th>
+            <th>${eList.name9}</th>
+            <th>${eList.name10}</th>
         </tr>
     </thead>
     <tbody>
-        <c:forEach var="campaigns" items="${campaigns}">
+        <c:forEach var="eList" items="${eList}">
         <tr>
-            <td>${campaigns.campaign_id}</td>
-            <td>${campaigns.campaign_name}</td>
-            <td>${campaigns.campaignCategory.category_description}</td>
-            <td>${campaigns.campaign_status}</td>
-            <td>${campaigns.campaign_start_date}</td>
-            <td>${campaigns.campaign_end_date}</td>
-            <td>${campaigns.broadcast_number}</td>
+            <td>${eList.email}</td>
+            <td>${eList.value1}</td>
+            <td>${eList.value2}</td>
+            <td>${eList.value3}</td>
+            <td>${eList.value4}</td>
+            <td>${eList.value5}</td>
+            <td>${eList.value6}</td>
+            <td>${eList.value7}</td>
+            <td>${eList.value8}</td>
+            <td>${eList.value9}</td>
+            <td>${eList.value10}</td>
         </tr>
         </c:forEach>
     </tbody>

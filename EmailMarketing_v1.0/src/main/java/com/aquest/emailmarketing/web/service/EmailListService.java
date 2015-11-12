@@ -39,7 +39,8 @@ public class EmailListService {
     	return emailListDao.getEmailListById(id);
     }
 
-    public void importEmailfromFile(InputStream filename, String separator, String broadcast_id) throws IOException {
+    public int importEmailfromFile(InputStream filename, String separator, String broadcast_id) throws IOException {
+    	int emailCount = 0;
     	CSVReader reader = new CSVReader(new InputStreamReader(filename), separator.charAt(0));
         boolean isFirstLine = true;
         String[] firstLine = null;
@@ -100,9 +101,11 @@ public class EmailListService {
                     }
                 }
                 emailListDao.saveOrUpdate(emailList);
+                emailCount++;
             }            
         }
         reader.close();
+        return emailCount;
     }
     
     public void delete(String id) {
