@@ -28,6 +28,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -84,9 +85,10 @@ public class ImportController {
                 System.out.println(listfilename);
                 System.out.println(separator);
             }   
-            int importCount = emailListService.importEmailfromFile(fileContent, separator, broadcast_id);
+            List<EmailList> eList = emailListService.importEmailfromFile(fileContent, separator, broadcast_id);
+            System.out.println(broadcast_id);
+            int importCount = eList.size();
             model.addAttribute("importCount", importCount);
-            List<EmailList> eList =  emailListService.getAllEmailList(broadcast_id);
             model.addAttribute("eList", eList);
             //Broadcast broadcast = broadcastService.getBroadcast(broadcast_id);
             System.out.println("Old broadcast: "+old_broadcast_id);
@@ -98,9 +100,13 @@ public class ImportController {
 	}
 	
 	@RequestMapping(value="/importListReport", method = RequestMethod.POST)        
-	public String ImportListReport(Model model, HttpServletRequest request) {
+	public String ImportListReport(@ModelAttribute("eList") List<EmailList> emailList, Model model, HttpServletRequest request) {
 		String broadcast_id = "";
 		String old_broadcast_id = "";
+		for(EmailList elist: emailList) {
+			System.out.println(elist);
+		}
+		//emailListService.SaveOrUpdate(emailList);
 		Broadcast broadcast = broadcastService.getBroadcast(broadcast_id);
         System.out.println("Old broadcast: "+old_broadcast_id);
         if(!old_broadcast_id.isEmpty()) {

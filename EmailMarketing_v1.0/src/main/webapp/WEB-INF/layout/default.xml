@@ -163,4 +163,8 @@
 		<put-attribute name="title" value="gaconfiguration.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/test.jsp"></put-attribute>
 	</definition>
+	<definition name="importlistreport" extends="base.definition">
+		<put-attribute name="title" value="definecontent.title"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/importlistreport.jsp"></put-attribute>
+	</definition>
 </tiles-definitions>

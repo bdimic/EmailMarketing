@@ -13,6 +13,7 @@ import com.opencsv.CSVReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +40,17 @@ public class EmailListService {
     	return emailListDao.getEmailListById(id);
     }
 
-    public int importEmailfromFile(InputStream filename, String separator, String broadcast_id) throws IOException {
-    	int emailCount = 0;
+    public List<EmailList> importEmailfromFile(InputStream filename, String separator, String broadcast_id) throws IOException {
     	CSVReader reader = new CSVReader(new InputStreamReader(filename), separator.charAt(0));
         boolean isFirstLine = true;
         String[] firstLine = null;
         String[] nextLine;
+        List<EmailList> eList = new ArrayList<EmailList>();
+        
+        System.out.println(broadcast_id);
         
         while ((nextLine = reader.readNext()) != null) {
+        	        	        	        	
             if(isFirstLine) {
                 firstLine = nextLine;
                 // print list
@@ -54,10 +58,10 @@ public class EmailListService {
                     System.out.println(firstLine[k]);
                 }
                 isFirstLine = false;
-            } else { 
+            } else {
             	EmailList emailList = new EmailList();
             	emailList.setBroadcast_id(broadcast_id);
-                for(int i=0; i < firstLine.length; i++) {
+                for(int i=0; i < firstLine.length; i++) {                	
                 	System.out.println(firstLine.length);
                 	// ovo je dirty verzija. napisati kako treba
                 	for(int j=0;j<nextLine.length;j++){
@@ -99,13 +103,24 @@ public class EmailListService {
                     	emailList.setName10(firstLine[i]);
                     	emailList.setValue10(nextLine[i]);
                     }
-                }
-                emailListDao.saveOrUpdate(emailList);
-                emailCount++;
-            }            
+                    System.out.println(emailList);
+                    
+                }                                 
+                
+                //Save i update ce se raditi u drugoj metodi
+                //emailListDao.saveOrUpdate(emailList);
+                eList.add(emailList);
+            }
+        }
+        for(EmailList elist : eList) {
+        	System.out.println(elist);
         }
         reader.close();
-        return emailCount;
+        return eList;
+    }
+    
+    public void SaveOrUpdate(EmailList emailList) {
+    	emailListDao.saveOrUpdate(emailList);
     }
     
     public void delete(String id) {

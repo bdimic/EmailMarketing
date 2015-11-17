@@ -43,6 +43,7 @@
                 <security:intercept-url pattern="/definebroadcast" access="isAuthenticated()" />
                 <security:intercept-url pattern="/definelist" access="isAuthenticated()" />
                 <security:intercept-url pattern="/importList" access="isAuthenticated()" />
+                <security:intercept-url pattern="/importlistreport" access="isAuthenticated()" />
                 <security:intercept-url pattern="/generateBroadcastFlow" access="isAuthenticated()" />
                 <security:intercept-url pattern="/createCamp" access="isAuthenticated()" />
                 <security:intercept-url pattern="/pickCampaignAction" access="isAuthenticated()" />
