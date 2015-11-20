@@ -16,26 +16,26 @@
 });    
 </script>
 <spring:message code="eList.number.email.exported" /> ${importCount}<br/>
-<sf:form method="POST" action="${pageContext.request.contextPath}/importListReport" commandName="importListData">
+<sf:form method="POST" action="${pageContext.request.contextPath}/importListReport" modelAttribute="emailListForm">
 <div class="sadrzaj">
 <table id="importlist_table" cellpadding="0" cellspacing="0" border="0"  class="display">
     <thead>
         <tr>
             <th><spring:message code="elist.email" /></th>
-            <c:if test="${eList[0].name1 != null}"><th>${eList[0].name1}</th></c:if>
-            <c:if test="${eList[0].name2 != null}"><th>${eList[0].name2}</th></c:if>
-            <c:if test="${eList[0].name3 != null}"><th>${eList[0].name3}</th></c:if>
-            <c:if test="${eList[0].name4 != null}"><th>${eList[0].name4}</th></c:if>
-            <c:if test="${eList[0].name5 != null}"><th>${eList[0].name5}</th></c:if>
-            <c:if test="${eList[0].name6 != null}"><th>${eList[0].name6}</th></c:if>
-            <c:if test="${eList[0].name7 != null}"><th>${eList[0].name7}</th></c:if>
-            <c:if test="${eList[0].name8 != null}"><th>${eList[0].name8}</th></c:if>
-            <c:if test="${eList[0].name9 != null}"><th>${eList[0].name9}</th></c:if>
-            <c:if test="${eList[0].name10 != null}"><th>${eList[0].name10}</th></c:if>
+            <c:if test="${emailListForm.emailList[0].name1 != null}"><th>${emailListForm.emailList[0].name1}</th></c:if>
+            <c:if test="${emailListForm.emailList[0].name2 != null}"><th>${emailListForm.emailList[0].name2}</th></c:if>
+            <c:if test="${emailListForm.emailList[0].name3 != null}"><th>${emailListForm.emailList[0].name3}</th></c:if>
+            <c:if test="${emailListForm.emailList[0].name4 != null}"><th>${emailListForm.emailList[0].name4}</th></c:if>
+            <c:if test="${emailListForm.emailList[0].name5 != null}"><th>${emailListForm.emailList[0].name5}</th></c:if>
+            <c:if test="${emailListForm.emailList[0].name6 != null}"><th>${emailListForm.emailList[0].name6}</th></c:if>
+            <c:if test="${emailListForm.emailList[0].name7 != null}"><th>${emailListForm.emailList[0].name7}</th></c:if>
+            <c:if test="${emailListForm.emailList[0].name8 != null}"><th>${emailListForm.emailList[0].name8}</th></c:if>
+            <c:if test="${emailListForm.emailList[0].name9 != null}"><th>${emailListForm.emailList[0].name9}</th></c:if>
+            <c:if test="${emailListForm.emailList[0].name10 != null}"><th>${emailListForm.emailList[0].name10}</th></c:if>
         </tr>
     </thead>
     <tbody>
-        <c:forEach var="eList" items="${eList}">
+        <c:forEach var="eList" items="${emailListForm.emailList}">
         <tr>
             <td>${eList.email}</td>
             <c:if test="${eList.value1 != null}"><td>${eList.value1}</td></c:if>
