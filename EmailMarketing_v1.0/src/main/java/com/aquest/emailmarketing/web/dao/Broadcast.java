@@ -53,11 +53,11 @@ public class Broadcast implements Serializable {
     private Timestamp execution_dttm;
     private String execution_user;
     @Transient
-    private int leadNumber;
+    private int lead_number;
     @Transient
-    private int openNumber;
+    private int open_number;
     @Transient
-    private int clickNumber;
+    private int click_number;
 
     public Broadcast() {
     	this.emailConfig = new EmailConfig();
@@ -231,28 +231,28 @@ public class Broadcast implements Serializable {
 		return emailConfig.getProfile_id();
 	}	
 
-	public int getLeadNumber() {
-		return leadNumber;
+	public int getLead_number() {
+		return lead_number;
 	}
 
-	public void setLeadNumber(int leadNumber) {
-		this.leadNumber = leadNumber;
+	public void setLead_number(int lead_number) {
+		this.lead_number = lead_number;
 	}
 
-	public int getOpenNumber() {
-		return openNumber;
+	public int getOpen_number() {
+		return open_number;
 	}
 
-	public void setOpenNumber(int openNumber) {
-		this.openNumber = openNumber;
+	public void setOpen_number(int open_number) {
+		this.open_number = open_number;
 	}
 
-	public int getClickNumber() {
-		return clickNumber;
+	public int getClick_number() {
+		return click_number;
 	}
 
-	public void setClickNumber(int clickNumber) {
-		this.clickNumber = clickNumber;
+	public void setClick_number(int click_number) {
+		this.click_number = click_number;
 	}
 
 	@Override

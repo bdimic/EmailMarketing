@@ -8,7 +8,7 @@
 <script type="text/javascript">
     
     $(document).ready( function () {
-        $('#campaigns_table').DataTable({"scrollY": "200px",
+        $('#campaigns_table').DataTable({"scrollY": "250px",
            "DisplayLength": 10,
            "scrollCollapse": true,
            "drawCallback": function (settings) {

@@ -7,6 +7,8 @@
 package com.aquest.emailmarketing.web.controllers;
 
 import com.aquest.emailmarketing.web.dao.Broadcast;
+import com.aquest.emailmarketing.web.dao.EmailList;
+import com.aquest.emailmarketing.web.dao.EmailListForm;
 import com.aquest.emailmarketing.web.service.BroadcastService;
 import com.aquest.emailmarketing.web.service.EmailListService;
 import java.io.FileNotFoundException;
@@ -27,19 +29,24 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 /**
  *
  * @author bdimic
  */
 @Controller
+@SessionAttributes("emailListForm")
 public class ImportController {
 	
 	private EmailListService emailListService;
 	private BroadcastService broadcastService;
-		
+			
 	@Autowired
 	public void setEmailListService(EmailListService emailListService) {
 		this.emailListService = emailListService;
@@ -56,7 +63,10 @@ public class ImportController {
             String separator = "";
             String broadcast_id = "";
             String old_broadcast_id = "";
+            EmailListForm emailListForm = new EmailListForm();
+            
             InputStream fileContent = null;
+            
             List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
             for (FileItem item : items) {
                 if (item.isFormField()) {
@@ -83,21 +93,47 @@ public class ImportController {
                 System.out.println(listfilename);
                 System.out.println(separator);
             }   
-            emailListService.importEmailfromFile(fileContent, separator, broadcast_id);
-            Broadcast broadcast = broadcastService.getBroadcast(broadcast_id);
+            List<EmailList> eList = emailListService.importEmailfromFile(fileContent, separator, broadcast_id);
+            emailListForm.setEmailList(eList);
+            System.out.println(broadcast_id);
+            int importCount = eList.size();
+            model.addAttribute("importCount", importCount);
+            model.addAttribute("emailListForm", emailListForm);
+            //Broadcast broadcast = broadcastService.getBroadcast(broadcast_id);
             System.out.println("Old broadcast: "+old_broadcast_id);
             if(!old_broadcast_id.isEmpty()) {
-	            try {
-					Broadcast old_broadcast = broadcastService.getBroadcast(old_broadcast_id);
-					broadcast.setHtmlbody(old_broadcast.getHtmlbody());
-					broadcast.setPlaintext(old_broadcast.getPlaintext());
-					model.addAttribute("old_broadcast", old_broadcast);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					model.addAttribute("old_broadcast_id", old_broadcast_id);
             }
-            model.addAttribute("broadcast", broadcast);
+            		model.addAttribute("broadcast_id", broadcast_id);
+		return "importlistreport";
+	}
+	
+	@RequestMapping(value="/importListReport", method = RequestMethod.POST)        
+	public String ImportListReport(@ModelAttribute("emailListForm") EmailListForm emailList, Model model,
+			@RequestParam(value = "broadcast_id") String broadcast_id,
+			@RequestParam(value = "old_broadcast_id") String old_broadcast_id,
+			HttpServletRequest request) {
+		System.out.println(emailList);
+		List<EmailList> eList = emailList.getEmailList();
+		for(EmailList elist: eList) {
+			System.out.println(elist);
+			emailListService.SaveOrUpdate(elist);
+		}
+		//emailListService.SaveOrUpdate(emailList);
+		Broadcast broadcast = broadcastService.getBroadcast(broadcast_id);
+        System.out.println("Old broadcast: "+old_broadcast_id);
+        if(!old_broadcast_id.isEmpty()) {
+            try {
+				Broadcast old_broadcast = broadcastService.getBroadcast(old_broadcast_id);
+				broadcast.setHtmlbody(old_broadcast.getHtmlbody());
+				broadcast.setPlaintext(old_broadcast.getPlaintext());
+				model.addAttribute("old_broadcast", old_broadcast);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        model.addAttribute("broadcast", broadcast);
 		return "definecontent";
 	}
 }

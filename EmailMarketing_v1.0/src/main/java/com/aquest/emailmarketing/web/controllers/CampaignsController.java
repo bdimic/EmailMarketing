@@ -15,6 +15,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +30,6 @@ import com.aquest.emailmarketing.web.dao.CampaignCategory;
 import com.aquest.emailmarketing.web.dao.Campaigns;
 import com.aquest.emailmarketing.web.dao.EmailConfig;
 import com.aquest.emailmarketing.web.dao.EmailList;
-import com.aquest.emailmarketing.web.dao.TrackingResponse;
 import com.aquest.emailmarketing.web.service.BroadcastService;
 import com.aquest.emailmarketing.web.service.CampaignCategoryService;
 import com.aquest.emailmarketing.web.service.CampaignsService;
@@ -43,6 +43,8 @@ import com.aquest.emailmarketing.web.service.TrackingResponseService;
  */
 @Controller
 public class CampaignsController {
+	
+	final static Logger logger = Logger.getLogger(com.aquest.emailmarketing.web.controllers.CampaignsController.class);
 
     private CampaignsService campaignsService;
     private BroadcastService broadcastService;
@@ -122,6 +124,9 @@ public class CampaignsController {
         }
         
         if(deleteCampaign != null) {
+        	// ubaciti logiku koja proverava dali za kampanju za brisanje postoji definisan broadcast. ukoliko postoji
+        	// kampanju moze obrisati samo administrator. ukoliko postoji broadcast koji je u statusu sent nije moguce brisanje
+        	// ni administratoru
         	if(broadcast != null) {
         		int sentBroadcast = 0;
         		for(int i=0; i<broadcast.size();i++) {
@@ -165,21 +170,17 @@ public class CampaignsController {
         if(openCampaign != null) {
         	Campaigns campaign = campaignsService.getCampaign(campaign_id);
         	for(Broadcast bcast: broadcast) {
-        		List<EmailList> eList = emailListService.getAllEmailList(bcast.getBroadcast_id());
-        		bcast.setLeadNumber(eList.size());
         		if(bcast.getStatus().equals("SENT")) {
-        			List<TrackingResponse> trackingResponse = trackingResponseService.getTrackingResponseByBroadcastId(bcast.getBroadcast_id());
-        			int openCount = 0;
-        			int clickCount = 0;
-        			for(TrackingResponse tresp: trackingResponse) {
-        				if(tresp.getResponse_type().equals("Open")){
-        					openCount++;
-        				} else if(tresp.getResponse_type().equals("Click")) {
-        					clickCount++;
-        				}
-        			}
-        			bcast.setOpenNumber(openCount);
-        			bcast.setClickNumber(clickCount);
+        			List<EmailList> eList = emailListService.getAllEmailList(bcast.getBroadcast_id());
+        			bcast.setLead_number(eList.size());
+        			int openNum = trackingResponseService.getNoOfOpensByBroadcast(bcast.getBroadcast_id());
+        			bcast.setOpen_number(openNum);
+        			int clickNum = trackingResponseService.getNoOfClickByBroadcast(bcast.getBroadcast_id());
+        			bcast.setClick_number(clickNum);
+        		} else {
+        			bcast.setLead_number(0);
+        			bcast.setOpen_number(0);
+        			bcast.setClick_number(0);
         		}
         	}
         	model.addAttribute("broadcast", broadcast);
@@ -212,7 +213,16 @@ public class CampaignsController {
         }
         
         return "home";
-    }    
+    }
+    
+    @RequestMapping(value = "/createCamp")
+    public String showCreate(Model model, Principal principal) {
+    	List<CampaignCategory> campcat = campaignCategoryService.getCategories();
+    	model.addAttribute("campcat", campcat);
+    	Campaigns campaign = new Campaigns();
+    	model.addAttribute("campaign", campaign);
+    	return "createcampaign";
+    }
     
     @RequestMapping(value = "/createCampaign", method = RequestMethod.POST)
     public String doCreate(@Valid @ModelAttribute("campaign") Campaigns campaign, BindingResult result, Principal principal, Model model,
