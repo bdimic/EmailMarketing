@@ -30,6 +30,7 @@ import com.aquest.emailmarketing.web.dao.CampaignCategory;
 import com.aquest.emailmarketing.web.dao.Campaigns;
 import com.aquest.emailmarketing.web.dao.EmailConfig;
 import com.aquest.emailmarketing.web.dao.EmailList;
+import com.aquest.emailmarketing.web.service.BouncedEmailService;
 import com.aquest.emailmarketing.web.service.BroadcastService;
 import com.aquest.emailmarketing.web.service.CampaignCategoryService;
 import com.aquest.emailmarketing.web.service.CampaignsService;
@@ -52,6 +53,7 @@ public class CampaignsController {
     private EmailConfigService emailConfigService;
     private CampaignCategoryService campaignCategoryService;
     private TrackingResponseService trackingResponseService;
+    private BouncedEmailService bouncedEmailService;
     
     @Autowired
     public void setCampaignsService(CampaignsService campaignsService) {
@@ -82,6 +84,11 @@ public class CampaignsController {
     @Autowired
 	public void setTrackingResponseService(TrackingResponseService trackingResponseService) {
 		this.trackingResponseService = trackingResponseService;
+	}    
+    
+    @Autowired
+	public void setBouncedEmailService(BouncedEmailService bouncedEmailService) {
+		this.bouncedEmailService = bouncedEmailService;
 	}
 
 	@RequestMapping("/")
@@ -99,6 +106,7 @@ public class CampaignsController {
 	
 	@RequestMapping(value="/test")
 	public String test() {
+		bouncedEmailService.processAllBounces();
 		return "test";
 	}
     

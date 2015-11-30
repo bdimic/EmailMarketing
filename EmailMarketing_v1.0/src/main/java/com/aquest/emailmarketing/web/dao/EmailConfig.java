@@ -31,6 +31,11 @@ public class EmailConfig {
 	@NotBlank()
 	private String reply_to;
 	private String bounce_address;
+	private String bounce_protocol;
+	private String bounce_host;
+	private String bounce_port;
+	private String bounce_username;
+	private String bounce_password;
 	
 	public EmailConfig() {
 		
@@ -131,13 +136,53 @@ public class EmailConfig {
 		this.bounce_address = bounce_address;
 	}
 
+	public String getBounce_protocol() {
+		return bounce_protocol;
+	}
+
+	public void setBounce_protocol(String bounce_protocol) {
+		this.bounce_protocol = bounce_protocol;
+	}
+
+	public String getBounce_host() {
+		return bounce_host;
+	}
+
+	public void setBounce_host(String bounce_host) {
+		this.bounce_host = bounce_host;
+	}
+
+	public String getBounce_port() {
+		return bounce_port;
+	}
+
+	public void setBounce_port(String bounce_port) {
+		this.bounce_port = bounce_port;
+	}
+
+	public String getBounce_username() {
+		return bounce_username;
+	}
+
+	public void setBounce_username(String bounce_username) {
+		this.bounce_username = bounce_username;
+	}
+
+	public String getBounce_password() {
+		return bounce_password;
+	}
+
+	public void setBounce_password(String bounce_password) {
+		this.bounce_password = bounce_password;
+	}
+
 	@Override
 	public String toString() {
-		return "EmailConfig [profile_id=" + profile_id + ", profile_name=" + profile_name
-				+ ", hostname=" + hostname + ", port=" + port + ", username="
-				+ username + ", password=" + password + ", from=" + from_address
-				+ ", debug=" + debug + ", sslonconnect=" + sslonconnect
-				+ ", wait=" + wait + ", reply_to=" + reply_to
-				+ ", bounce_address=" + bounce_address + "]";
+		return "EmailConfig [profile_id=" + profile_id + ", profile_name=" + profile_name + ", hostname=" + hostname
+				+ ", port=" + port + ", username=" + username + ", password=" + password + ", from_address="
+				+ from_address + ", debug=" + debug + ", sslonconnect=" + sslonconnect + ", wait=" + wait
+				+ ", reply_to=" + reply_to + ", bounce_address=" + bounce_address + ", bounce_protocol="
+				+ bounce_protocol + ", bounce_host=" + bounce_host + ", bounce_port=" + bounce_port
+				+ ", bounce_username=" + bounce_username + ", bounce_password=" + bounce_password + "]";
 	}
 }
