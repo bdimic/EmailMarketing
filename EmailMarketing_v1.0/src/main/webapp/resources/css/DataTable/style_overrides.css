@@ -59,11 +59,17 @@
     cursor: default;
 }
 
-.paging_full_numbers a.paginate_button, .paging_full_numbers a.paginate_active 
+.paging_full_numbers a.paginate_button, .paging_full_numbers a.paginate_active, .paginate_button.previous.disabled, .paginate_button
 {
+    margin: 10px 0px;
+    width: auto;
+    background: #e8e8e8;
+    border: 1px solid #AAAAAA;
     border-radius: 5px 5px 5px 5px;
     -moz-border-radius: 5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
+    padding:2px 5px;
+    font-size: 1em;
     /* Enable CSS3 effects in IE8 using CSS3PIE */
     position: relative;
     zoom: 1;
