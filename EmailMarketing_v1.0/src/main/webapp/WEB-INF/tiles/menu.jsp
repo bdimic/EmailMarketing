@@ -7,16 +7,20 @@
 <div id='cssmenu'>
 <ul>
    <li class='active'><a href='<c:url value='/'/>'><span><spring:message code="menu.home"/></span></a></li>
-   <li class='has-sub'><a href='#'><span>Campaigns</span></a>
+   <li class='has-sub'><a href='#'><span><spring:message code="menu.campaigns"/></span></a>
       <ul>
-         <li><a href='<c:url value='/'/>'><span>Show Campaigns</span></a></li>
-         <li class='last'><a href='createCamp'><span>Create Campaign</span></a></li>
+         <li><a href='<c:url value='/'/>'><span><spring:message code="menu.showcampaigns"/></span></a></li>
+         <li class='last'><a href='createCamp'><span><spring:message code="menu.createcampaign"/></span></a></li>
       </ul>
    </li>
-   <li class='has-sub'><a href='#'><span>About</span></a>
+   <li class='has-sub'><a href='#'><span><spring:message code="menu.templates"/></span></a>
       <ul>
-         <li><a href='#'><span>Company</span></a></li>
-         <li class='last'><a href='#'><span>Contact</span></a></li>
+         <li class='has-sub'><a href='#'><span><spring:message code="menu.broadcasttemplates"/></span></a>
+         	<ul class='navigation-3'>
+         		<li><a href='#'><span><spring:message code="menu.newbcasttemplate"/></span></a></li>
+         		<li class='last'><a href='#'><span><spring:message code="menu.showbcasttemplates"/></span></a></li>
+         	</ul>
+         </li>
       </ul>
    </li>
    <li class='active'><a href='#'><span>Contact</span></a></li>

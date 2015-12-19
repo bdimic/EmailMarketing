@@ -13,7 +13,7 @@ body {
 }
 
 .formtable {
-	width: 600px;
+	width: 640px;
 	padding: 10px;
 	border: 1px solid blue;
 }
@@ -311,6 +311,24 @@ td.header {
 #cssmenu > ul li ul li ul.navigation-3 li a:link,
 #cssmenu > ul li ul li ul.navigation-3 li a:visited {
   background: #3B5E87;
+}
+
+#cssmenu > ul li ul li ul.navigation-3 li {
+  clear: left;
+  width: 146px;
+}
+
+#cssmenu > ul li ul li ul.navigation-3 li:hover a,
+#cssmenu > ul li ul li ul.navigation-3 li:active,
+#cssmenu > ul li ul li ul.navigation-3 li:hover {
+  clear: left;
+  background: #678AB2;
+  padding: 4px 0;
+  width: 146px;
+  border: none;
+  border-bottom: 1px solid #ffffff;
+  position: relative;
+  z-index: 1000;
 }
 
 /* MENU CSS ENDS HERE */
