@@ -167,4 +167,16 @@
 		<put-attribute name="title" value="definecontent.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/importlistreport.jsp"></put-attribute>
 	</definition>
+	<definition name="definebroadcasttemplate" extends="base.definition">
+		<put-attribute name="title" value="definecontent.title"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/definebroadcasttemplate.jsp"></put-attribute>
+	</definition>
+	<definition name="definebcasttempcontent" extends="base.definition">
+		<put-attribute name="title" value="definecontent.title"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/definebcasttempcontent.jsp"></put-attribute>
+	</definition>
+	<definition name="bcasttemptracking" extends="base.definition">
+		<put-attribute name="title" value="definecontent.title"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/bcasttemptracking.jsp"></put-attribute>
+	</definition>
 </tiles-definitions>

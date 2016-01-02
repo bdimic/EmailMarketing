@@ -16,6 +16,7 @@ public class TrackingConfig {
     @Column(name = "id")
 	private int id;
 	private String broadcast_id;
+	private int bcast_template_id;
 	private int tracking_flg;
 	private String tracking_type;
 	private String utm_campaign;
@@ -31,11 +32,12 @@ public class TrackingConfig {
 	}
 
 
-	public TrackingConfig(int id, String broadcast_id, int tracking_flg, String tracking_type, String utm_campaign,
+	public TrackingConfig(int id, String broadcast_id, int bcast_template_id, int tracking_flg, String tracking_type, String utm_campaign,
 			String utm_medium, String utm_source, String utm_content, int open_ga_flg, int open_pixel_flg) {
 		super();
 		this.id = id;
 		this.broadcast_id = broadcast_id;
+		this.bcast_template_id = bcast_template_id;
 		this.tracking_flg = tracking_flg;
 		this.tracking_type = tracking_type;
 		this.utm_campaign = utm_campaign;
@@ -64,6 +66,16 @@ public class TrackingConfig {
 
 	public void setBroadcast_id(String broadcast_id) {
 		this.broadcast_id = broadcast_id;
+	}	
+	
+	
+	public int getBcast_template_id() {
+		return bcast_template_id;
+	}
+
+
+	public void setBcast_template_id(int bcast_template_id) {
+		this.bcast_template_id = bcast_template_id;
 	}
 
 
@@ -149,9 +161,10 @@ public class TrackingConfig {
 
 	@Override
 	public String toString() {
-		return "TrackingConfig [id=" + id + ", broadcast_id=" + broadcast_id + ", tracking_flg=" + tracking_flg
-				+ ", tracking_type=" + tracking_type + ", utm_campaign=" + utm_campaign + ", utm_medium=" + utm_medium
-				+ ", utm_source=" + utm_source + ", utm_content=" + utm_content + ", open_ga_flg=" + open_ga_flg
-				+ ", open_pixel_flg=" + open_pixel_flg + "]";
-	}
+		return "TrackingConfig [id=" + id + ", broadcast_id=" + broadcast_id + ", bcast_template_id="
+				+ bcast_template_id + ", tracking_flg=" + tracking_flg + ", tracking_type=" + tracking_type
+				+ ", utm_campaign=" + utm_campaign + ", utm_medium=" + utm_medium + ", utm_source=" + utm_source
+				+ ", utm_content=" + utm_content + ", open_ga_flg=" + open_ga_flg + ", open_pixel_flg=" + open_pixel_flg
+				+ "]";
+	}	
 }

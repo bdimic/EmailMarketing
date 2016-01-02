@@ -36,6 +36,11 @@ public class BroadcastTemplateService {
         return broadcastTemplate;
     }
     
+    public BroadcastTemplate getBroadcastTemplateById(int id) {
+        BroadcastTemplate broadcastTemplate = broadcastTemplateDao.getBroadcastTemplateById(id);
+        return broadcastTemplate;
+    }
+    
     public String SaveOrUpdate(BroadcastTemplate broadcastTemplate) {
         return broadcastTemplateDao.saveOrUpdate(broadcastTemplate);
     }

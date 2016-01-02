@@ -34,7 +34,7 @@
             <td><sf:input type="text" name="b_template_subject" path="b_template_subject" /></td>
         </tr>
         <tr>
-            <td colspan="2"><sf:textarea name="htmlbody" path="htmlbody" value="${old_broadcast.htmlbody}" /></td>
+            <td colspan="2"><sf:textarea name="htmlbody" path="htmlbody"/></td>
         </tr>
         <tr>
             <td colspan="2"><spring:message code="broadcast.plain.text"/>:</td>

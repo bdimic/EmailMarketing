@@ -8,6 +8,7 @@ package com.aquest.emailmarketing.web.controllers;
 
 import com.aquest.emailmarketing.web.dao.Broadcast;
 import com.aquest.emailmarketing.web.dao.BroadcastTemplate;
+import com.aquest.emailmarketing.web.dao.CampaignCategory;
 import com.aquest.emailmarketing.web.dao.Campaigns;
 import com.aquest.emailmarketing.web.dao.EmailConfig;
 import com.aquest.emailmarketing.web.dao.EmbeddedImage;
@@ -100,6 +101,15 @@ public class BroadcastTemplateController {
     public void setEmailListService(EmailListService emailListService) {
 		this.emailListService = emailListService;
 	}
+    
+    @RequestMapping(value = "/newBroadcastTemplate")
+    public String newBroadcastTemplate(Model model, Principal principal) {
+    	BroadcastTemplate broadcastTemplate = new BroadcastTemplate();
+    	List<EmailConfig> emailconfig = emailConfigService.getAllProfiles();
+    	model.addAttribute("broadcastTemplate", broadcastTemplate);
+    	model.addAttribute("emailconfig", emailconfig);
+    	return "definebroadcasttemplate";
+    }
 
 	@RequestMapping(value = "/generateBroadcastTemplateFlow", method = RequestMethod.POST)
     public String doGenerate(Model model,@Valid @ModelAttribute("broadcastTemplate") BroadcastTemplate broadcastTemplate,BindingResult result, Principal principal,
@@ -108,23 +118,23 @@ public class BroadcastTemplateController {
     	broadcastTemplate.setCreation_user(principal.getName());
         broadcastTemplate.setCreation_dttm(curTimestamp);
         broadcastTemplate.getEmailConfig().setProfile_id(profile_id);
-        String broadcast_id = broadcastService.getNextBroadcastId();
         @SuppressWarnings("unused")
         String bcast_id = broadcastTemplateService.SaveOrUpdate(broadcastTemplate);
         	model.addAttribute("broadcastTemplate",broadcastTemplate);
-        	return "definelist";
+        	return "definebcasttempcontent";
     }
     
-    @RequestMapping(value= "/defineContent", method = RequestMethod.POST)
-    public String defineContent(Model model,@Valid @ModelAttribute("broadcast") Broadcast broadcast1,BindingResult result, Principal principal) {
-    	Broadcast broadcast = broadcastService.getBroadcastById(broadcast1.getId());
-    	broadcast.setSubject(broadcast1.getSubject());
-    	broadcast.setHtmlbody(broadcast1.getHtmlbody());
-    	broadcast.setPlaintext(broadcast1.getPlaintext());
-    	broadcastService.SaveOrUpdate(broadcast);
+    @RequestMapping(value= "/defineBcastTemplateContent", method = RequestMethod.POST)
+    public String defineContent(Model model,@Valid @ModelAttribute("broadcastTemplate") BroadcastTemplate broadcastTemplate1,BindingResult result, Principal principal) {
+    	BroadcastTemplate broadcastTemplate = broadcastTemplateService.getBroadcastTemplateById(broadcastTemplate1.getId());
+    	broadcastTemplate.setB_template_subject(broadcastTemplate1.getB_template_subject());
+    	broadcastTemplate.setHtmlbody(broadcastTemplate1.getHtmlbody());
+    	broadcastTemplate.setPlaintext(broadcastTemplate1.getPlaintext());
+    	System.out.println(broadcastTemplate.toString());
+    	String bcast_id = broadcastTemplateService.SaveOrUpdate(broadcastTemplate);
     	// Find URLs in html body and add tracking code
     	Urls urls = new Urls();
-    	String html = broadcast.getHtmlbody();
+    	String html = broadcastTemplate.getHtmlbody();
     	List<String> urlList = new ArrayList<String>();
     	Document doc = Jsoup.parse(html);
     	Elements links = doc.select("a[href]");
@@ -152,11 +162,11 @@ public class BroadcastTemplateController {
     	// ovde dodati sve varijabilne podatke iz CM_EMAIL_BROADCAST_LIST
     	model.addAttribute("utmContentList", utmContentList);
     	
-    	model.addAttribute("broadcast", broadcast);
-    	return "tracking";
+    	model.addAttribute("broadcastTemplate", broadcastTemplate);
+    	return "bcasttemptracking";
     }
     
-    @RequestMapping(value= "/generateUrls", method = RequestMethod.POST)
+    @RequestMapping(value= "/bcastTempGenerateUrls", method = RequestMethod.POST)
     public String addTracking(Model model, Urls urls, Principal principal,
     							@RequestParam(value = "id") int id,
     							@RequestParam(value = "trackingFlg", required = false) boolean trackingFlg,
@@ -164,8 +174,8 @@ public class BroadcastTemplateController {
     							@RequestParam(value = "openPixelFlg", required = false) boolean openPixelFlg,
     							@RequestParam(value = "trackingType", required = false) String trackingType){
     	TrackingConfig trackingConfig = new TrackingConfig();
-    	Broadcast broadcast = broadcastService.getBroadcastById(id);
-    	String workingHtml = broadcast.getHtmlbody();
+    	BroadcastTemplate broadcastTemplate = broadcastTemplateService.getBroadcastTemplateById(id);
+    	String workingHtml = broadcastTemplate.getHtmlbody();
     	if(trackingFlg == true) {
     		if(openGAflg == true) {
     			workingHtml = emailTracking.addGaOpenEmailTracking(workingHtml, urls);
@@ -187,16 +197,16 @@ public class BroadcastTemplateController {
     		
     	}
     	
-    	broadcast.setHtmlbody_tracking(workingHtml);
-    	System.out.println(broadcast.getHtmlbody_tracking());
-    	String confirm = broadcastService.SaveOrUpdate(broadcast);
+    	broadcastTemplate.setHtmlbody_tracking(workingHtml);
+    	System.out.println(broadcastTemplate.getHtmlbody_tracking());
+    	String confirm = broadcastTemplateService.SaveOrUpdate(broadcastTemplate);
     	System.out.println(confirm);
     	System.out.println(trackingFlg);
     	System.out.println(openGAflg);
     	System.out.println(openPixelFlg);
     	System.out.println(trackingType);
-    	if(confirm == broadcast.getBroadcast_id()){
-    		trackingConfig.setBroadcast_id(broadcast.getBroadcast_id());
+    	if(confirm == broadcastTemplate.getB_template_name()){
+    		trackingConfig.setBcast_template_id(broadcastTemplate.getId());
     		// taking care of tracking flg
     		int tracking_flg = 0;
     		if(trackingFlg == true) {
@@ -227,7 +237,7 @@ public class BroadcastTemplateController {
     	// find images in html to be able to embed images in email as in-line attachments
     	EmbeddedImage embeddedImage = new EmbeddedImage();
     	List<String> imgList = new ArrayList<String>();
-    	String html = broadcast.getHtmlbody();
+    	String html = broadcastTemplate.getHtmlbody();
     	Document doc = Jsoup.parse(html);
     	Elements media = doc.select("[src]");
     	for (Element src : media) {
@@ -237,11 +247,11 @@ public class BroadcastTemplateController {
     	}
     	model.addAttribute("imgList", imgList);
     	model.addAttribute("embeddedImage", embeddedImage);
-    	model.addAttribute("broadcast", broadcast);
-    	return "embeddedimage";
+    	model.addAttribute("broadcastTemplate", broadcastTemplate);
+    	return "bcasttempembeddedimage";
     }
     
-    @RequestMapping(value= "/embedImages", method = RequestMethod.POST)
+    @RequestMapping(value= "/bcastTemplateEmbedImages", method = RequestMethod.POST)
     public String embedImage(Model model, Principal principal,
 			@RequestParam(value = "id") int id,
 			@RequestParam(value = "url", required = false) String[] url){
@@ -286,103 +296,86 @@ public class BroadcastTemplateController {
     	return "sendbroadcast";
     }
     
-    @RequestMapping(value= "/sendBroadcast", method = RequestMethod.POST)
-    public String sendIt(Model model, Principal principal,
-    		@RequestParam(value = "id") int id,
-			@RequestParam(value = "send", required = false) String send,
-			HttpServletRequest request) {
-    	Timestamp curTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
-    	System.out.println(String.valueOf(id));
-    	Broadcast broadcast = broadcastService.getBroadcastById(id);
-    	System.out.println(broadcast);
-    	sendEmailService.sendEmails(broadcast);
-    	broadcast.setStatus("SENT");
-    	broadcast.setExecution_user(principal.getName());
-    	broadcast.setExecution_dttm(curTimestamp);
-    	broadcastService.SaveOrUpdate(broadcast);
-    	return "sentbroadcast";
-    }
     
-    
-    @RequestMapping(value="/pickBroadcastAction", method = RequestMethod.POST)
-    public String createNewBroadcast(Model model, 
-    		@RequestParam(value = "newBroadcast", required = false) String newBroadcast,
-    		@RequestParam(value = "copyBroadcast", required = false) String copyBroadcast,
-    		@RequestParam(value = "editBroadcast", required = false) String editBroadcast,
-    		@RequestParam(value = "showBroadcast", required = false) String showBroadcast,
-    		@RequestParam(value = "deleteBroadcast", required = false) String deleteBroadcast,
-    		@RequestParam(value = "campaign_id", required = false) String campaign_id,
-    		@RequestParam(value = "broadcast_id", required = false) String broadcast_id,
-    		Principal principal, HttpServletRequest request) {
-        
-    	Broadcast broadcast = broadcastService.getBroadcast(broadcast_id);
-    	
-        if(newBroadcast != null) {
-        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
-        	Broadcast broadcast1 = new Broadcast();
-        	List<EmailConfig> emailconfig = emailConfigService.getAllProfiles();
-        	model.addAttribute("campaign", campaign);
-        	model.addAttribute("broadcast", broadcast1);
-        	model.addAttribute("emailconfig", emailconfig);
-        	return "definebroadcast";
-        }
-        
-        if(copyBroadcast != null) {
-        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
-        	List<EmailConfig> emailconfig = emailConfigService.getAllProfiles();
-        	model.addAttribute("campaign", campaign);
-        	model.addAttribute("broadcast", broadcast);
-        	model.addAttribute("emailconfig", emailconfig);
-        	return "definebroadcast";
-        }
-        
-        if(deleteBroadcast != null) {
-        	
-        	if(broadcast != null) {
-        		if(broadcast.getStatus().equals("SENT")) {
-        			String message = "confirmation.broadcast.status.nodelete";
-        			model.addAttribute("message", message);
-        			return "confirmation";
-        		} else {
-        			boolean isDeleted = broadcastService.delete(broadcast.getId());
-            		if(isDeleted) {
-            			boolean trackingDeleted = trackingConfigService.delete(broadcast_id);
-            			if(trackingDeleted) {
-	            			String message = "confirmation.broadcast.status.deleted";
-	            			model.addAttribute("message", message);
-	            			return "confirmation";
-            			} else {
-            				return "error";
-            			}
-            		} else {
-            			return "error";
-            		}
-        		}
-        		
-        	} else {
-        		return "error";
-        	}
-        }
-        
-        if(editBroadcast != null) {
-//        	List<CampaignCategory> campcat = campaignCategoryService.getCategories();        	
+//    @RequestMapping(value="/pickBroadcastAction", method = RequestMethod.POST)
+//    public String createNewBroadcast(Model model, 
+//    		@RequestParam(value = "newBroadcast", required = false) String newBroadcast,
+//    		@RequestParam(value = "copyBroadcast", required = false) String copyBroadcast,
+//    		@RequestParam(value = "editBroadcast", required = false) String editBroadcast,
+//    		@RequestParam(value = "showBroadcast", required = false) String showBroadcast,
+//    		@RequestParam(value = "deleteBroadcast", required = false) String deleteBroadcast,
+//    		@RequestParam(value = "campaign_id", required = false) String campaign_id,
+//    		@RequestParam(value = "broadcast_id", required = false) String broadcast_id,
+//    		Principal principal, HttpServletRequest request) {
+//        
+//    	Broadcast broadcast = broadcastService.getBroadcast(broadcast_id);
+//    	
+//        if(newBroadcast != null) {
 //        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
+//        	Broadcast broadcast1 = new Broadcast();
+//        	List<EmailConfig> emailconfig = emailConfigService.getAllProfiles();
 //        	model.addAttribute("campaign", campaign);
-//        	model.addAttribute("campcat", campcat);
-        	return "editcampaign";
-        }
-        
-        if(showBroadcast != null) {
+//        	model.addAttribute("broadcast", broadcast1);
+//        	model.addAttribute("emailconfig", emailconfig);
+//        	return "definebroadcast";
+//        }
+//        
+//        if(copyBroadcast != null) {
 //        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
+//        	List<EmailConfig> emailconfig = emailConfigService.getAllProfiles();
+//        	model.addAttribute("campaign", campaign);
 //        	model.addAttribute("broadcast", broadcast);
-//        	model.addAttribute("campaign", campaign);
-//        	System.out.println(campaign.getCampaignCategory().getCategory_id());
-//        	CampaignCategory campcat = campaignCategoryService.getCategoryById(campaign.getCampaignCategory().getCategory_id());
-//        	model.addAttribute("campcat", campcat);
-        	
-        	return "opencampaign";
-        }
-                
-        return "home";
-    }
+//        	model.addAttribute("emailconfig", emailconfig);
+//        	return "definebroadcast";
+//        }
+//        
+//        if(deleteBroadcast != null) {
+//        	
+//        	if(broadcast != null) {
+//        		if(broadcast.getStatus().equals("SENT")) {
+//        			String message = "confirmation.broadcast.status.nodelete";
+//        			model.addAttribute("message", message);
+//        			return "confirmation";
+//        		} else {
+//        			boolean isDeleted = broadcastService.delete(broadcast.getId());
+//            		if(isDeleted) {
+//            			boolean trackingDeleted = trackingConfigService.delete(broadcast_id);
+//            			if(trackingDeleted) {
+//	            			String message = "confirmation.broadcast.status.deleted";
+//	            			model.addAttribute("message", message);
+//	            			return "confirmation";
+//            			} else {
+//            				return "error";
+//            			}
+//            		} else {
+//            			return "error";
+//            		}
+//        		}
+//        		
+//        	} else {
+//        		return "error";
+//        	}
+//        }
+//        
+//        if(editBroadcast != null) {
+////        	List<CampaignCategory> campcat = campaignCategoryService.getCategories();        	
+////        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
+////        	model.addAttribute("campaign", campaign);
+////        	model.addAttribute("campcat", campcat);
+//        	return "editcampaign";
+//        }
+//        
+//        if(showBroadcast != null) {
+////        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
+////        	model.addAttribute("broadcast", broadcast);
+////        	model.addAttribute("campaign", campaign);
+////        	System.out.println(campaign.getCampaignCategory().getCategory_id());
+////        	CampaignCategory campcat = campaignCategoryService.getCategoryById(campaign.getCampaignCategory().getCategory_id());
+////        	model.addAttribute("campcat", campcat);
+//        	
+//        	return "opencampaign";
+//        }
+//                
+//        return "home";
+//    }
 }

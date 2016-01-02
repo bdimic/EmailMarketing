@@ -41,9 +41,15 @@ public class BroadcastTemplateDao {
     
     public BroadcastTemplate getBroadcastTemplate(String id) {
     	
-        Criteria crit = session().createCriteria(Broadcast.class);
+        Criteria crit = session().createCriteria(BroadcastTemplate.class);
         int bt_id = Integer.parseInt(id);
         crit.add(Restrictions.eq("id", bt_id));
+        return (BroadcastTemplate)crit.uniqueResult();
+    }
+    
+    public BroadcastTemplate getBroadcastTemplateById(int id) {    	
+        Criteria crit = session().createCriteria(BroadcastTemplate.class);
+        crit.add(Restrictions.eq("id", id));
         return (BroadcastTemplate)crit.uniqueResult();
     }
     

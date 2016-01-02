@@ -17,7 +17,7 @@
       <ul>
          <li class='has-sub'><a href='#'><span><spring:message code="menu.broadcasttemplates"/></span></a>
          	<ul class='navigation-3'>
-         		<li><a href='#'><span><spring:message code="menu.newbcasttemplate"/></span></a></li>
+         		<li><a href='newBroadcastTemplate'><span><spring:message code="menu.newbcasttemplate"/></span></a></li>
          		<li class='last'><a href='#'><span><spring:message code="menu.showbcasttemplates"/></span></a></li>
          	</ul>
          </li>

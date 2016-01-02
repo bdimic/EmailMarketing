@@ -45,11 +45,18 @@
                 <security:intercept-url pattern="/importList" access="isAuthenticated()" />
                 <security:intercept-url pattern="/importlistreport" access="isAuthenticated()" />
                 <security:intercept-url pattern="/generateBroadcastFlow" access="isAuthenticated()" />
+                <security:intercept-url pattern="/generateBroadcastTemplateFlow" access="isAuthenticated()" />
+                <security:intercept-url pattern="/definebroadcasttemplate" access="isAuthenticated()" />
+                <security:intercept-url pattern="/definebcasttempcontent" access="isAuthenticated()" />
+                <security:intercept-url pattern="/newBroadcastTemplate" access="isAuthenticated()" />
+                <security:intercept-url pattern="/defineBcastTemplateContent" access="isAuthenticated()" />
                 <security:intercept-url pattern="/createCamp" access="isAuthenticated()" />
                 <security:intercept-url pattern="/pickCampaignAction" access="isAuthenticated()" />
                 <security:intercept-url pattern="/pickBroadcastAction" access="isAuthenticated()" />
                 <security:intercept-url pattern="/broadcastgenerated" access="isAuthenticated()" />
                 <security:intercept-url pattern="/showbroadcast" access="isAuthenticated()" />
+                <security:intercept-url pattern="/bcasttemptracking" access="isAuthenticated()" />
+                <security:intercept-url pattern="/bcastTempGenerateUrls" access="isAuthenticated()" />
                 <security:intercept-url pattern="/showbroadcasts" access="isAuthenticated()" />
                 <security:intercept-url pattern="/deletedbroadcast" access="isAuthenticated()" />
                 <security:intercept-url pattern="/manageBroadcast" access="isAuthenticated()" />
