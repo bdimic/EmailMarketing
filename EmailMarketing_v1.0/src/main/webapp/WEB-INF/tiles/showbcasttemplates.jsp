@@ -40,45 +40,26 @@
 });    
 </script>
 
-
-                <p><spring:message code="broadcast.campaign.id"/>:
-                <b>${campaign.campaign_id}</b><br/>
-                <spring:message code="broadcast.campaign.name"/>:
-                <b>${campaign.campaign_name}</b></p>
-                <p><spring:message code="broadcast.campaign.start.date"/>:
-                <b>${campaign.campaign_start_date}</b><br/>
-                <spring:message code="broadcast.campaign.end.date"/>:
-                <b>${campaign.campaign_end_date}</b></p>
-                <p><spring:message code="broadcast.campaign.description"/>:
-                <b>${campaign.campaign_description}</b><br/>
-                <spring:message code="broadcast.campaign.status"/>:
-                <b>${campaign.campaign_status}</b><br/>
-                <spring:message code="broadcast.campaign.category"/>:
-                <b>${campcat.category_description}</b></p>
-
-<sf:form method="POST" action="${pageContext.request.contextPath}/pickBroadcastAction" commandName="broadcast">
-<input type="hidden" name="campaign_id" id="campaign_id" value="${campaign.campaign_id}"/>
+<sf:form method="POST" action="${pageContext.request.contextPath}/pickBroadcastTemplateAction" commandName="broadcastTemplate">
 <div class="sadrzaj">   
 <table id="broadcast_table" cellpadding="0" cellspacing="0" border="0"  class="display">
     <thead>
         <tr>
-            <th><spring:message code="broadcast.th.id"/></th>
-            <th><spring:message code="broadcast.th.name"/></th>
-            <th><spring:message code="broadcast.th.status"/></th>
-            <th><spring:message code="broadcast.th.leadsno"/></th>
-            <th><spring:message code="broadcast.th.leadsopen"/></th>
-            <th><spring:message code="broadcast.th.leadsclick"/></th>
+            <th><spring:message code="broadcasttemplate.id"/></th>
+            <th><spring:message code="broadcasttemplate.name"/></th>
+            <th><spring:message code="broadcasttemplate.subject"/></th>
+            <th><spring:message code="broadcasttemplate.creation_dttm"/></th>
+            <th><spring:message code="broadcasttemplate.creation_user"/></th>
         </tr>
     </thead>
     <tbody>
-        <c:forEach var="broadcast" items="${broadcast}">
+        <c:forEach var="broadcastTemplate" items="${broadcastTemplate}">
         <tr>
-            <td>${broadcast.broadcast_id}</td>
-            <td>${broadcast.broadcast_name}</td>
-            <td>${broadcast.status}</td>
-            <td>${broadcast.lead_number}</td>
-            <td>${broadcast.open_number}</td>
-            <td>${broadcast.click_number}</td>
+            <td>${broadcastTemplate.id}</td>
+            <td>${broadcastTemplate.b_template_name}</td>
+            <td>${broadcastTemplate.b_template_subject}</td>
+            <td>${broadcastTemplate.creation_dttm}</td>
+            <td>${broadcastTemplate.creation_user}</td>
         </tr>
         </c:forEach>
     </tbody>

@@ -6,21 +6,14 @@
 
 package com.aquest.emailmarketing.web.controllers;
 
-import com.aquest.emailmarketing.web.dao.Broadcast;
 import com.aquest.emailmarketing.web.dao.BroadcastTemplate;
-import com.aquest.emailmarketing.web.dao.CampaignCategory;
-import com.aquest.emailmarketing.web.dao.Campaigns;
 import com.aquest.emailmarketing.web.dao.EmailConfig;
 import com.aquest.emailmarketing.web.dao.EmbeddedImage;
 import com.aquest.emailmarketing.web.dao.TrackingConfig;
 import com.aquest.emailmarketing.web.dao.Urls;
-import com.aquest.emailmarketing.web.service.BroadcastService;
 import com.aquest.emailmarketing.web.service.BroadcastTemplateService;
-import com.aquest.emailmarketing.web.service.CampaignsService;
 import com.aquest.emailmarketing.web.service.EmailConfigService;
-import com.aquest.emailmarketing.web.service.EmailListService;
 import com.aquest.emailmarketing.web.service.EmbeddedImageService;
-import com.aquest.emailmarketing.web.service.SendEmailService;
 import com.aquest.emailmarketing.web.service.TrackingConfigService;
 import com.aquest.emailmarketing.web.tracking.EmailTrackingService;
 
@@ -29,7 +22,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
+
 import javax.validation.Valid;
 
 import org.jsoup.Jsoup;
@@ -52,35 +46,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class BroadcastTemplateController {
     
-    private BroadcastService broadcastService;
     private BroadcastTemplateService broadcastTemplateService;
-    private CampaignsService campaignsService;
-    private EmailListService emailListService;
-    private SendEmailService sendEmailService;
     private EmailConfigService emailConfigService;
     private EmbeddedImageService embeddedImageService;
     private TrackingConfigService trackingConfigService;
     EmailTrackingService emailTracking = new EmailTrackingService();
 
     @Autowired
-    public void setCampaignsService(CampaignsService campaignsService) {
-        this.campaignsService = campaignsService;
-    }
-    
-    @Autowired
-    public void setBroadcastService(BroadcastService broadcastService) {
-        this.broadcastService = broadcastService;
-    }
-
-    @Autowired
     public void setBroadcastTemplateService(BroadcastTemplateService broadcastTemplateService) {
 		this.broadcastTemplateService = broadcastTemplateService;
 	}
-
-	@Autowired
-    public void setSendEmailService(SendEmailService sendEmailService) {
-    	this.sendEmailService = sendEmailService;
-    }
     
     @Autowired
     public void setEmailConfigService(EmailConfigService emailConfigService) {
@@ -96,11 +71,13 @@ public class BroadcastTemplateController {
     public void setEmbeddedImageService(EmbeddedImageService embeddedImageService) {
     	this.embeddedImageService = embeddedImageService;
     }
-        
-    @Autowired
-    public void setEmailListService(EmailListService emailListService) {
-		this.emailListService = emailListService;
-	}
+    
+    @RequestMapping("/showBroadcastTemplate")
+    public String showBroadcastTemplate(Model model, Principal principal, Locale locale) {
+    	List<BroadcastTemplate> broadcastTemplate = broadcastTemplateService.getAllBroadcasts();
+    	model.addAttribute("broadcastTemplate", broadcastTemplate);
+    	return "showbcasttemplates";
+    }
     
     @RequestMapping(value = "/newBroadcastTemplate")
     public String newBroadcastTemplate(Model model, Principal principal) {
@@ -257,13 +234,13 @@ public class BroadcastTemplateController {
 			@RequestParam(value = "url", required = false) String[] url){
     	
     	System.out.println(url.toString());
-    	Broadcast broadcast = broadcastService.getBroadcastById(id);
-    	System.out.println(broadcast.toString());
-    	String addedTracking = broadcast.getHtmlbody_tracking();
+    	BroadcastTemplate broadcastTemplate = broadcastTemplateService.getBroadcastTemplateById(id);
+    	System.out.println(broadcastTemplate.toString());
+    	String addedTracking = broadcastTemplate.getHtmlbody_tracking();
     	
     	if(url.length > 0) {
 	    	EmbeddedImage embeddedImage = new EmbeddedImage();
-	    	embeddedImage.setBroadcast_id(broadcast.getBroadcast_id());
+	    	embeddedImage.setBcast_template_id(broadcastTemplate.getId());;
 	    	System.out.println(embeddedImage.getBroadcast_id());
 	    	// iz array u string sa ; kao separatorom
 	    	StringBuilder sb = new StringBuilder();
@@ -289,10 +266,9 @@ public class BroadcastTemplateController {
 	    	}
 	    	System.out.println(addedTracking);
     	}
-    	broadcast.setHtmlbody_embed(addedTracking);
-    	broadcast.setStatus("DEFINED");
-		broadcastService.SaveOrUpdate(broadcast);
-		model.addAttribute("broadcast", broadcast);
+    	broadcastTemplate.setHtmlbody_embed(addedTracking);
+		broadcastTemplateService.SaveOrUpdate(broadcastTemplate);
+		model.addAttribute("broadcastTemplate", broadcastTemplate);
     	return "sendbroadcast";
     }
     

@@ -18,19 +18,16 @@ $(document).ready(function () {
 });
 </script>
 <div class="progressbar">
-    	<ol class="progtrckr" data-progtrckr-steps="7">
-    		<li class="progtrckr-done"><spring:message code="flow.create.campaign"/></li><!--
-    		--><li class="progtrckr-done"><spring:message code="flow.create.broadcast"/></li><!-- 
-    		--><li class="progtrckr-done"><spring:message code="flow.define.list"/></li><!-- 
-    		--><li class="progtrckr-done"><spring:message code="flow.add.content"/></li><!-- 
-    		--><li class="progtrckr-done"><spring:message code="flow.add.tracking"/></li><!-- 
-    		--><li class="progtrckr-doing"><spring:message code="flow.embed.images"/></li><!-- 
-    		--><li class="progtrckr-todo"><spring:message code="flow.send.broadcast"/></li>
+    	<ol class="progtrckr" data-progtrckr-steps="4">
+    		<li class="progtrckr-done"><spring:message code="bcasttempflow.create.bcasttemplate"/></li><!--
+    		--><li class="progtrckr-done"><spring:message code="bcasttempflow.add.content"/></li><!-- 
+    		--><li class="progtrckr-done"><spring:message code="bcasttempflow.add.tracking"/></li><!-- 
+    		--><li class="progtrckr-doing"><spring:message code="bcasttempflow.embed.images"/></li>
     	</ol>
 </div>
 <div class="sadrzaj">
-<sf:form method="POST" action="${pageContext.request.contextPath}/embedImages" commandName="embeddedImage">
-<input type="hidden" id="id" name="id" value="${broadcast.id}"/>
+<sf:form method="POST" action="${pageContext.request.contextPath}/bcastTemplateEmbedImages" commandName="embeddedImage">
+<input type="hidden" id="id" name="id" value="${broadcastTemplate.id}"/>
 	<input type="checkbox" id="selectall"><spring:message code="embed.images.selectall"/></input></br>
 	<table>
 		<c:forEach var="imgList" items="${imgList}">

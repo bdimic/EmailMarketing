@@ -25,15 +25,17 @@ public class EmbeddedImage {
     @Column(name = "id")
 	private int id;
     private String broadcast_id;
+    private int bcast_template_id;
     private String url;    
     
 	public EmbeddedImage() {
 
 	}
 	
-	public EmbeddedImage(int id, String broadcast_id, String url) {
+	public EmbeddedImage(int id, String broadcast_id, int bcast_template_id, String url) {
 		this.id = id;
 		this.broadcast_id = broadcast_id;
+		this.bcast_template_id = bcast_template_id;
 		this.url = url;
 	}
 	
@@ -53,6 +55,14 @@ public class EmbeddedImage {
 		this.broadcast_id = broadcast_id;
 	}
 	
+	public int getBcast_template_id() {
+		return bcast_template_id;
+	}
+
+	public void setBcast_template_id(int bcast_template_id) {
+		this.bcast_template_id = bcast_template_id;
+	}
+
 	public String getUrl() {
 		return url;
 	}
@@ -63,7 +73,7 @@ public class EmbeddedImage {
 
 	@Override
 	public String toString() {
-		return "EmbeddedImage [id=" + id + ", broadcast_id=" + broadcast_id
-				+ ", url=" + url +"]";
+		return "EmbeddedImage [id=" + id + ", broadcast_id=" + broadcast_id + ", bcast_template_id=" + bcast_template_id
+				+ ", url=" + url + "]";
 	}
 }

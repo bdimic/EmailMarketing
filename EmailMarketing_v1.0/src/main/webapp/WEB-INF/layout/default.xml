@@ -179,4 +179,12 @@
 		<put-attribute name="title" value="definecontent.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/bcasttemptracking.jsp"></put-attribute>
 	</definition>
+	<definition name="bcasttempembeddedimage" extends="base.definition">
+		<put-attribute name="title" value="definecontent.title"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/bcasttempembeddedimage.jsp"></put-attribute>
+	</definition>
+	<definition name="showbcasttemplates" extends="base.definition">
+		<put-attribute name="title" value="definecontent.title"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/showbcasttemplates.jsp"></put-attribute>
+	</definition>
 </tiles-definitions>

@@ -27,8 +27,9 @@
         </tr>
         <tr>
             <td class="label"><spring:message code="broadcasttemplate.emailprofile"/>:</td>
-            <td><sf:select path="profile_id" name="profile_id">
-                		<sf:option value="0" label="--- Pick Email Profile ---"/>
+            <td><spring:message code="broadcasttemplate.emailprofile.pick" var="emailprofilepick"/>
+            	<sf:select path="profile_id" name="profile_id">
+                		<sf:option value="0" label="${emailprofilepick}"/>
                 		<sf:options items="${emailconfig}" itemValue="profile_id" itemLabel="profile_name"/>
                 	</sf:select></td>
         </tr>
