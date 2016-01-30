@@ -92,6 +92,30 @@ public class BroadcastController {
     public void setEmailListService(EmailListService emailListService) {
 		this.emailListService = emailListService;
 	}
+    
+    @RequestMapping(value = "/generateBroadcastFromTemplate", method = RequestMethod.POST)
+    public String doGenerateFromTemplate(Model model, @Valid @ModelAttribute("broadcast") Broadcast broadcast, Principal principal,
+			 @RequestParam(value = "campaign_id") String campaign_id) {
+    	Timestamp curTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+    	broadcast.setCreation_user(principal.getName());
+        broadcast.setCreation_dttm(curTimestamp);
+        broadcast.setBroadcast_source("BT");
+        broadcast.setStatus("In definition process");
+        broadcast.setCampaign_id(campaign_id);
+        String broadcast_id = broadcastService.getNextBroadcastId();
+        if(broadcast_id.equals("Error")){
+        	return "error";
+        } else {
+        	broadcast.setBroadcast_id(broadcast_id);
+        	// samo privremeno - pronaci kako da se sacuva broadcast objekat a da ima null vrednost na profile_id polju
+        	// koje je setovano kao foreign key. Trenutno je reseno da upise prvi emailConfig.
+        	broadcast.setEmailConfig(emailConfigService.getFirstProfile());
+			String bcast_id = broadcastService.SaveOrUpdate(broadcast);
+        	//model.addAttribute("old_broadcast_id", old_broadcast_id);
+        	model.addAttribute("broadcast",broadcast);
+        	return "definelist";
+        }
+    }
 
 	@RequestMapping(value = "/generateBroadcastFlow", method = RequestMethod.POST)
     public String doGenerate(Model model,@Valid @ModelAttribute("broadcast") Broadcast broadcast,BindingResult result, Principal principal,
@@ -376,13 +400,7 @@ public class BroadcastController {
         }
         
         if(showBroadcast != null) {
-//        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
-//        	model.addAttribute("broadcast", broadcast);
-//        	model.addAttribute("campaign", campaign);
-//        	System.out.println(campaign.getCampaignCategory().getCategory_id());
-//        	CampaignCategory campcat = campaignCategoryService.getCategoryById(campaign.getCampaignCategory().getCategory_id());
-//        	model.addAttribute("campcat", campcat);
-        	
+        	model.addAttribute("broadcast", broadcast);        	
         	return "opencampaign";
         }
                 

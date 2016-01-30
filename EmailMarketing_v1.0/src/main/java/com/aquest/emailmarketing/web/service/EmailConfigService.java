@@ -17,6 +17,11 @@ public class EmailConfigService {
         this.emailConfigDao = emailConfigDao;
     }
     
+    public EmailConfig getFirstProfile() {
+    	List<EmailConfig> emailConfigs = emailConfigDao.getAllProfiles();    	
+    	return emailConfigs.get(0);
+    }
+    
     public List<EmailConfig> getAllProfiles() {
     	List<EmailConfig> emailConfigs = emailConfigDao.getAllProfiles();
     	return emailConfigs;

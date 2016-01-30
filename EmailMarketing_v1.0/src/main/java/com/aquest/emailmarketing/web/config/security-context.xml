@@ -53,6 +53,7 @@
                 <security:intercept-url pattern="/createCamp" access="isAuthenticated()" />
                 <security:intercept-url pattern="/pickCampaignAction" access="isAuthenticated()" />
                 <security:intercept-url pattern="/pickBroadcastAction" access="isAuthenticated()" />
+                <security:intercept-url pattern="/pickbcasttemplate" access="isAuthenticated()" />
                 <security:intercept-url pattern="/broadcastgenerated" access="isAuthenticated()" />
                 <security:intercept-url pattern="/showbroadcast" access="isAuthenticated()" />
                 <security:intercept-url pattern="/bcasttemptracking" access="isAuthenticated()" />
@@ -61,6 +62,7 @@
                 <security:intercept-url pattern="/bcastTemplateEmbedImages" access="isAuthenticated()" />
                 <security:intercept-url pattern="/showbcasttemplates" access="isAuthenticated()" />
                 <security:intercept-url pattern="/showBroadcastTemplate" access="isAuthenticated()" />
+                <security:intercept-url pattern="/generateBroadcastFromTemplate" access="isAuthenticated()" />
                 <security:intercept-url pattern="/showbroadcasts" access="isAuthenticated()" />
                 <security:intercept-url pattern="/deletedbroadcast" access="isAuthenticated()" />
                 <security:intercept-url pattern="/manageBroadcast" access="isAuthenticated()" />

@@ -26,12 +26,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.aquest.emailmarketing.web.dao.Broadcast;
+import com.aquest.emailmarketing.web.dao.BroadcastTemplate;
 import com.aquest.emailmarketing.web.dao.CampaignCategory;
 import com.aquest.emailmarketing.web.dao.Campaigns;
 import com.aquest.emailmarketing.web.dao.EmailConfig;
 import com.aquest.emailmarketing.web.dao.EmailList;
 import com.aquest.emailmarketing.web.service.BouncedEmailService;
 import com.aquest.emailmarketing.web.service.BroadcastService;
+import com.aquest.emailmarketing.web.service.BroadcastTemplateService;
 import com.aquest.emailmarketing.web.service.CampaignCategoryService;
 import com.aquest.emailmarketing.web.service.CampaignsService;
 import com.aquest.emailmarketing.web.service.EmailConfigService;
@@ -49,6 +51,7 @@ public class CampaignsController {
 
     private CampaignsService campaignsService;
     private BroadcastService broadcastService;
+    private BroadcastTemplateService broadcastTemplateService;
     private EmailListService emailListService;
     private EmailConfigService emailConfigService;
     private CampaignCategoryService campaignCategoryService;
@@ -66,11 +69,16 @@ public class CampaignsController {
     }
     
     @Autowired
-    public void setEmailConfigService(EmailConfigService emailConfigService) {
-		this.emailConfigService = emailConfigService;
-	}    
+    public void setBroadcastTemplateService(BroadcastTemplateService broadcastTemplateService) {
+		this.broadcastTemplateService = broadcastTemplateService;
+	}
     
     @Autowired
+    public void setEmailConfigService(EmailConfigService emailConfigService) {
+		this.emailConfigService = emailConfigService;
+	}
+
+	@Autowired
 	public void setCampaignCategoryService(
 			CampaignCategoryService campaignCategoryService) {
 		this.campaignCategoryService = campaignCategoryService;
@@ -132,9 +140,6 @@ public class CampaignsController {
         }
         
         if(deleteCampaign != null) {
-        	// ubaciti logiku koja proverava dali za kampanju za brisanje postoji definisan broadcast. ukoliko postoji
-        	// kampanju moze obrisati samo administrator. ukoliko postoji broadcast koji je u statusu sent nije moguce brisanje
-        	// ni administratoru
         	if(broadcast != null) {
         		int sentBroadcast = 0;
         		for(int i=0; i<broadcast.size();i++) {
@@ -219,7 +224,6 @@ public class CampaignsController {
         	model.addAttribute("emailconfig", emailconfig);
         	return "definebroadcast";
         }
-        
         return "home";
     }
     
@@ -236,6 +240,7 @@ public class CampaignsController {
     public String doCreate(@Valid @ModelAttribute("campaign") Campaigns campaign, BindingResult result, Principal principal, Model model,
     						@RequestParam(value = "saveCampaign", required = false) String saveCampaign,
     						@RequestParam(value = "defineBroadcast", required = false) String defineBroadcast,
+    						@RequestParam(value = "fromBroadcastTemplate", required = false) String fromBroadcastTemplate,
     						@RequestParam(value = "category_id") int category_id) {
     	
     	if(result.hasErrors()) {
@@ -274,6 +279,16 @@ public class CampaignsController {
     			model.addAttribute("broadcast", broadcast);    			
     			return "definebroadcast";
     		}
+    		
+    		if(fromBroadcastTemplate != null) {
+    			model.addAttribute("campaign", campaign);
+    			Broadcast broadcast = new Broadcast();
+    			model.addAttribute("broadcast", broadcast);
+    			List<BroadcastTemplate> broadcastTemplate = broadcastTemplateService.getAllBroadcasts();
+    			model.addAttribute("broadcastTemplate", broadcastTemplate);
+    			return "pickbcasttemplate";
+    		}
+    		
     			return "error";
     	} else {
     		// this is for changing campaign

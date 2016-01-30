@@ -61,7 +61,8 @@
             </tr>
             <tr>
                 <td><input type="submit" name="saveCampaign" value="<spring:message code="campaign.button.saveasdraft"/>" id="saveCampaign" /></td>
-                <td class="label"><input type="submit" name="defineBroadcast" value="<spring:message code="campaign.button.definebroadcast"/>" id="defineBroadcast"/></td>
+                <td class="label"><input type="submit" name="defineBroadcast" value="<spring:message code="campaign.button.definebroadcast"/>" id="defineBroadcast"/>
+                					<input type="submit" name="fromBroadcastTemplate" value="<spring:message code="campaign.button.frombroadcasttemplate"/>" id="fromBroadcastTemplate"/></td>
             </tr>
         </table>
     </div>

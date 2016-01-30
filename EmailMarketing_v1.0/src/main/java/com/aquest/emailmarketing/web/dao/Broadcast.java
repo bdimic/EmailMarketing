@@ -9,6 +9,7 @@ package com.aquest.emailmarketing.web.dao;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +18,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  *
@@ -35,6 +39,7 @@ public class Broadcast implements Serializable {
 	private int id;
     private String broadcast_id;
     private String broadcast_source;
+    private Integer bcast_template_id;
     private String broadcast_name;    
     private String campaign_id;
     private String subject;
@@ -63,10 +68,11 @@ public class Broadcast implements Serializable {
     	this.emailConfig = new EmailConfig();
     }
 
-    public Broadcast(EmailConfig emailConfig, int id, String broadcast_id, String broadcast_name, String campaign_id, String subject, String baseurl, String htmlbody, String htmlbody_tracking, String htmlbody_embed, String plaintext, String status, Timestamp creation_dttm, String creation_user, Timestamp last_change_dttm, String last_change_user, Timestamp execution_dttm, String execution_user) {
+    public Broadcast(EmailConfig emailConfig, int id, String broadcast_id, String broadcast_name, Integer bcast_template_id, String campaign_id, String subject, String baseurl, String htmlbody, String htmlbody_tracking, String htmlbody_embed, String plaintext, String status, Timestamp creation_dttm, String creation_user, Timestamp last_change_dttm, String last_change_user, Timestamp execution_dttm, String execution_user) {
         this.emailConfig = emailConfig;
         this.id = id;
     	this.broadcast_id = broadcast_id;
+    	this.bcast_template_id = bcast_template_id;
         this.broadcast_name = broadcast_name;
         this.campaign_id = campaign_id;
         this.subject = subject;
@@ -105,6 +111,14 @@ public class Broadcast implements Serializable {
 
 	public void setBroadcast_source(String broadcast_source) {
 		this.broadcast_source = broadcast_source;
+	}
+
+	public Integer getBcast_template_id() {
+		return bcast_template_id;
+	}
+
+	public void setBcast_template_id(Integer bcast_template_id) {
+		this.bcast_template_id = bcast_template_id;
 	}
 
 	public String getBroadcast_name() {
@@ -229,7 +243,7 @@ public class Broadcast implements Serializable {
 	
 	public int getProfile_id() {
 		return emailConfig.getProfile_id();
-	}	
+	}
 
 	public int getLead_number() {
 		return lead_number;
