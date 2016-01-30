@@ -112,6 +112,8 @@ public class BroadcastController {
         	broadcast.setEmailConfig(emailConfigService.getFirstProfile());
 			String bcast_id = broadcastService.SaveOrUpdate(broadcast);
         	//model.addAttribute("old_broadcast_id", old_broadcast_id);
+			String message = "template";
+			model.addAttribute("message", message);
         	model.addAttribute("broadcast",broadcast);
         	return "definelist";
         }

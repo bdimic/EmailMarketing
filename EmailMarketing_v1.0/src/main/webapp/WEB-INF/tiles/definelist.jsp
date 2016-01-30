@@ -5,17 +5,33 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<div class="progressbar">
-    	<ol class="progtrckr" data-progtrckr-steps="7">
-    		<li class="progtrckr-done"><spring:message code="flow.create.campaign"/></li><!--
-    		--><li class="progtrckr-done"><spring:message code="flow.create.broadcast"/></li><!-- 
-    		--><li class="progtrckr-doing"><spring:message code="flow.define.list"/></li><!-- 
-    		--><li class="progtrckr-todo"><spring:message code="flow.add.content"/></li><!-- 
-    		--><li class="progtrckr-todo"><spring:message code="flow.add.tracking"/></li><!-- 
-    		--><li class="progtrckr-todo"><spring:message code="flow.embed.images"/></li><!-- 
-    		--><li class="progtrckr-todo"><spring:message code="flow.send.broadcast"/></li>
-    	</ol>
-</div>
+<c:choose>
+	<c:when test='${message == "template"}'>
+		<div class="progressbar">
+    		<ol class="progtrckr" data-progtrckr-steps="4">
+    			<li class="progtrckr-done"><spring:message code="flow.create.campaign"/></li><!--
+    			--><li class="progtrckr-done"><spring:message code="flow.pick.broadcasttemplate"/></li><!-- 
+    			--><li class="progtrckr-doing"><spring:message code="flow.define.list"/></li><!-- 
+    			--><li class="progtrckr-todo"><spring:message code="flow.send.broadcast"/></li>
+    		</ol>
+    	</div> 
+	</c:when>
+	<c:otherwise>
+		<div class="progressbar">
+    		<ol class="progtrckr" data-progtrckr-steps="7">
+    			<li class="progtrckr-done"><spring:message code="flow.create.campaign"/></li><!--
+    			--><li class="progtrckr-done"><spring:message code="flow.create.broadcast"/></li><!-- 
+    			--><li class="progtrckr-doing"><spring:message code="flow.define.list"/></li><!-- 
+    			--><li class="progtrckr-todo"><spring:message code="flow.add.content"/></li><!-- 
+    			--><li class="progtrckr-todo"><spring:message code="flow.add.tracking"/></li><!-- 
+    			--><li class="progtrckr-todo"><spring:message code="flow.embed.images"/></li><!-- 
+    			--><li class="progtrckr-todo"><spring:message code="flow.send.broadcast"/></li>
+    		</ol>
+		</div>
+	</c:otherwise>
+</c:choose>
+
+
 <form method="POST" action="${pageContext.request.contextPath}/importList" enctype="multipart/form-data">
 <input type="hidden" id="broadcast_id" name="broadcast_id" value="${broadcast.broadcast_id}"/>
 <input type="hidden" id="old_broadcast_id" name="old_broadcast_id" value="${old_broadcast_id}" />
