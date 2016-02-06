@@ -18,21 +18,34 @@ import com.aquest.emailmarketing.web.dao.Broadcast;
 import com.aquest.emailmarketing.web.dao.Campaigns;
 import com.aquest.emailmarketing.web.dao.EmailList;
 
+// TODO: Auto-generated Javadoc
 /**
- *
- * @author bdimic
+ * The Class ProcessVariableService.
  */
 @Service("processVariableService")
 public class ProcessVariableService {
 	
+	/** The campaigns service. */
 	private CampaignsService campaignsService;
+	
+	/** The broadcast service. */
 	private BroadcastService broadcastService;
 	
+	/**
+	 * Sets the campaigns service.
+	 *
+	 * @param campaignsService the new campaigns service
+	 */
 	@Autowired
     public void setCampaignsService(CampaignsService campaignsService) {
 		this.campaignsService = campaignsService;
 	}
     
+	/**
+	 * Sets the broadcast service.
+	 *
+	 * @param broadcastService the new broadcast service
+	 */
 	@Autowired
 	public void setBroadcastService(BroadcastService broadcastService) {
 		this.broadcastService = broadcastService;
@@ -40,6 +53,12 @@ public class ProcessVariableService {
 
 
 
+	/**
+	 * Process variable.
+	 *
+	 * @param emailList the email list
+	 * @return the hash map
+	 */
 	public HashMap<String, String> ProcessVariable(EmailList emailList) {
 		
 		Broadcast broadcast = broadcastService.getBroadcast(emailList.getBroadcast_id());

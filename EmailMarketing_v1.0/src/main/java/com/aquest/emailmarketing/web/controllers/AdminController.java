@@ -29,36 +29,74 @@ import com.aquest.emailmarketing.web.service.GaConfigService;
 import com.aquest.emailmarketing.web.service.GoogleAnalyticsService;
 import com.aquest.emailmarketing.web.service.UsersService;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AdminController.
+ */
 @Controller
 public class AdminController {
 	
+	/** The users service. */
 	private UsersService usersService;
+	
+	/** The email config service. */
 	private EmailConfigService emailConfigService;
+	
+	/** The ga config service. */
 	private GaConfigService gaConfigService;
+	
+	/** The google analytics service. */
 	private GoogleAnalyticsService googleAnalyticsService;
 	
+	/** The file path. */
 	private final String filePath = "C:\\Users\\bdimic\\Documents";
 	
+	/**
+	 * Sets the users service.
+	 *
+	 * @param usersService the new users service
+	 */
 	@Autowired
 	public void setUsersService(UsersService usersService) {
 		this.usersService = usersService;
 	}
 	
+	/**
+	 * Sets the email config service.
+	 *
+	 * @param emailConfigService the new email config service
+	 */
 	@Autowired
 	public void setEmailConfigService(EmailConfigService emailConfigService) {
 		this.emailConfigService = emailConfigService;
 	}
 	
+	/**
+	 * Sets the ga config service.
+	 *
+	 * @param gaConfigService the new ga config service
+	 */
 	@Autowired
 	public void setGaConfigService(GaConfigService gaConfigService) {
 		this.gaConfigService = gaConfigService;
 	}
 	
+	/**
+	 * Sets the google analytics service.
+	 *
+	 * @param googleAnalyticsService the new google analytics service
+	 */
 	@Autowired
 	public void setGoogleAnalyticsService(GoogleAnalyticsService googleAnalyticsService) {
 		this.googleAnalyticsService = googleAnalyticsService;
 	}
 
+	/**
+	 * Show admin.
+	 *
+	 * @param model the model
+	 * @return the string
+	 */
 	@RequestMapping("/admin")
 	public String showAdmin(Model model) {
 		
@@ -69,6 +107,12 @@ public class AdminController {
 		return "admin";
 	}
 	
+	/**
+	 * Show users.
+	 *
+	 * @param model the model
+	 * @return the string
+	 */
 	@RequestMapping("/usermanagement")
 	public String showUsers(Model model) {
 		
@@ -79,6 +123,12 @@ public class AdminController {
 		return "usermanagement";
 	}
 	
+	/**
+	 * Show all email config.
+	 *
+	 * @param model the model
+	 * @return the string
+	 */
 	@RequestMapping("/emailconfig")
 	public String showAllEmailConfig(Model model) {
 		
@@ -89,6 +139,18 @@ public class AdminController {
 		return "emailconfig";
 	}
 	
+	/**
+	 * Show email config.
+	 *
+	 * @param model the model
+	 * @param createProfile the create profile
+	 * @param editProfile the edit profile
+	 * @param deleteProfile the delete profile
+	 * @param id the id
+	 * @param principal the principal
+	 * @param request the request
+	 * @return the string
+	 */
 	@RequestMapping("/emailconfiguration")
 	public String showEmailConfig(Model model,
 			@RequestParam(value = "createProfile", required = false) String createProfile,
@@ -122,6 +184,14 @@ public class AdminController {
 		return "emailconfig";
 	}
 	
+	/**
+	 * Save config.
+	 *
+	 * @param emailConfig the email config
+	 * @param result the result
+	 * @param model the model
+	 * @return the string
+	 */
 	@RequestMapping(value="/saveEmailConfig", method = RequestMethod.POST)
 	public String saveConfig(@Valid @ModelAttribute("emailConfig") EmailConfig emailConfig, BindingResult result, Model model) {
 		if(result.hasErrors()) {
@@ -135,6 +205,14 @@ public class AdminController {
 		return "emailconfig";
 	}
 	
+	/**
+	 * Show ga config.
+	 *
+	 * @param model the model
+	 * @param principal the principal
+	 * @param request the request
+	 * @return the string
+	 */
 	@RequestMapping("/gaconfiguration")
 	public String showGaConfig(Model model,
     		Principal principal, HttpServletRequest request) {
@@ -147,6 +225,14 @@ public class AdminController {
 		return "gaconfiguration";
 	}
 	
+	/**
+	 * Save ga config.
+	 *
+	 * @param model the model
+	 * @param request the request
+	 * @return the string
+	 * @throws Exception the exception
+	 */
 	@RequestMapping(value="/saveGaConfig", method = RequestMethod.POST)
 	public String saveGaConfig(Model model, HttpServletRequest request) throws Exception {
 		

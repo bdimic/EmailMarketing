@@ -18,21 +18,33 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+// TODO: Auto-generated Javadoc
 /**
- *
- * @author bdimic
+ * The Class CampaignsDao.
  */
 @Repository
 @Transactional
 @Component("campaignsDao")
 public class CampaignsDao {
+    
+    /** The session factory. */
     @Autowired
     private SessionFactory sessionFactory;
     
+    /**
+     * Session.
+     *
+     * @return the session
+     */
     public Session session() {
 		return sessionFactory.getCurrentSession();
     }
     
+    /**
+     * Gets the campaigns.
+     *
+     * @return the campaigns
+     */
     public List<Campaigns> getCampaigns() {
         Criteria crit = session().createCriteria(Campaigns.class);
         //DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -44,6 +56,11 @@ public class CampaignsDao {
         return crit.list();
     }
     
+    /**
+     * Gets the next campaign id.
+     *
+     * @return the next campaign id
+     */
     public String getNextCampaignId() {
     	int campaignid = 1000000;
     	try {
@@ -63,6 +80,12 @@ public class CampaignsDao {
     	return "Error";
     }
     
+    /**
+     * Gets the campaign.
+     *
+     * @param campaign_id the campaign_id
+     * @return the campaign
+     */
     public Campaigns getCampaign(String campaign_id) {
         Criteria crit = session().createCriteria(Campaigns.class);
         crit.add(Restrictions.eq("campaign_id", campaign_id));
@@ -70,11 +93,23 @@ public class CampaignsDao {
         return (Campaigns)crit.uniqueResult();
     }
     
+    /**
+     * Save or update.
+     *
+     * @param campaigns the campaigns
+     * @return the string
+     */
     public String saveOrUpdate(Campaigns campaigns) {
     	session().saveOrUpdate(campaigns);
             return String.valueOf(campaigns.getCampaign_id());
     }
     
+    /**
+     * Delete.
+     *
+     * @param campaign_id the campaign_id
+     * @return true, if successful
+     */
     public boolean delete(String campaign_id) {
         Query query = session().createQuery("delete Campaigns c where c.campaign_id=:id");
         query.setParameter("id", campaign_id);

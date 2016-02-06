@@ -18,17 +18,24 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+// TODO: Auto-generated Javadoc
 /**
- *
- * @author bdimic
+ * The Class GaConfigDao.
  */
 @Repository
 @Transactional
 @Component("gaConfigDao")
 public class GaConfigDao {
+    
+    /** The session factory. */
     @Autowired
     private SessionFactory sessionFactory;
     
+    /**
+     * Session.
+     *
+     * @return the session
+     */
     public Session session() {
 		return sessionFactory.getCurrentSession();
     }
@@ -38,11 +45,22 @@ public class GaConfigDao {
 //        return crit.list();
 //    }
         
-    public GaConfig getGaConfig() {
+    /**
+ * Gets the ga config.
+ *
+ * @return the ga config
+ */
+public GaConfig getGaConfig() {
         Criteria crit = session().createCriteria(GaConfig.class);
         return (GaConfig)crit.uniqueResult();
     }
     
+    /**
+     * Save or update.
+     *
+     * @param gaConfig the ga config
+     * @return the string
+     */
     public String saveOrUpdate(GaConfig gaConfig) {
 	session().saveOrUpdate(gaConfig);
         return String.valueOf(gaConfig.getId());

@@ -19,27 +19,55 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+// TODO: Auto-generated Javadoc
 /**
- *
- * @author bdimic
+ * The Class EmailListService.
  */
 @Service("emailListService")
 public class EmailListService {
+    
+    /** The email list dao. */
     private EmailListDao emailListDao;
 
+    /**
+     * Sets the email list dao.
+     *
+     * @param emailListDao the new email list dao
+     */
     @Autowired
     public void setEmailListDao(EmailListDao emailListDao) {
         this.emailListDao = emailListDao;
     }
     
+    /**
+     * Gets the all email list.
+     *
+     * @param broadcast_id the broadcast_id
+     * @return the all email list
+     */
     public List<EmailList> getAllEmailList(String broadcast_id) {
     	return emailListDao.getAllEmailList(broadcast_id);
     }
     
+    /**
+     * Gets the email list by id.
+     *
+     * @param id the id
+     * @return the email list by id
+     */
     public EmailList getEmailListById(String id) {
     	return emailListDao.getEmailListById(id);
     }
 
+    /**
+     * Import emailfrom file.
+     *
+     * @param filename the filename
+     * @param separator the separator
+     * @param broadcast_id the broadcast_id
+     * @return the list
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     public List<EmailList> importEmailfromFile(InputStream filename, String separator, String broadcast_id) throws IOException {
     	CSVReader reader = new CSVReader(new InputStreamReader(filename), separator.charAt(0));
         boolean isFirstLine = true;
@@ -119,10 +147,20 @@ public class EmailListService {
         return eList;
     }
     
+    /**
+     * Save or update.
+     *
+     * @param emailList the email list
+     */
     public void SaveOrUpdate(EmailList emailList) {
     	emailListDao.saveOrUpdate(emailList);
     }
     
+    /**
+     * Delete.
+     *
+     * @param id the id
+     */
     public void delete(String id) {
     	emailListDao.delete(id);
     }

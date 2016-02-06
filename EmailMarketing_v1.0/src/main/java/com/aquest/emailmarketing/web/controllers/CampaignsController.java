@@ -40,65 +40,129 @@ import com.aquest.emailmarketing.web.service.EmailConfigService;
 import com.aquest.emailmarketing.web.service.EmailListService;
 import com.aquest.emailmarketing.web.service.TrackingResponseService;
 
+// TODO: Auto-generated Javadoc
 /**
- *
- * @author bdimic
+ * The Class CampaignsController.
  */
 @Controller
 public class CampaignsController {
 	
+	/** The Constant logger. */
 	final static Logger logger = Logger.getLogger(com.aquest.emailmarketing.web.controllers.CampaignsController.class);
 
+    /** The campaigns service. */
     private CampaignsService campaignsService;
+    
+    /** The broadcast service. */
     private BroadcastService broadcastService;
+    
+    /** The broadcast template service. */
     private BroadcastTemplateService broadcastTemplateService;
+    
+    /** The email list service. */
     private EmailListService emailListService;
+    
+    /** The email config service. */
     private EmailConfigService emailConfigService;
+    
+    /** The campaign category service. */
     private CampaignCategoryService campaignCategoryService;
+    
+    /** The tracking response service. */
     private TrackingResponseService trackingResponseService;
+    
+    /** The bounced email service. */
     private BouncedEmailService bouncedEmailService;
     
+    /**
+     * Sets the campaigns service.
+     *
+     * @param campaignsService the new campaigns service
+     */
     @Autowired
     public void setCampaignsService(CampaignsService campaignsService) {
         this.campaignsService = campaignsService;
     }
     
+    /**
+     * Sets the broadcast service.
+     *
+     * @param broadcastService the new broadcast service
+     */
     @Autowired
     public void setBroadcastService(BroadcastService broadcastService) {
         this.broadcastService = broadcastService;
     }
     
+    /**
+     * Sets the broadcast template service.
+     *
+     * @param broadcastTemplateService the new broadcast template service
+     */
     @Autowired
     public void setBroadcastTemplateService(BroadcastTemplateService broadcastTemplateService) {
 		this.broadcastTemplateService = broadcastTemplateService;
 	}
     
+    /**
+     * Sets the email config service.
+     *
+     * @param emailConfigService the new email config service
+     */
     @Autowired
     public void setEmailConfigService(EmailConfigService emailConfigService) {
 		this.emailConfigService = emailConfigService;
 	}
 
+	/**
+	 * Sets the campaign category service.
+	 *
+	 * @param campaignCategoryService the new campaign category service
+	 */
 	@Autowired
 	public void setCampaignCategoryService(
 			CampaignCategoryService campaignCategoryService) {
 		this.campaignCategoryService = campaignCategoryService;
 	}
         
+    /**
+     * Sets the email list service.
+     *
+     * @param emailListService the new email list service
+     */
     @Autowired
 	public void setEmailListService(EmailListService emailListService) {
 		this.emailListService = emailListService;
 	}    
     
+    /**
+     * Sets the tracking response service.
+     *
+     * @param trackingResponseService the new tracking response service
+     */
     @Autowired
 	public void setTrackingResponseService(TrackingResponseService trackingResponseService) {
 		this.trackingResponseService = trackingResponseService;
 	}    
     
+    /**
+     * Sets the bounced email service.
+     *
+     * @param bouncedEmailService the new bounced email service
+     */
     @Autowired
 	public void setBouncedEmailService(BouncedEmailService bouncedEmailService) {
 		this.bouncedEmailService = bouncedEmailService;
 	}
 
+	/**
+	 * Show home.
+	 *
+	 * @param model the model
+	 * @param principal the principal
+	 * @param locale the locale
+	 * @return the string
+	 */
 	@RequestMapping("/")
     public String showHome(Model model, Principal principal, Locale locale) {
         String username = principal.getName();        
@@ -112,12 +176,32 @@ public class CampaignsController {
         return "home";
     }
 	
+	/**
+	 * Test.
+	 *
+	 * @return the string
+	 */
 	@RequestMapping(value="/test")
 	public String test() {
 		bouncedEmailService.processAllBounces();
 		return "test";
 	}
     
+    /**
+     * Creates the new campaign.
+     *
+     * @param model the model
+     * @param createCampaign the create campaign
+     * @param deleteCampaign the delete campaign
+     * @param editCampaign the edit campaign
+     * @param openCampaign the open campaign
+     * @param closeCampaign the close campaign
+     * @param createBroadcast the create broadcast
+     * @param campaign_id the campaign_id
+     * @param principal the principal
+     * @param request the request
+     * @return the string
+     */
     @RequestMapping(value="/pickCampaignAction", method = RequestMethod.POST)
     public String createNewCampaign(Model model, 
     		@RequestParam(value = "createCampaign", required = false) String createCampaign,
@@ -227,6 +311,13 @@ public class CampaignsController {
         return "home";
     }
     
+    /**
+     * Show create.
+     *
+     * @param model the model
+     * @param principal the principal
+     * @return the string
+     */
     @RequestMapping(value = "/createCamp")
     public String showCreate(Model model, Principal principal) {
     	List<CampaignCategory> campcat = campaignCategoryService.getCategories();
@@ -236,6 +327,19 @@ public class CampaignsController {
     	return "createcampaign";
     }
     
+    /**
+     * Do create.
+     *
+     * @param campaign the campaign
+     * @param result the result
+     * @param principal the principal
+     * @param model the model
+     * @param saveCampaign the save campaign
+     * @param defineBroadcast the define broadcast
+     * @param fromBroadcastTemplate the from broadcast template
+     * @param category_id the category_id
+     * @return the string
+     */
     @RequestMapping(value = "/createCampaign", method = RequestMethod.POST)
     public String doCreate(@Valid @ModelAttribute("campaign") Campaigns campaign, BindingResult result, Principal principal, Model model,
     						@RequestParam(value = "saveCampaign", required = false) String saveCampaign,

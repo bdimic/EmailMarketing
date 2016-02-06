@@ -18,27 +18,46 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+// TODO: Auto-generated Javadoc
 /**
- *
- * @author bdimic
+ * The Class EmailListDao.
  */
 @Repository
 @Transactional
 @Component("emailListDao")
 public class EmailListDao {
+    
+    /** The session factory. */
     @Autowired
     private SessionFactory sessionFactory;
     
+    /**
+     * Session.
+     *
+     * @return the session
+     */
     public Session session() {
 		return sessionFactory.getCurrentSession();
     }
     
+    /**
+     * Gets the all email list.
+     *
+     * @param broadcast_id the broadcast_id
+     * @return the all email list
+     */
     public List<EmailList> getAllEmailList(String broadcast_id) {
         Criteria crit = session().createCriteria(EmailList.class);
         crit.add(Restrictions.eq("broadcast_id", broadcast_id));
         return crit.list();
     }
     
+    /**
+     * Gets the email list by id.
+     *
+     * @param id the id
+     * @return the email list by id
+     */
     public EmailList getEmailListById(String id) {
     	Criteria crit = session().createCriteria(EmailList.class);
     	long b_id = Long.parseLong(id);
@@ -46,11 +65,23 @@ public class EmailListDao {
         return (EmailList)crit.uniqueResult();
     }
     
+    /**
+     * Save or update.
+     *
+     * @param emailList the email list
+     * @return the string
+     */
     public String saveOrUpdate(EmailList emailList) {
 	session().saveOrUpdate(emailList);
         return String.valueOf(emailList.getId());
     }
     
+    /**
+     * Delete.
+     *
+     * @param id the id
+     * @return true, if successful
+     */
     public boolean delete(String id) {
         long b_id = Long.parseLong(id);
         Query query = session().createQuery("delete EmailList e where b.id=:id");

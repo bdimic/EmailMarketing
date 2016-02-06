@@ -36,33 +36,69 @@ import com.google.api.services.analytics.model.Webproperties;
 
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GoogleAnalyticsService.
+ */
 @Service("googleAnalyticsService")
 public class GoogleAnalyticsService {
 	
+	/** The Constant logger. */
 	final static Logger logger = Logger.getLogger(com.aquest.emailmarketing.web.service.GoogleAnalyticsService.class);
 	
+	/** The Constant HTTP_TRANSPORT. */
 	private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
+	
+	/** The Constant JSON_FACTORY. */
 	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 	
+	/** The ga config service. */
 	private GaConfigService gaConfigService;
+	
+	/** The tracking response sevice. */
 	private TrackingResponseService trackingResponseSevice;
+	
+	/** The email list service. */
 	private EmailListService emailListService;
 	
+	/**
+	 * Sets the ga config service.
+	 *
+	 * @param gaConfigService the new ga config service
+	 */
 	@Autowired	
 	public void setGaConfigService(GaConfigService gaConfigService) {
 		this.gaConfigService = gaConfigService;
 	}
 	
+	/**
+	 * Sets the tracking response sevice.
+	 *
+	 * @param trackingResponseSevice the new tracking response sevice
+	 */
 	@Autowired
 	public void setTrackingResponseSevice(TrackingResponseService trackingResponseSevice) {
 		this.trackingResponseSevice = trackingResponseSevice;
 	}
 	
+	/**
+	 * Sets the email list service.
+	 *
+	 * @param emailListService the new email list service
+	 */
 	@Autowired
 	public void setEmailListService(EmailListService emailListService) {
 		this.emailListService = emailListService;
 	}
 
+	/**
+	 * Check ga config.
+	 *
+	 * @param applicationName the application name
+	 * @param apiEmail the api email
+	 * @param KeyFileLocation the key file location
+	 * @return the map
+	 */
 	public Map<String, String> checkGaConfig(String applicationName, String apiEmail, String KeyFileLocation) {
 		 Map<String, String> result = new HashMap<String, String>();
 		
@@ -104,6 +140,13 @@ public class GoogleAnalyticsService {
 		return result;
 	}
 	
+	/**
+	 * Gets the first profile id.
+	 *
+	 * @param analytics the analytics
+	 * @return the first profile id
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public String getFirstProfileId(Analytics analytics) throws IOException {
 	    String profileId = null;
 
@@ -138,6 +181,12 @@ public class GoogleAnalyticsService {
 	    return profileId;
 	}
 	
+	/**
+	 * Gets the ga click responses.
+	 *
+	 * @return the ga click responses
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void getGaClickResponses() throws IOException {
 		GaConfig gaConfig = gaConfigService.getGaConfig();
 		
@@ -216,6 +265,12 @@ public class GoogleAnalyticsService {
 	     }
 	}
 	
+	/**
+	 * Gets the ga open responses.
+	 *
+	 * @return the ga open responses
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void getGaOpenResponses() throws IOException {
 		GaConfig gaConfig = gaConfigService.getGaConfig();
 		
@@ -292,6 +347,11 @@ public class GoogleAnalyticsService {
 	     }
 	}
 	
+	/**
+	 * Gets the ga responses.
+	 *
+	 * @return the ga responses
+	 */
 	public void getGaResponses() {
 		try {
 			getGaOpenResponses();

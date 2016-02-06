@@ -15,6 +15,33 @@
   });
 });    
 </script>
+
+<c:choose>
+	<c:when test='${message == "template"}'>
+		<div class="progressbar">
+    		<ol class="progtrckr" data-progtrckr-steps="4">
+    			<li class="progtrckr-done"><spring:message code="flow.create.campaign"/></li><!--
+    			--><li class="progtrckr-done"><spring:message code="flow.pick.broadcasttemplate"/></li><!-- 
+    			--><li class="progtrckr-doing"><spring:message code="flow.define.list"/></li><!-- 
+    			--><li class="progtrckr-todo"><spring:message code="flow.send.broadcast"/></li>
+    		</ol>
+    	</div> 
+	</c:when>
+	<c:otherwise>
+		<div class="progressbar">
+    		<ol class="progtrckr" data-progtrckr-steps="7">
+    			<li class="progtrckr-done"><spring:message code="flow.create.campaign"/></li><!--
+    			--><li class="progtrckr-done"><spring:message code="flow.create.broadcast"/></li><!-- 
+    			--><li class="progtrckr-doing"><spring:message code="flow.define.list"/></li><!-- 
+    			--><li class="progtrckr-todo"><spring:message code="flow.add.content"/></li><!-- 
+    			--><li class="progtrckr-todo"><spring:message code="flow.add.tracking"/></li><!-- 
+    			--><li class="progtrckr-todo"><spring:message code="flow.embed.images"/></li><!-- 
+    			--><li class="progtrckr-todo"><spring:message code="flow.send.broadcast"/></li>
+    		</ol>
+		</div>
+	</c:otherwise>
+</c:choose>
+
 <spring:message code="eList.number.email.exported" /> ${importCount}<br/>
 <sf:form method="POST" action="${pageContext.request.contextPath}/importListReport" modelAttribute="emailListForm">
 <div class="sadrzaj">

@@ -34,36 +34,75 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+// TODO: Auto-generated Javadoc
 /**
- *
- * @author bdimic
+ * The Class TrackingController.
  */
 @Controller
 public class TrackingController {
 	
+	/** The tracking response service. */
 	private TrackingResponseService trackingResponseService;
+	
+	/** The email list service. */
 	private EmailListService emailListService;
+	
+	/** The google analytics service. */
 	private GoogleAnalyticsService googleAnalyticsService;
 	
+	/**
+	 * Sets the tracking response service.
+	 *
+	 * @param trackingResponseService the new tracking response service
+	 */
 	@Autowired
     public void setTrackingResponseService(TrackingResponseService trackingResponseService) {
 		this.trackingResponseService = trackingResponseService;
 	}
 	
+	/**
+	 * Sets the email list service.
+	 *
+	 * @param emailListService the new email list service
+	 */
 	@Autowired
     public void setEmailListService(EmailListService emailListService) {
 		this.emailListService = emailListService;
 	}
 	
+	/**
+	 * Sets the broadcast service.
+	 *
+	 * @param broadcastService the new broadcast service
+	 */
 	@Autowired
     public void setBroadcastService(BroadcastService broadcastService) {
 	}	
 	
+	/**
+	 * Sets the google analytics service.
+	 *
+	 * @param googleAnalyticsService the new google analytics service
+	 */
 	@Autowired
 	public void setGoogleAnalyticsService(GoogleAnalyticsService googleAnalyticsService) {
 		this.googleAnalyticsService = googleAnalyticsService;
 	}
 
+	/**
+	 * Gets the image.
+	 *
+	 * @param request the request
+	 * @param response the response
+	 * @param trackingId the tracking id
+	 * @return the image
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws FileNotFoundException the file not found exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws TransformerException the transformer exception
+	 * @throws ServletException the servlet exception
+	 * @throws FileUploadException the file upload exception
+	 */
 	@RequestMapping(value="/openTrack", method = RequestMethod.GET)        
 	public void getImage(HttpServletRequest request, HttpServletResponse response, @RequestParam("trackingId") String trackingId) throws IOException, FileNotFoundException, ParserConfigurationException, TransformerException, ServletException, FileUploadException {
 		BufferedImage pixel;
@@ -92,6 +131,15 @@ public class TrackingController {
 	    System.out.println("Neko je pristupio!!!");
 	}
 	
+	/**
+	 * Gets the tracking link.
+	 *
+	 * @param request the request
+	 * @param response the response
+	 * @param id the id
+	 * @return the tracking link
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@RequestMapping(value="/tracking", method = RequestMethod.GET)
 	public void getTrackingLink(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") String id) throws IOException {
 		Base64 base64 = new Base64(true);
@@ -116,6 +164,12 @@ public class TrackingController {
 		trackingResponseService.SaveOrUpdate(trackingResponse);
 	}
 	
+	/**
+	 * Gets the ga responses.
+	 *
+	 * @return the ga responses
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@RequestMapping("/garesponse")
 	public void getGaResponses() throws IOException {
 		googleAnalyticsService.getGaClickResponses();

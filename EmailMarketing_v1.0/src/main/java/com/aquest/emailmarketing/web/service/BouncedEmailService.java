@@ -34,48 +34,98 @@ import com.aquest.emailmarketing.web.dao.BouncedEmail;
 import com.aquest.emailmarketing.web.dao.BouncedEmailDao;
 import com.aquest.emailmarketing.web.dao.EmailConfig;
 
+// TODO: Auto-generated Javadoc
 /**
- *
- * @author bdimic
+ * The Class BouncedEmailService.
  */
 @Service("bouncedEmailService")
 public class BouncedEmailService {
 	
+	/** The bounced email dao. */
 	private BouncedEmailDao bouncedEmailDao;
+	
+	/** The bounce code service. */
 	private BounceCodeService bounceCodeService;
+	
+	/** The email config service. */
 	private EmailConfigService emailConfigService;
 
+	/**
+	 * Sets the bounced email dao.
+	 *
+	 * @param bouncedEmailDao the new bounced email dao
+	 */
 	@Autowired
 	public void setBouncedEmailDao(BouncedEmailDao bouncedEmailDao) {
 		this.bouncedEmailDao = bouncedEmailDao;
 	}
 	
+	/**
+	 * Sets the bounce code service.
+	 *
+	 * @param bounceCodeService the new bounce code service
+	 */
 	@Autowired
 	public void setBounceCodeService(BounceCodeService bounceCodeService) {
 		this.bounceCodeService = bounceCodeService;
 	}
 
+	/**
+	 * Sets the email config service.
+	 *
+	 * @param emailConfigService the new email config service
+	 */
 	@Autowired
 	public void setEmailConfigService(EmailConfigService emailConfigService) {
 		this.emailConfigService = emailConfigService;
 	}
 
+	/**
+	 * Gets the all bounced emails.
+	 *
+	 * @return the all bounced emails
+	 */
 	public List<BouncedEmail> getAllBouncedEmails() {
 		return bouncedEmailDao.getAllBouncedEmails();
 	}	
 
+	/**
+	 * Checks if is bouncedget bounced email.
+	 *
+	 * @param email_address the email_address
+	 * @return the list
+	 */
 	public List<BouncedEmail> isBouncedgetBouncedEmail(String email_address) {
 		return bouncedEmailDao.isBouncedgetBouncedEmail(email_address);
 	}
 	
+	/**
+	 * Save or update.
+	 *
+	 * @param bouncedEmail the bounced email
+	 */
 	public void saveOrUpdate(BouncedEmail bouncedEmail) {
 		bouncedEmailDao.saveOrUpdate(bouncedEmail);
 	}
 	
+	/**
+	 * Delete.
+	 *
+	 * @param id the id
+	 * @return true, if successful
+	 */
 	public boolean delete(String id) {
 		return bouncedEmailDao.delete(id);
 	}
 	
+	/**
+	 * Gets the server properties.
+	 *
+	 * @param protocol the protocol
+	 * @param host the host
+	 * @param port the port
+	 * @return the server properties
+	 */
 	private Properties getServerProperties(String protocol, String host,
             String port) {
         Properties properties = new Properties();
@@ -98,6 +148,15 @@ public class BouncedEmailService {
         return properties;
     }
 	
+	/**
+	 * Process bounces.
+	 *
+	 * @param protocol the protocol
+	 * @param host the host
+	 * @param port the port
+	 * @param userName the user name
+	 * @param password the password
+	 */
 	public void processBounces(String protocol, String host, String port,
             String userName, String password) {
         Properties properties = getServerProperties(protocol, host, port);
@@ -234,6 +293,9 @@ public class BouncedEmailService {
         }
     }
 	
+	/**
+	 * Process all bounces.
+	 */
 	public void processAllBounces() {
 		List<EmailConfig> emailConfigs = emailConfigService.getAllProfiles();
 		
@@ -244,10 +306,10 @@ public class BouncedEmailService {
 	}
  
     /**
-     * Returns a list of addresses in String format separated by comma
+     * Parses the addresses.
      *
-     * @param address an array of Address objects
-     * @return a string represents a list of addresses
+     * @param address the address
+     * @return the string
      */
     private String parseAddresses(Address[] address) {
         String listAddress = "";

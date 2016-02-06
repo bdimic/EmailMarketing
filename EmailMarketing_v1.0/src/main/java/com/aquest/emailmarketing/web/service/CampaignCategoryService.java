@@ -12,39 +12,75 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+// TODO: Auto-generated Javadoc
 /**
- *
- * @author bdimic
+ * The Class CampaignCategoryService.
  */
 @Service("campaignCategoryService")
 public class CampaignCategoryService {
+    
+    /** The campaign category dao. */
     private CampaignCategoryDao campaignCategoryDao;
     
+    /**
+     * Sets the campaign category dao.
+     *
+     * @param campaignCategoryDao the new campaign category dao
+     */
     @Autowired
     public void setCampaignCategoryDao(CampaignCategoryDao campaignCategoryDao) {
 		this.campaignCategoryDao = campaignCategoryDao;
 	}
     
+    /**
+     * Gets the categories.
+     *
+     * @return the categories
+     */
     public List<CampaignCategory> getCategories() {
         System.out.println("Ovo se pokrenulo");
         List<CampaignCategory> campaignCategory = campaignCategoryDao.getCategories();
         return campaignCategory;
     }
     
+    /**
+     * Gets the category by id.
+     *
+     * @param category_id the category_id
+     * @return the category by id
+     */
     public CampaignCategory getCategoryById(int category_id) {
     	CampaignCategory campaignCategory = campaignCategoryDao.getCategoryById(category_id);
         return campaignCategory;
     }
 
+	/**
+	 * Gets the category.
+	 *
+	 * @param category_id the category_id
+	 * @return the category
+	 */
 	public CampaignCategory getCategory(String category_id) {
 		CampaignCategory campaignCategory = campaignCategoryDao.getCategory(category_id);
         return campaignCategory;
     }
     
+    /**
+     * Save or update.
+     *
+     * @param campaignCategory the campaign category
+     * @return the string
+     */
     public String SaveOrUpdate(CampaignCategory campaignCategory) {
         return campaignCategoryDao.saveOrUpdate(campaignCategory);
     }
     
+    /**
+     * Delete.
+     *
+     * @param category_id the category_id
+     * @return true, if successful
+     */
     public boolean delete(String category_id) {
         boolean isDeleted = campaignCategoryDao.delete(category_id);
         return isDeleted;

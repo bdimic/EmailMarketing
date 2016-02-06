@@ -7,12 +7,14 @@
 package com.aquest.emailmarketing.web.controllers;
 
 import com.aquest.emailmarketing.web.dao.Broadcast;
+import com.aquest.emailmarketing.web.dao.BroadcastTemplate;
 import com.aquest.emailmarketing.web.dao.Campaigns;
 import com.aquest.emailmarketing.web.dao.EmailConfig;
 import com.aquest.emailmarketing.web.dao.EmbeddedImage;
 import com.aquest.emailmarketing.web.dao.TrackingConfig;
 import com.aquest.emailmarketing.web.dao.Urls;
 import com.aquest.emailmarketing.web.service.BroadcastService;
+import com.aquest.emailmarketing.web.service.BroadcastTemplateService;
 import com.aquest.emailmarketing.web.service.CampaignsService;
 import com.aquest.emailmarketing.web.service.EmailConfigService;
 import com.aquest.emailmarketing.web.service.EmailListService;
@@ -42,64 +44,136 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+// TODO: Auto-generated Javadoc
 /**
- *
- * @author bdimic
+ * The Class BroadcastController.
  */
 @Controller
 public class BroadcastController {
     
+    /** The broadcast service. */
     private BroadcastService broadcastService;
+    
+    /** The broadcast template service. */
+    private BroadcastTemplateService broadcastTemplateService;
+    
+    /** The campaigns service. */
     private CampaignsService campaignsService;
+    
+    /** The email list service. */
     private EmailListService emailListService;
+    
+    /** The send email service. */
     private SendEmailService sendEmailService;
+    
+    /** The email config service. */
     private EmailConfigService emailConfigService;
+    
+    /** The embedded image service. */
     private EmbeddedImageService embeddedImageService;
+    
+    /** The tracking config service. */
     private TrackingConfigService trackingConfigService;
+    
+    /** The email tracking. */
     EmailTrackingService emailTracking = new EmailTrackingService();
 
+    /**
+     * Sets the campaigns service.
+     *
+     * @param campaignsService the new campaigns service
+     */
     @Autowired
     public void setCampaignsService(CampaignsService campaignsService) {
         this.campaignsService = campaignsService;
     }
     
+    /**
+     * Sets the broadcast service.
+     *
+     * @param broadcastService the new broadcast service
+     */
     @Autowired
     public void setBroadcastService(BroadcastService broadcastService) {
         this.broadcastService = broadcastService;
-    }
-
+    }    
+    
+    /**
+     * Sets the broadcast template service.
+     *
+     * @param broadcastTemplateService the new broadcast template service
+     */
     @Autowired
+    public void setBroadcastTemplateService(BroadcastTemplateService broadcastTemplateService) {
+		this.broadcastTemplateService = broadcastTemplateService;
+	}
+
+	/**
+	 * Sets the send email service.
+	 *
+	 * @param sendEmailService the new send email service
+	 */
+	@Autowired
     public void setSendEmailService(SendEmailService sendEmailService) {
     	this.sendEmailService = sendEmailService;
     }
     
+    /**
+     * Sets the email config service.
+     *
+     * @param emailConfigService the new email config service
+     */
     @Autowired
     public void setEmailConfigService(EmailConfigService emailConfigService) {
 		this.emailConfigService = emailConfigService;
 	}
     
+    /**
+     * Sets the tracking config service.
+     *
+     * @param trackingConfigService the new tracking config service
+     */
     @Autowired
     public void setTrackingConfigService(TrackingConfigService trackingConfigService) {
     	this.trackingConfigService = trackingConfigService;
     }
     
+    /**
+     * Sets the embedded image service.
+     *
+     * @param embeddedImageService the new embedded image service
+     */
     @Autowired
     public void setEmbeddedImageService(EmbeddedImageService embeddedImageService) {
     	this.embeddedImageService = embeddedImageService;
     }
         
+    /**
+     * Sets the email list service.
+     *
+     * @param emailListService the new email list service
+     */
     @Autowired
     public void setEmailListService(EmailListService emailListService) {
 		this.emailListService = emailListService;
 	}
     
+    /**
+     * Do generate from template.
+     *
+     * @param model the model
+     * @param broadcast the broadcast
+     * @param principal the principal
+     * @param campaign_id the campaign_id
+     * @return the string
+     */
     @RequestMapping(value = "/generateBroadcastFromTemplate", method = RequestMethod.POST)
     public String doGenerateFromTemplate(Model model, @Valid @ModelAttribute("broadcast") Broadcast broadcast, Principal principal,
 			 @RequestParam(value = "campaign_id") String campaign_id) {
     	Timestamp curTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
     	broadcast.setCreation_user(principal.getName());
         broadcast.setCreation_dttm(curTimestamp);
-        broadcast.setBroadcast_source("BT");
+        broadcast.setBroadcast_source("EM");
         broadcast.setStatus("In definition process");
         broadcast.setCampaign_id(campaign_id);
         String broadcast_id = broadcastService.getNextBroadcastId();
@@ -107,10 +181,21 @@ public class BroadcastController {
         	return "error";
         } else {
         	broadcast.setBroadcast_id(broadcast_id);
-        	// samo privremeno - pronaci kako da se sacuva broadcast objekat a da ima null vrednost na profile_id polju
-        	// koje je setovano kao foreign key. Trenutno je reseno da upise prvi emailConfig.
-        	broadcast.setEmailConfig(emailConfigService.getFirstProfile());
+        	BroadcastTemplate bcastTemplate = broadcastTemplateService.getBroadcastTemplateById(broadcast.getBcast_template_id());
+        	broadcast.setBroadcast_name(bcastTemplate.getB_template_name());
+        	broadcast.setSubject(bcastTemplate.getB_template_subject());
+        	broadcast.setEmailConfig(bcastTemplate.getEmailConfig());
+        	broadcast.setHtmlbody(bcastTemplate.getHtmlbody());
+        	broadcast.setHtmlbody_embed(bcastTemplate.getHtmlbody_embed());
+        	broadcast.setHtmlbody_tracking(bcastTemplate.getHtmlbody_tracking());
+        	broadcast.setPlaintext(bcastTemplate.getPlaintext());
 			String bcast_id = broadcastService.SaveOrUpdate(broadcast);
+			//dodaje se red u embedded_image sa broadcast_id
+			EmbeddedImage embeddedImage = embeddedImageService.getEmbeddedImagesFromTemplateId(broadcast.getBcast_template_id());
+			EmbeddedImage embeddedImage1 = new EmbeddedImage();			
+			embeddedImage1.setBroadcast_id(broadcast_id);
+			embeddedImage1.setUrl(embeddedImage.getUrl());
+			embeddedImageService.SaveOrUpdate(embeddedImage1);
         	//model.addAttribute("old_broadcast_id", old_broadcast_id);
 			String message = "template";
 			model.addAttribute("message", message);
@@ -119,6 +204,18 @@ public class BroadcastController {
         }
     }
 
+	/**
+	 * Do generate.
+	 *
+	 * @param model the model
+	 * @param broadcast the broadcast
+	 * @param result the result
+	 * @param principal the principal
+	 * @param profile_id the profile_id
+	 * @param campaign_id the campaign_id
+	 * @param old_broadcast_id the old_broadcast_id
+	 * @return the string
+	 */
 	@RequestMapping(value = "/generateBroadcastFlow", method = RequestMethod.POST)
     public String doGenerate(Model model,@Valid @ModelAttribute("broadcast") Broadcast broadcast,BindingResult result, Principal principal,
     						 @RequestParam(value = "profile_id") int profile_id,
@@ -144,6 +241,15 @@ public class BroadcastController {
         }
     }
     
+    /**
+     * Define content.
+     *
+     * @param model the model
+     * @param broadcast1 the broadcast1
+     * @param result the result
+     * @param principal the principal
+     * @return the string
+     */
     @RequestMapping(value= "/defineContent", method = RequestMethod.POST)
     public String defineContent(Model model,@Valid @ModelAttribute("broadcast") Broadcast broadcast1,BindingResult result, Principal principal) {
     	Broadcast broadcast = broadcastService.getBroadcastById(broadcast1.getId());
@@ -185,6 +291,19 @@ public class BroadcastController {
     	return "tracking";
     }
     
+    /**
+     * Adds the tracking.
+     *
+     * @param model the model
+     * @param urls the urls
+     * @param principal the principal
+     * @param id the id
+     * @param trackingFlg the tracking flg
+     * @param openGAflg the open g aflg
+     * @param openPixelFlg the open pixel flg
+     * @param trackingType the tracking type
+     * @return the string
+     */
     @RequestMapping(value= "/generateUrls", method = RequestMethod.POST)
     public String addTracking(Model model, Urls urls, Principal principal,
     							@RequestParam(value = "id") int id,
@@ -270,6 +389,15 @@ public class BroadcastController {
     	return "embeddedimage";
     }
     
+    /**
+     * Embed image.
+     *
+     * @param model the model
+     * @param principal the principal
+     * @param id the id
+     * @param url the url
+     * @return the string
+     */
     @RequestMapping(value= "/embedImages", method = RequestMethod.POST)
     public String embedImage(Model model, Principal principal,
 			@RequestParam(value = "id") int id,
@@ -315,6 +443,16 @@ public class BroadcastController {
     	return "sendbroadcast";
     }
     
+    /**
+     * Send it.
+     *
+     * @param model the model
+     * @param principal the principal
+     * @param id the id
+     * @param send the send
+     * @param request the request
+     * @return the string
+     */
     @RequestMapping(value= "/sendBroadcast", method = RequestMethod.POST)
     public String sendIt(Model model, Principal principal,
     		@RequestParam(value = "id") int id,
@@ -333,6 +471,21 @@ public class BroadcastController {
     }
     
     
+    /**
+     * Creates the new broadcast.
+     *
+     * @param model the model
+     * @param newBroadcast the new broadcast
+     * @param copyBroadcast the copy broadcast
+     * @param editBroadcast the edit broadcast
+     * @param showBroadcast the show broadcast
+     * @param deleteBroadcast the delete broadcast
+     * @param campaign_id the campaign_id
+     * @param broadcast_id the broadcast_id
+     * @param principal the principal
+     * @param request the request
+     * @return the string
+     */
     @RequestMapping(value="/pickBroadcastAction", method = RequestMethod.POST)
     public String createNewBroadcast(Model model, 
     		@RequestParam(value = "newBroadcast", required = false) String newBroadcast,
@@ -394,6 +547,7 @@ public class BroadcastController {
         }
         
         if(editBroadcast != null) {
+        	// TODO: Create logic for edit Broadcast option
 //        	List<CampaignCategory> campcat = campaignCategoryService.getCategories();        	
 //        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
 //        	model.addAttribute("campaign", campaign);
@@ -402,6 +556,7 @@ public class BroadcastController {
         }
         
         if(showBroadcast != null) {
+        	// TODO: Create logic for show Broadcast option
         	model.addAttribute("broadcast", broadcast);        	
         	return "opencampaign";
         }

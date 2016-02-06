@@ -15,20 +15,31 @@ import org.springframework.stereotype.Service;
 import com.aquest.emailmarketing.web.dao.BounceCode;
 import com.aquest.emailmarketing.web.dao.BounceCodeDao;
 
+// TODO: Auto-generated Javadoc
 /**
- *
- * @author bdimic
+ * The Class BounceCodeService.
  */
 @Service("bounceCodeService")
 public class BounceCodeService {
 	
+	/** The bounce code dao. */
 	private BounceCodeDao bounceCodeDao;
 
+	/**
+	 * Sets the bounce code dao.
+	 *
+	 * @param bounceCodeDao the new bounce code dao
+	 */
 	@Autowired
 	public void setBounceCodeDao(BounceCodeDao bounceCodeDao) {
 		this.bounceCodeDao = bounceCodeDao;
 	}
 	
+	/**
+	 * Gets the all bounce codes.
+	 *
+	 * @return the all bounce codes
+	 */
 	public List<BounceCode> getAllBounceCodes() {
 		return bounceCodeDao.getAllBounceCodes();
 	}

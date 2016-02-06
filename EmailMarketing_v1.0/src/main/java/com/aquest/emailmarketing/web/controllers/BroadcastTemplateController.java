@@ -39,39 +39,76 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+// TODO: Auto-generated Javadoc
 /**
- *
- * @author bdimic
+ * The Class BroadcastTemplateController.
  */
 @Controller
 public class BroadcastTemplateController {
     
+    /** The broadcast template service. */
     private BroadcastTemplateService broadcastTemplateService;
+    
+    /** The email config service. */
     private EmailConfigService emailConfigService;
+    
+    /** The embedded image service. */
     private EmbeddedImageService embeddedImageService;
+    
+    /** The tracking config service. */
     private TrackingConfigService trackingConfigService;
+    
+    /** The email tracking. */
     EmailTrackingService emailTracking = new EmailTrackingService();
 
+    /**
+     * Sets the broadcast template service.
+     *
+     * @param broadcastTemplateService the new broadcast template service
+     */
     @Autowired
     public void setBroadcastTemplateService(BroadcastTemplateService broadcastTemplateService) {
 		this.broadcastTemplateService = broadcastTemplateService;
 	}
     
+    /**
+     * Sets the email config service.
+     *
+     * @param emailConfigService the new email config service
+     */
     @Autowired
     public void setEmailConfigService(EmailConfigService emailConfigService) {
 		this.emailConfigService = emailConfigService;
 	}
     
+    /**
+     * Sets the tracking config service.
+     *
+     * @param trackingConfigService the new tracking config service
+     */
     @Autowired
     public void setTrackingConfigService(TrackingConfigService trackingConfigService) {
     	this.trackingConfigService = trackingConfigService;
     }
     
+    /**
+     * Sets the embedded image service.
+     *
+     * @param embeddedImageService the new embedded image service
+     */
     @Autowired
     public void setEmbeddedImageService(EmbeddedImageService embeddedImageService) {
     	this.embeddedImageService = embeddedImageService;
     }
     
+    /**
+     * Show broadcast template.
+     *
+     * @param model the model
+     * @param principal the principal
+     * @param locale the locale
+     * @return the string
+     */
     @RequestMapping("/showBroadcastTemplate")
     public String showBroadcastTemplate(Model model, Principal principal, Locale locale) {
     	List<BroadcastTemplate> broadcastTemplate = broadcastTemplateService.getAllBroadcasts();
@@ -79,6 +116,13 @@ public class BroadcastTemplateController {
     	return "showbcasttemplates";
     }
     
+    /**
+     * New broadcast template.
+     *
+     * @param model the model
+     * @param principal the principal
+     * @return the string
+     */
     @RequestMapping(value = "/newBroadcastTemplate")
     public String newBroadcastTemplate(Model model, Principal principal) {
     	BroadcastTemplate broadcastTemplate = new BroadcastTemplate();
@@ -88,6 +132,16 @@ public class BroadcastTemplateController {
     	return "definebroadcasttemplate";
     }
 
+	/**
+	 * Do generate.
+	 *
+	 * @param model the model
+	 * @param broadcastTemplate the broadcast template
+	 * @param result the result
+	 * @param principal the principal
+	 * @param profile_id the profile_id
+	 * @return the string
+	 */
 	@RequestMapping(value = "/generateBroadcastTemplateFlow", method = RequestMethod.POST)
     public String doGenerate(Model model,@Valid @ModelAttribute("broadcastTemplate") BroadcastTemplate broadcastTemplate,BindingResult result, Principal principal,
     						 @RequestParam(value = "profile_id") int profile_id) {
@@ -101,6 +155,15 @@ public class BroadcastTemplateController {
         	return "definebcasttempcontent";
     }
     
+    /**
+     * Define content.
+     *
+     * @param model the model
+     * @param broadcastTemplate1 the broadcast template1
+     * @param result the result
+     * @param principal the principal
+     * @return the string
+     */
     @RequestMapping(value= "/defineBcastTemplateContent", method = RequestMethod.POST)
     public String defineContent(Model model,@Valid @ModelAttribute("broadcastTemplate") BroadcastTemplate broadcastTemplate1,BindingResult result, Principal principal) {
     	BroadcastTemplate broadcastTemplate = broadcastTemplateService.getBroadcastTemplateById(broadcastTemplate1.getId());
@@ -143,6 +206,19 @@ public class BroadcastTemplateController {
     	return "bcasttemptracking";
     }
     
+    /**
+     * Adds the tracking.
+     *
+     * @param model the model
+     * @param urls the urls
+     * @param principal the principal
+     * @param id the id
+     * @param trackingFlg the tracking flg
+     * @param openGAflg the open g aflg
+     * @param openPixelFlg the open pixel flg
+     * @param trackingType the tracking type
+     * @return the string
+     */
     @RequestMapping(value= "/bcastTempGenerateUrls", method = RequestMethod.POST)
     public String addTracking(Model model, Urls urls, Principal principal,
     							@RequestParam(value = "id") int id,
@@ -228,6 +304,15 @@ public class BroadcastTemplateController {
     	return "bcasttempembeddedimage";
     }
     
+    /**
+     * Embed image.
+     *
+     * @param model the model
+     * @param principal the principal
+     * @param id the id
+     * @param url the url
+     * @return the string
+     */
     @RequestMapping(value= "/bcastTemplateEmbedImages", method = RequestMethod.POST)
     public String embedImage(Model model, Principal principal,
 			@RequestParam(value = "id") int id,

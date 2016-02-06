@@ -26,27 +26,50 @@ import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+// TODO: Auto-generated Javadoc
 /**
- *
- * @author bdimic
+ * The Class SendEmail.
  */
 @Service("sendEmail")
 public class SendEmail {
 	
+	/** The process variable service. */
 	private ProcessVariableService processVariableService;
+	
+	/** The embedded image service. */
 	private EmbeddedImageService embeddedImageService;	
 	
+	/**
+	 * Sets the embedded image service.
+	 *
+	 * @param embeddedImageService the new embedded image service
+	 */
 	@Autowired
     public void setEmbeddedImageService(EmbeddedImageService embeddedImageService) {
         this.embeddedImageService = embeddedImageService;
     }
 	
+	/**
+	 * Sets the process variable service.
+	 *
+	 * @param processVariableService the new process variable service
+	 */
 	@Autowired
     public void setProcessVariableService(
 			ProcessVariableService processVariableService) {
 		this.processVariableService = processVariableService;
 	}
 
+	/**
+	 * Send email.
+	 *
+	 * @param broadcast the broadcast
+	 * @param emailConfig the email config
+	 * @param emailList the email list
+	 * @throws EmailException the email exception
+	 * @throws MalformedURLException the malformed url exception
+	 * @throws InterruptedException the interrupted exception
+	 */
 	public void sendEmail(Broadcast broadcast, EmailConfig emailConfig, EmailList emailList) throws EmailException, MalformedURLException, InterruptedException {   
             	
     	// email configuration part
@@ -58,12 +81,12 @@ public class SendEmail {
         email.setDebug(emailConfig.isDebug());
         email.setFrom(emailConfig.getFrom_address()); //ovde dodati i email from description
         
-//        System.out.println(emailList);
+        System.out.println(emailList);
         HashMap<String, String> variables = processVariableService.ProcessVariable(emailList);
         
-//        for(String keys : variables.keySet()) {
-//        	System.out.println("key:"+keys+", value:"+variables.get(keys));
-//        }
+        for(String keys : variables.keySet()) {
+        	System.out.println("key:"+keys+", value:"+variables.get(keys));
+        }
         
         String processSubject = broadcast.getSubject();
         String newHtml = broadcast.getHtmlbody_embed();
@@ -71,19 +94,20 @@ public class SendEmail {
         
         for(String key : variables.keySet()) {
         	processSubject = processSubject.replace("["+key+"]", variables.get(key));
-//        	System.out.println(key+"-"+variables.get(key));
+        	System.out.println(key+"-"+variables.get(key));
         	newHtml = newHtml.replace("["+key+"]", variables.get(key));
         	newPlainText = newPlainText.replace("["+key+"]", variables.get(key));
         }
-//      System.out.println(processSubject);
+      System.out.println(processSubject);
         email.setSubject(processSubject);
         email.addTo(emailList.getEmail());
         
+        
         String image = embeddedImageService.getEmbeddedImages(broadcast.getBroadcast_id()).getUrl();
         List<String> images = Arrays.asList(image.split(";"));
-//        for(int j=0; j<images.size();j++) {
-//        	System.out.println(images.get(j));
-//        }
+        for(int j=0; j<images.size();j++) {
+        	System.out.println(images.get(j));
+        }
         for(int i=0; i<images.size(); i++) {
         	String id = email.embed(images.get(i), "Slika"+i);
         	newHtml = newHtml.replace("[IMAGE:"+i+"]", "cid:"+id);

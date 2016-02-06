@@ -28,11 +28,24 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+// TODO: Auto-generated Javadoc
 /**
- *
- * @author bdimic
+ * The Class ImportService.
  */
 public class ImportService {
+    
+    /**
+     * Import file.
+     *
+     * @param listfilename the listfilename
+     * @param filename the filename
+     * @param separator the separator
+     * @throws FileNotFoundException the file not found exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws ParserConfigurationException the parser configuration exception
+     * @throws TransformerConfigurationException the transformer configuration exception
+     * @throws TransformerException the transformer exception
+     */
     public void ImportFile(String listfilename, InputStream filename, String separator) throws FileNotFoundException, IOException, ParserConfigurationException, TransformerConfigurationException, TransformerException {
         CSVReader reader = new CSVReader(new InputStreamReader(filename), separator.charAt(0));
         boolean isFirstLine = true;
