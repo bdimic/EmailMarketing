@@ -80,14 +80,13 @@ $(document).ready(function () {
             <td class="label"><spring:message code="broadcast.utmCampaign"/>:</td>            
             <td><sf:select path="utmCampaign" name="utmCampaign" id="utmCampaign">
                 		<sf:option selected="selected" value="[BROADCAST_ID]" label="[BROADCAST_ID]"/>
-                		<sf:options items="${utmCampaignList}"/>
                 </sf:select>
 			</td>
         </tr>
         <tr>
             <td class="label"><spring:message code="broadcast.utmMedium"/>:</td>
             <td><sf:select path="utmMedium" name="utmMedium" id="utmMedium">
-                		<sf:option value="email" label="email"/>
+                		<sf:option selected="selected" value="email" label="email"/>
                 </sf:select>
             </td>
         </tr>

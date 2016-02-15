@@ -256,7 +256,6 @@ public class GoogleAnalyticsService {
 	 					}
 	 				}
 	 			} catch (ParseException e) {
-	 				// TODO Auto-generated catch block
 	 				logger.error(e);
 	 			}
 	         }
@@ -338,7 +337,6 @@ public class GoogleAnalyticsService {
 	 					}
 	 				}
 	 			} catch (ParseException e) {
-	 				// TODO Auto-generated catch block
 	 				logger.error(e);
 	 			}
 	         }
@@ -356,13 +354,11 @@ public class GoogleAnalyticsService {
 		try {
 			getGaOpenResponses();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
 			getGaClickResponses();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

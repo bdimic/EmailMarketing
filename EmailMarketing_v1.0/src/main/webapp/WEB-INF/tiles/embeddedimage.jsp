@@ -31,7 +31,7 @@ $(document).ready(function () {
 <div class="sadrzaj">
 <sf:form method="POST" action="${pageContext.request.contextPath}/embedImages" commandName="embeddedImage">
 <input type="hidden" id="id" name="id" value="${broadcast.id}"/>
-	<input type="checkbox" id="selectall"><spring:message code="embed.images.selectall"/></input></br>
+	<input type="checkbox" id="selectall"><spring:message code="embed.images.selectall"/>
 	<table>
 		<c:forEach var="imgList" items="${imgList}">
 			<tr><td><input type="checkbox" id="url" class="selectedId" name="url" value="${imgList}"/></td>

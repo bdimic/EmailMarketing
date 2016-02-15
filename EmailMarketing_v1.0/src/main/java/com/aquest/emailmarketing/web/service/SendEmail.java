@@ -22,6 +22,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
+import org.apache.log4j.Logger;
 import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,9 @@ import org.springframework.stereotype.Service;
  */
 @Service("sendEmail")
 public class SendEmail {
+	
+	/** The Constant logger. */
+	final static Logger logger = Logger.getLogger(com.aquest.emailmarketing.web.service.GoogleAnalyticsService.class);
 	
 	/** The process variable service. */
 	private ProcessVariableService processVariableService;
@@ -133,8 +137,7 @@ public class SendEmail {
         try {
 			email.send();			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e);
 		}
         // time in seconds to wait between 2 mails
         TimeUnit.SECONDS.sleep(emailConfig.getWait());

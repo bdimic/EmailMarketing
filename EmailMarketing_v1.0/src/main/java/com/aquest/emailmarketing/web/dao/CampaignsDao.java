@@ -7,6 +7,7 @@ package com.aquest.emailmarketing.web.dao;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -27,6 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Component("campaignsDao")
 public class CampaignsDao {
     
+	/** The Constant logger. */
+	final static Logger logger = Logger.getLogger(com.aquest.emailmarketing.web.service.GoogleAnalyticsService.class);
+	
     /** The session factory. */
     @Autowired
     private SessionFactory sessionFactory;
@@ -73,9 +77,8 @@ public class CampaignsDao {
 				return "EM"+String.valueOf(campaignid);
 			}
 		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Unable to get Next Campaign ID");
-			e.printStackTrace();
+			logger.error(e);
 		}
     	return "Error";
     }

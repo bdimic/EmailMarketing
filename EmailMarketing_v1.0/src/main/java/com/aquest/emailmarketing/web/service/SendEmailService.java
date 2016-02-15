@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.apache.commons.mail.EmailException;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,9 @@ import com.aquest.emailmarketing.web.dao.EmailList;
  */
 @Service("sendEmailService")
 public class SendEmailService {
+	
+	/** The Constant logger. */
+	final static Logger logger = Logger.getLogger(com.aquest.emailmarketing.web.service.GoogleAnalyticsService.class);
 	
 	/** The s email. */
 	private SendEmail sEmail;
@@ -81,8 +85,7 @@ public class SendEmailService {
 				sEmail.sendEmail(broadcast, emailConfig, emailList);
 			} catch (MalformedURLException | EmailException
 					| InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 	}

@@ -8,6 +8,7 @@ package com.aquest.emailmarketing.web.dao;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -28,6 +29,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Component("broadcastDao")
 public class BroadcastDao {
     
+	/** The Constant logger. */
+	final static Logger logger = Logger.getLogger(com.aquest.emailmarketing.web.service.GoogleAnalyticsService.class);
+	
     /** The session factory. */
     @Autowired
     private SessionFactory sessionFactory;
@@ -68,9 +72,8 @@ public class BroadcastDao {
 				return "EM"+String.valueOf(broadcastid);
 			}
 		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Unable to get Next Broadcast ID");
-			e.printStackTrace();
+			logger.error(e);
 		}
     	return "Error";
     }

@@ -284,7 +284,7 @@ public class BroadcastController {
     	// Google Analytics - utmContent List
     	List<String> utmContentList = new ArrayList<String>();    	
     	utmContentList.add("[EMAIL]");
-    	// ovde dodati sve varijabilne podatke iz CM_EMAIL_BROADCAST_LIST
+    	//TODO: add all variables from CM_EMAIL_BROADCAST_LIST
     	model.addAttribute("utmContentList", utmContentList);
     	
     	model.addAttribute("broadcast", broadcast);
@@ -389,6 +389,8 @@ public class BroadcastController {
     	return "embeddedimage";
     }
     
+    
+    
     /**
      * Embed image.
      *
@@ -401,21 +403,23 @@ public class BroadcastController {
     @RequestMapping(value= "/embedImages", method = RequestMethod.POST)
     public String embedImage(Model model, Principal principal,
 			@RequestParam(value = "id") int id,
-			@RequestParam(value = "url", required = false) String[] url){
+			@RequestParam(value = "url", required = false, defaultValue = "nesto") List<String> url){
+    	
+    	//DONE: NullPointerException when no pictures is selected
     	
     	System.out.println(url.toString());
     	Broadcast broadcast = broadcastService.getBroadcastById(id);
     	System.out.println(broadcast.toString());
     	String addedTracking = broadcast.getHtmlbody_tracking();
     	
-    	if(url.length > 0) {
+    	if(url.size() > 0 && !url.get(0).equals("nesto")) {
 	    	EmbeddedImage embeddedImage = new EmbeddedImage();
 	    	embeddedImage.setBroadcast_id(broadcast.getBroadcast_id());
 	    	System.out.println(embeddedImage.getBroadcast_id());
 	    	// iz array u string sa ; kao separatorom
 	    	StringBuilder sb = new StringBuilder();
-	    	for(int i=0;i<url.length;i++){
-	    		sb.append(url[i]);
+	    	for(int i=0;i<url.size();i++){
+	    		sb.append(url.get(i));
 	    		sb.append(";");
 	    	}
 	    	System.out.println(sb.toString());
@@ -431,8 +435,8 @@ public class BroadcastController {
 	    	embeddedImage.setUrl(urls);
 	    	embeddedImageService.SaveOrUpdate(embeddedImage);
 	    	
-	    	for(int k=0;k<url.length;k++) {
-	    		addedTracking = addedTracking.replace(url[k], "[IMAGE:"+k+"]");
+	    	for(int k=0;k<url.size();k++) {
+	    		addedTracking = addedTracking.replace(url.get(k), "[IMAGE:"+k+"]");
 	    	}
 	    	System.out.println(addedTracking);
     	}

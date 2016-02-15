@@ -96,6 +96,7 @@ public class EmailListService {
                         System.out.println(nextLine[j]);
                     }
                     if(i==0){
+                    	//TODO: add email address validation
                     	emailList.setEmail(nextLine[i]);
                     	System.out.println("Email: "+nextLine[i]);
                     } else if(i==1) {

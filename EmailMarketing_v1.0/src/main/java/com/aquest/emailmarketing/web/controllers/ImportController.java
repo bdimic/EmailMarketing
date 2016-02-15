@@ -26,6 +26,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,6 +44,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @Controller
 @SessionAttributes("emailListForm")
 public class ImportController {
+	
+	/** The Constant logger. */
+	final static Logger logger = Logger.getLogger(com.aquest.emailmarketing.web.service.GoogleAnalyticsService.class);
 	
 	/** The email list service. */
 	private EmailListService emailListService;
@@ -129,7 +133,7 @@ public class ImportController {
 					model.addAttribute("old_broadcast_id", old_broadcast_id);
             }
             String message = null;
-            if(!broadcast.getBcast_template_id().equals(null)){
+            if(broadcast.getBcast_template_id() != null){
             	message = "template";
             }
             model.addAttribute("message", message);
@@ -168,11 +172,10 @@ public class ImportController {
 				broadcast.setPlaintext(old_broadcast.getPlaintext());
 				model.addAttribute("old_broadcast", old_broadcast);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e);
 			}
         }
-        if(broadcast.getBcast_template_id().equals(null)){
+        if(broadcast.getBcast_template_id() == null){
         	model.addAttribute("broadcast", broadcast);
     		return "definecontent";
         }

@@ -82,6 +82,7 @@
 </div>
 <div class="prazno"></div>
 <div class="dugme">
+<!-- TODO: Change buttons label and logic to have c:choose depending where they need to get -->
 <input type="submit" name="createCampaign" value="<spring:message code="campaign.button.create" />" id="create_campaign" />
 <input type="submit" name="createBroadcast" value="<spring:message code="campaign.button.createbroadcast" />" id="create_broadcast" />
 <input type="hidden" name="broadcast_id" id="broadcast_id" value="${broadcast_id}"/>
