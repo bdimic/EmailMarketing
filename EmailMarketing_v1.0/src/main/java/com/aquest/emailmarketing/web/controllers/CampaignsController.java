@@ -183,6 +183,7 @@ public class CampaignsController {
 	 */
 	@RequestMapping(value="/test")
 	public String test() {
+		//TODO: Check if bounces process is finished
 		bouncedEmailService.processAllBounces();
 		return "test";
 	}
@@ -270,6 +271,8 @@ public class CampaignsController {
         		if(bcast.getStatus().equals("SENT")) {
         			List<EmailList> eList = emailListService.getAllEmailList(bcast.getBroadcast_id());
         			bcast.setLead_number(eList.size());
+        			List<EmailList> eListSent = emailListService.getSentEmailList(bcast.getBroadcast_id());
+        			bcast.setSent_number(eListSent.size());
         			int openNum = trackingResponseService.getNoOfOpensByBroadcast(bcast.getBroadcast_id());
         			bcast.setOpen_number(openNum);
         			int clickNum = trackingResponseService.getNoOfClickByBroadcast(bcast.getBroadcast_id());

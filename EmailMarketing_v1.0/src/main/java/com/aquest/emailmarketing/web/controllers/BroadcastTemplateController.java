@@ -356,7 +356,8 @@ public class BroadcastTemplateController {
 		model.addAttribute("broadcastTemplate", broadcastTemplate);
     	return "sendbroadcast";
     }
-    
+
+    // TODO: Add logic for pickBroadcastTemplateAction
     
 //    @RequestMapping(value="/pickBroadcastAction", method = RequestMethod.POST)
 //    public String createNewBroadcast(Model model, 

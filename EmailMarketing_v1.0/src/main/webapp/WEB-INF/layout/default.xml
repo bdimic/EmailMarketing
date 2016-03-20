@@ -94,6 +94,11 @@
 		<put-attribute name="content" value="/WEB-INF/tiles/usermanagement.jsp"></put-attribute>
 	</definition>
 	
+	<definition name="config" extends="base.definition">
+		<put-attribute name="title" value="config.title"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/config.jsp"></put-attribute>
+	</definition>
+	
 	<definition name="emailconfiguration" extends="base.definition">
 		<put-attribute name="title" value="emailconfiguration.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/emailconfiguration.jsp"></put-attribute>

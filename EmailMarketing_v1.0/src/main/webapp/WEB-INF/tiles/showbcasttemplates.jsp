@@ -67,6 +67,7 @@
 </div>
 <div class="prazno"></div>
 <div class="dugme">
+<!-- TODO: Change button labels -->
 <input type="submit" name="newBroadcast" value="New Broadcast" id="new_broadcast" />
 <input type="submit" name="copyBroadcast" value="Copy into new Broadcast" id="copy_broadcast" disabled="disabled" />
 <input type="submit" name="editBroadcast" value="Edit Broadcast" id="edit_broadcast" disabled="disabled" />

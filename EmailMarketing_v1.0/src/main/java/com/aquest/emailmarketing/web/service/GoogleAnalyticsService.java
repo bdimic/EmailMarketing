@@ -1,8 +1,13 @@
 package com.aquest.emailmarketing.web.service;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.GeneralSecurityException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.PrivateKey;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,6 +31,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.SecurityUtils;
 import com.google.api.services.analytics.Analytics;
 import com.google.api.services.analytics.AnalyticsScopes;
 import com.google.api.services.analytics.Analytics.Data.Ga.Get;
@@ -186,26 +192,27 @@ public class GoogleAnalyticsService {
 	 *
 	 * @return the ga click responses
 	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws GeneralSecurityException 
+	 * @throws KeyStoreException 
 	 */
-	public void getGaClickResponses() throws IOException {
+	public void getGaClickResponses() throws IOException, KeyStoreException, GeneralSecurityException {
 		GaConfig gaConfig = gaConfigService.getGaConfig();
 		
 		Timestamp curTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+		KeyStore ks = KeyStore.getInstance("PKCS12");
+		byte[] keyAsByteArray = gaConfig.getP12_file();
+		InputStream keyStream = new ByteArrayInputStream(keyAsByteArray);
+		ks.load(keyStream, "notasecret".toCharArray());
+		PrivateKey privateKey = SecurityUtils.getPrivateKey(ks, "privatekey", "notasecret");
 		
 		GoogleCredential credential = null;
-		 try {
-			credential = new GoogleCredential.Builder()
-			        .setTransport(HTTP_TRANSPORT)
-			        .setJsonFactory(JSON_FACTORY)
-			        .setServiceAccountId(gaConfig.getApi_email())
-			        .setServiceAccountScopes(Arrays.asList(AnalyticsScopes.ANALYTICS_READONLY))
-			        .setServiceAccountPrivateKeyFromP12File(new File(gaConfig.getP12_key_file_name())).build();
-
-		 } catch (GeneralSecurityException e) {
-			 logger.error(e);
-	     } catch (IOException e) {
-	    	 logger.error(e);  
-	     }	
+		 credential = new GoogleCredential.Builder()
+		        .setTransport(HTTP_TRANSPORT)
+		        .setJsonFactory(JSON_FACTORY)
+		        .setServiceAccountId(gaConfig.getApi_email())
+		        .setServiceAccountScopes(Arrays.asList(AnalyticsScopes.ANALYTICS_READONLY))
+		        .setServiceAccountPrivateKey(privateKey).build();
+//new File(gaConfig.getP12_key_file_name())	
 	     // Set up and return Google Analytics API client.
 	     Analytics analytics = new Analytics.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName(
 	    		 gaConfig.getApplication_name()).build();
@@ -349,8 +356,10 @@ public class GoogleAnalyticsService {
 	 * Gets the ga responses.
 	 *
 	 * @return the ga responses
+	 * @throws GeneralSecurityException 
+	 * @throws KeyStoreException 
 	 */
-	public void getGaResponses() {
+	public void getGaResponses() throws KeyStoreException, GeneralSecurityException {
 		try {
 			getGaOpenResponses();
 		} catch (IOException e) {

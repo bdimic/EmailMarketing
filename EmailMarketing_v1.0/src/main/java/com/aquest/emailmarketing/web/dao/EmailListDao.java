@@ -53,6 +53,19 @@ public class EmailListDao {
     }
     
     /**
+     * Gets the all email list.
+     *
+     * @param broadcast_id the broadcast_id
+     * @return the all email list
+     */
+    public List<EmailList> getSentEmailList(String broadcast_id) {
+        Criteria crit = session().createCriteria(EmailList.class);
+        crit.add(Restrictions.eq("broadcast_id", broadcast_id));
+        crit.add(Restrictions.eq("status", "SENT"));
+        return crit.list();
+    }
+    
+    /**
      * Gets the email list by id.
      *
      * @param id the id

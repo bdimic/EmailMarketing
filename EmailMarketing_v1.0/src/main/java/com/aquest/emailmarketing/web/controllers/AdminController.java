@@ -1,7 +1,14 @@
 package com.aquest.emailmarketing.web.controllers;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.KeyStore;
 import java.security.Principal;
+import java.security.PrivateKey;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +19,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,13 +29,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.aquest.emailmarketing.web.dao.Config;
 import com.aquest.emailmarketing.web.dao.EmailConfig;
 import com.aquest.emailmarketing.web.dao.GaConfig;
 import com.aquest.emailmarketing.web.dao.User;
+import com.aquest.emailmarketing.web.service.ConfigService;
 import com.aquest.emailmarketing.web.service.EmailConfigService;
 import com.aquest.emailmarketing.web.service.GaConfigService;
 import com.aquest.emailmarketing.web.service.GoogleAnalyticsService;
 import com.aquest.emailmarketing.web.service.UsersService;
+import com.google.api.client.util.SecurityUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -47,6 +58,9 @@ public class AdminController {
 	
 	/** The google analytics service. */
 	private GoogleAnalyticsService googleAnalyticsService;
+	
+	/** The config service. */
+	private ConfigService configService;
 	
 	/** The file path. */
 	private final String filePath = "C:\\Users\\bdimic\\Documents";
@@ -89,6 +103,17 @@ public class AdminController {
 	@Autowired
 	public void setGoogleAnalyticsService(GoogleAnalyticsService googleAnalyticsService) {
 		this.googleAnalyticsService = googleAnalyticsService;
+	}
+	
+	
+	/**
+	 * Sets the config service.
+	 * 
+	 * @param configService the configService to set
+	 */
+	@Autowired
+	public void setConfigService(ConfigService configService) {
+		this.configService = configService;
 	}
 
 	/**
@@ -184,6 +209,29 @@ public class AdminController {
 		return "emailconfig";
 	}
 	
+	@RequestMapping("/config")
+	public String showConfig(Model model) {
+		List<Config> configs = configService.getAllConfigs();
+		for(Config config : configs) {
+			if(config.getCategory().equals("trackingurl")){
+				model.addAttribute("trackingurl", config.getValue());
+			}
+		}
+		return "config";
+	}
+	
+	@RequestMapping(value="/saveConfig", method = RequestMethod.POST)
+	public String saveConfig(Model model, Principal principal,
+								@RequestParam(value = "trackingurl") String trackingurl) {
+		
+		Config config = new Config();
+		config.setCategory("trackingurl");
+		config.setValue(trackingurl);
+		configService.saveOrUpdate(config);
+		
+		return "config";
+	}
+	
 	/**
 	 * Save config.
 	 *
@@ -193,7 +241,7 @@ public class AdminController {
 	 * @return the string
 	 */
 	@RequestMapping(value="/saveEmailConfig", method = RequestMethod.POST)
-	public String saveConfig(@Valid @ModelAttribute("emailConfig") EmailConfig emailConfig, BindingResult result, Model model) {
+	public String saveEmailConfig(@Valid @ModelAttribute("emailConfig") EmailConfig emailConfig, BindingResult result, Model model) {
 		if(result.hasErrors()) {
     		return "emailconfiguration";
     	}		
@@ -239,6 +287,7 @@ public class AdminController {
 		String applicationName = "";
 		String apiEmail = "";
 		String uploadPath = "";
+		File storeFile = null;
 		
 		GaConfig gaConfig = gaConfigService.getGaConfig();
 		if(gaConfig == null) {
@@ -264,7 +313,7 @@ public class AdminController {
 				//String fieldName = item.getFieldName();
                 String fileName = FilenameUtils.getName(item.getName());
                 uploadPath = filePath+File.separator+fileName;
-                File storeFile = new File(uploadPath);
+                storeFile = new File(uploadPath);
                 item.write(storeFile);                
 			}
 		}
@@ -275,6 +324,14 @@ public class AdminController {
 			gaConfig.setApplication_name(applicationName);
 			gaConfig.setApi_email(apiEmail);
 			gaConfig.setP12_key_file_name(uploadPath);
+			KeyStore keystore = KeyStore.getInstance("PKCS12");
+			keystore.load(this.getClass().getClassLoader().getResourceAsStream(uploadPath), "notasecret".toCharArray());
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			keystore.store(byteArrayOutputStream, "notasecret".toCharArray());
+			byte[] keyStream = byteArrayOutputStream.toByteArray();
+			//InputStream is = new FileInputStream(storeFile);
+			//byte[] p12 = IOUtils.toByteArray(is);
+			gaConfig.setP12_file(keyStream);
 			gaConfig.setTable_id(result.get("profileId"));
 			System.out.println(gaConfig.toString());
 			gaConfigService.saveOrUpdate(gaConfig);		

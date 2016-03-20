@@ -66,6 +66,7 @@
             <th><spring:message code="broadcast.th.name"/></th>
             <th><spring:message code="broadcast.th.status"/></th>
             <th><spring:message code="broadcast.th.leadsno"/></th>
+            <th><spring:message code="broadcast.th.sentno"/></th>
             <th><spring:message code="broadcast.th.leadsopen"/></th>
             <th><spring:message code="broadcast.th.leadsclick"/></th>
         </tr>
@@ -77,6 +78,7 @@
             <td>${broadcast.broadcast_name}</td>
             <td>${broadcast.status}</td>
             <td>${broadcast.lead_number}</td>
+            <td>${broadcast.sent_number}</td>
             <td>${broadcast.open_number}</td>
             <td>${broadcast.click_number}</td>
         </tr>

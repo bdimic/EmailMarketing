@@ -8,6 +8,7 @@ package com.aquest.emailmarketing.web.controllers;
 
 import com.aquest.emailmarketing.web.dao.Broadcast;
 import com.aquest.emailmarketing.web.dao.BroadcastTemplate;
+import com.aquest.emailmarketing.web.dao.CampaignCategory;
 import com.aquest.emailmarketing.web.dao.Campaigns;
 import com.aquest.emailmarketing.web.dao.EmailConfig;
 import com.aquest.emailmarketing.web.dao.EmbeddedImage;
@@ -551,18 +552,26 @@ public class BroadcastController {
         }
         
         if(editBroadcast != null) {
-        	// TODO: Create logic for edit Broadcast option
-//        	List<CampaignCategory> campcat = campaignCategoryService.getCategories();        	
-//        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
-//        	model.addAttribute("campaign", campaign);
-//        	model.addAttribute("campcat", campcat);
-        	return "editcampaign";
+        	// DONE: Create logic for edit Broadcast option
+        	// DONE: Add that if broadcast is in "SENT" status, edit is not possible and appropriate message appear
+        	if(!broadcast.getStatus().equals("SENT")){
+	        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
+	        	model.addAttribute("campaign", campaign);
+	        	model.addAttribute("broadcast", broadcast);
+	        	List<EmailConfig> emailconfig = emailConfigService.getAllProfiles();
+	        	model.addAttribute("emailconfig", emailconfig);
+	        	return "definebroadcast";
+        	} else {
+        		String message = "confirmation.broadcast.no.edit";
+    			model.addAttribute("message", message);
+    			return "confirmation";
+        	}
         }
         
         if(showBroadcast != null) {
-        	// TODO: Create logic for show Broadcast option
-        	model.addAttribute("broadcast", broadcast);        	
-        	return "opencampaign";
+        	// DONE: Create logic for show Broadcast option
+        	model.addAttribute("broadcast", broadcast); 
+        	return "showbroadcast";
         }
                 
         return "home";

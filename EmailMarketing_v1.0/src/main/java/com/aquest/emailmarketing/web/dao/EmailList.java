@@ -7,6 +7,8 @@
 package com.aquest.emailmarketing.web.dao;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,6 +37,12 @@ public class EmailList implements Serializable {
 	
 	/** The email. */
 	private String email;
+	
+	/** The status. */
+	private String status;
+	
+	/** The process_dttm. */
+	private Timestamp process_dttm;
 	
 	/** The name1. */
 	private String name1;
@@ -109,6 +117,8 @@ public class EmailList implements Serializable {
 	 * @param id the id
 	 * @param broadcast_id the broadcast_id
 	 * @param email the email
+	 * @param status the status
+	 * @param process_dttm the process_dttm
 	 * @param name1 the name1
 	 * @param value1 the value1
 	 * @param name2 the name2
@@ -130,7 +140,8 @@ public class EmailList implements Serializable {
 	 * @param name10 the name10
 	 * @param value10 the value10
 	 */
-	public EmailList(long id, String broadcast_id, String email, String name1,
+	public EmailList(long id, String broadcast_id, String email, String status, 
+			Timestamp process_dttm, String name1,
 			String value1, String name2, String value2, String name3,
 			String value3, String name4, String value4, String name5,
 			String value5, String name6, String value6, String name7,
@@ -139,6 +150,8 @@ public class EmailList implements Serializable {
 		this.id = id;
 		this.broadcast_id = broadcast_id;
 		this.email = email;
+		this.status = status;
+		this.process_dttm = process_dttm;
 		this.name1 = name1;
 		this.value1 = value1;
 		this.name2 = name2;
@@ -213,8 +226,36 @@ public class EmailList implements Serializable {
 	 */
 	public void setEmail(String email) {
 		this.email = email;
-	}
+	}	
 	
+	/**
+	 * @return the status
+	 */
+	public String getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	/**
+	 * @return the process_dttm
+	 */
+	public Timestamp getProcess_dttm() {
+		return process_dttm;
+	}
+
+	/**
+	 * @param process_dttm the process_dttm to set
+	 */
+	public void setProcess_dttm(Timestamp process_dttm) {
+		this.process_dttm = process_dttm;
+	}
+
 	/**
 	 * Gets the name1.
 	 *
@@ -581,8 +622,9 @@ public class EmailList implements Serializable {
 	@Override
 	public String toString() {
 		return "EmailList [id=" + id + ", broadcast_id=" + broadcast_id
-				+ ", email=" + email + ", name1=" + name1 + ", value1="
-				+ value1 + ", name2=" + name2 + ", value2=" + value2
+				+ ", email=" + email + ", status=" + status + ", process_dttm=" + process_dttm 
+				+ ", name1=" + name1 + ", value1=" + value1
+				+ ", name2=" + name2 + ", value2=" + value2
 				+ ", name3=" + name3 + ", value3=" + value3 + ", name4="
 				+ name4 + ", value4=" + value4 + ", name5=" + name5
 				+ ", value5=" + value5 + ", name6=" + name6 + ", value6="

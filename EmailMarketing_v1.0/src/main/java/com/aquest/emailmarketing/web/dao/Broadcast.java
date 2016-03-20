@@ -106,6 +106,10 @@ public class Broadcast implements Serializable {
     /** The click_number. */
     @Transient
     private int click_number;
+    
+    /** The sent_number. */
+    @Transient
+    private int sent_number;
 
     /**
      * Instantiates a new broadcast.
@@ -561,6 +565,26 @@ public class Broadcast implements Serializable {
 	 */
 	public void setClick_number(int click_number) {
 		this.click_number = click_number;
+	}
+	
+	
+
+	/**
+	 * Gets the sent_number.
+	 * 
+	 * @return the sent_number
+	 */
+	public int getSent_number() {
+		return sent_number;
+	}
+
+	/**
+	 * Sets the sent_number.
+	 * 
+	 * @param sent_number the sent_number to set
+	 */
+	public void setSent_number(int sent_number) {
+		this.sent_number = sent_number;
 	}
 
 	/* (non-Javadoc)

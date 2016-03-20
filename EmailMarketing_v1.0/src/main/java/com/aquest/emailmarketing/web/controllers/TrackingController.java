@@ -17,6 +17,8 @@ import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.security.GeneralSecurityException;
+import java.security.KeyStoreException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import javax.imageio.ImageIO;
@@ -169,9 +171,11 @@ public class TrackingController {
 	 *
 	 * @return the ga responses
 	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws GeneralSecurityException 
+	 * @throws KeyStoreException 
 	 */
 	@RequestMapping("/garesponse")
-	public void getGaResponses() throws IOException {
+	public void getGaResponses() throws IOException, KeyStoreException, GeneralSecurityException {
 		googleAnalyticsService.getGaClickResponses();
 		googleAnalyticsService.getGaOpenResponses();
 	}

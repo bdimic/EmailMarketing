@@ -7,11 +7,14 @@
 package com.aquest.emailmarketing.web.service;
 
 import com.aquest.emailmarketing.web.dao.Broadcast;
+import com.aquest.emailmarketing.web.dao.Config;
 import com.aquest.emailmarketing.web.dao.EmailConfig;
 import com.aquest.emailmarketing.web.dao.EmailList;
 
 import java.net.MalformedURLException;
+import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -23,7 +26,6 @@ import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.log4j.Logger;
-import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +44,12 @@ public class SendEmail {
 	
 	/** The embedded image service. */
 	private EmbeddedImageService embeddedImageService;	
+	
+	/** The email list service. */
+	private EmailListService emailListService;
+	
+	/** The config sevice. */
+	private ConfigService configService;
 	
 	/**
 	 * Sets the embedded image service.
@@ -65,6 +73,28 @@ public class SendEmail {
 	}
 
 	/**
+	 * Sets the email list service.
+	 * 
+	 * @param emailListService the emailListService to set
+	 */
+	@Autowired
+	public void setEmailListService(EmailListService emailListService) {
+		this.emailListService = emailListService;
+	}
+	
+	
+
+	/**
+	 * Sets the config servic.
+	 * 
+	 * @param configService the configService to set
+	 */
+	@Autowired
+	public void setConfigService(ConfigService configService) {
+		this.configService = configService;
+	}
+
+	/**
 	 * Send email.
 	 *
 	 * @param broadcast the broadcast
@@ -75,7 +105,8 @@ public class SendEmail {
 	 * @throws InterruptedException the interrupted exception
 	 */
 	public void sendEmail(Broadcast broadcast, EmailConfig emailConfig, EmailList emailList) throws EmailException, MalformedURLException, InterruptedException {   
-            	
+        
+		Timestamp curTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
     	// email configuration part
         HtmlEmail email = new HtmlEmail();
         email.setSmtpPort(emailConfig.getPort());
@@ -117,7 +148,9 @@ public class SendEmail {
         	newHtml = newHtml.replace("[IMAGE:"+i+"]", "cid:"+id);
         }
         
-        final String SERVER_URL = "http://localhost:8080/EmailMarketing/";
+        Config config = configService.getConfig("trackingurl");
+        //TODO: Create jsp page for tracking server url
+        String serverUrl = config.getValue();
         Base64 base64 = new Base64(true);
         
         Pattern pattern = Pattern.compile("<%tracking=(.*?)=tracking%>");
@@ -126,7 +159,7 @@ public class SendEmail {
             String url = matcher.group(1);      
             String myEncryptedUrl = new String(base64.encode(url.getBytes()));
             String oldurl = "<%tracking="+url+"=tracking%>";
-            String newurl = SERVER_URL+"tracking?id="+myEncryptedUrl;
+            String newurl = serverUrl+"tracking?id="+myEncryptedUrl;
             System.out.println(newurl);
             newHtml = newHtml.replace(oldurl, newurl);
         }
@@ -135,7 +168,10 @@ public class SendEmail {
         email.setHtmlMsg(newHtml);
         email.setTextMsg(newPlainText);
         try {
-			email.send();			
+			email.send();
+			emailList.setStatus("SENT");
+			emailList.setProcess_dttm(curTimestamp);
+			emailListService.SaveOrUpdate(emailList);
 		} catch (Exception e) {
 			logger.error(e);
 		}
