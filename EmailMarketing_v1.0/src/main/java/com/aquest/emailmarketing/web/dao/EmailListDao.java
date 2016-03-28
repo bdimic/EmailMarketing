@@ -85,7 +85,7 @@ public class EmailListDao {
      * @return the string
      */
     public String saveOrUpdate(EmailList emailList) {
-	session().saveOrUpdate(emailList);
+    	session().saveOrUpdate(emailList);
         return String.valueOf(emailList.getId());
     }
     
@@ -100,5 +100,13 @@ public class EmailListDao {
         Query query = session().createQuery("delete EmailList e where b.id=:id");
         query.setParameter("id", b_id);
         return query.executeUpdate() == 1;
+    }
+    
+    public boolean exists(String broadcast_id, String email) {
+    	Criteria crit = session().createCriteria(EmailList.class);
+        crit.add(Restrictions.eq("broadcast_id", broadcast_id));
+        crit.add(Restrictions.eq("email", email));
+        EmailList emailList = (EmailList)crit.uniqueResult();
+    	return emailList != null;
     }
 }

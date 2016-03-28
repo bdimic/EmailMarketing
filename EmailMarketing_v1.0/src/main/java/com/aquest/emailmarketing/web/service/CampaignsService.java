@@ -89,4 +89,14 @@ public class CampaignsService {
         boolean isDeleted = campaignsDao.delete(campaign_id);
         return isDeleted;
     }
+    
+    /**
+     * isCampaignExist
+     * 
+     * @param campaign_id the campaign_id
+     * @return true, if campaign_id exist
+     */
+    public boolean isCampaignExist(String campaign_id) {
+    	return campaignsDao.isCampaignExist(campaign_id);
+    }
 }

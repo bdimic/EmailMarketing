@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.jsoup.Jsoup;
@@ -357,41 +358,40 @@ public class BroadcastTemplateController {
     	return "sendbroadcast";
     }
 
-    // TODO: Add logic for pickBroadcastTemplateAction
+    // DONE: Add logic for pickBroadcastTemplateAction
     
-//    @RequestMapping(value="/pickBroadcastAction", method = RequestMethod.POST)
-//    public String createNewBroadcast(Model model, 
-//    		@RequestParam(value = "newBroadcast", required = false) String newBroadcast,
-//    		@RequestParam(value = "copyBroadcast", required = false) String copyBroadcast,
-//    		@RequestParam(value = "editBroadcast", required = false) String editBroadcast,
-//    		@RequestParam(value = "showBroadcast", required = false) String showBroadcast,
-//    		@RequestParam(value = "deleteBroadcast", required = false) String deleteBroadcast,
-//    		@RequestParam(value = "campaign_id", required = false) String campaign_id,
-//    		@RequestParam(value = "broadcast_id", required = false) String broadcast_id,
-//    		Principal principal, HttpServletRequest request) {
-//        
-//    	Broadcast broadcast = broadcastService.getBroadcast(broadcast_id);
-//    	
-//        if(newBroadcast != null) {
-//        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
-//        	Broadcast broadcast1 = new Broadcast();
-//        	List<EmailConfig> emailconfig = emailConfigService.getAllProfiles();
-//        	model.addAttribute("campaign", campaign);
-//        	model.addAttribute("broadcast", broadcast1);
-//        	model.addAttribute("emailconfig", emailconfig);
-//        	return "definebroadcast";
-//        }
-//        
-//        if(copyBroadcast != null) {
+    @RequestMapping(value="/pickBroadcastTemplateAction", method = RequestMethod.POST)
+    public String createNewBroadcast(Model model, 
+    		@RequestParam(value = "newBcastTemp", required = false) String newBcastTemp,
+    		@RequestParam(value = "copyBcastTemp", required = false) String copyBcastTemp,
+    		@RequestParam(value = "editBcastTemp", required = false) String editBcastTemp,
+    		@RequestParam(value = "showBcastTemp", required = false) String showBcastTemp,
+    		@RequestParam(value = "deleteBcastTemp", required = false) String deleteBcastTemp,
+    		@RequestParam(value = "broadcast_template_id", required = false) String broadcast_template_id,
+    		Principal principal, HttpServletRequest request) {
+        
+    	BroadcastTemplate broadcastTemplate = broadcastTemplateService.getBroadcastTemplate(broadcast_template_id);
+    	
+        if(newBcastTemp != null) {
+        	BroadcastTemplate newBroadcastTemplate = new BroadcastTemplate();
+        	List<EmailConfig> emailconfig = emailConfigService.getAllProfiles();
+        	model.addAttribute("broadcastTemplate", newBroadcastTemplate);
+        	model.addAttribute("emailconfig", emailconfig);
+        	return "definebroadcasttemplate";
+        }
+        
+        // TODO: Add logic for copy Broadcast Template
+        if(copyBcastTemp != null) {
 //        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
 //        	List<EmailConfig> emailconfig = emailConfigService.getAllProfiles();
 //        	model.addAttribute("campaign", campaign);
 //        	model.addAttribute("broadcast", broadcast);
 //        	model.addAttribute("emailconfig", emailconfig);
-//        	return "definebroadcast";
-//        }
-//        
-//        if(deleteBroadcast != null) {
+        	return "definebroadcast";
+        }
+        
+     // TODO: Add logic for delete Broadcast Template
+        if(deleteBcastTemp != null) {
 //        	
 //        	if(broadcast != null) {
 //        		if(broadcast.getStatus().equals("SENT")) {
@@ -417,27 +417,24 @@ public class BroadcastTemplateController {
 //        	} else {
 //        		return "error";
 //        	}
-//        }
-//        
-//        if(editBroadcast != null) {
-////        	List<CampaignCategory> campcat = campaignCategoryService.getCategories();        	
-////        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
-////        	model.addAttribute("campaign", campaign);
-////        	model.addAttribute("campcat", campcat);
-//        	return "editcampaign";
-//        }
-//        
-//        if(showBroadcast != null) {
-////        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
-////        	model.addAttribute("broadcast", broadcast);
-////        	model.addAttribute("campaign", campaign);
-////        	System.out.println(campaign.getCampaignCategory().getCategory_id());
-////        	CampaignCategory campcat = campaignCategoryService.getCategoryById(campaign.getCampaignCategory().getCategory_id());
-////        	model.addAttribute("campcat", campcat);
-//        	
-//        	return "opencampaign";
-//        }
-//                
-//        return "home";
-//    }
+        }
+        
+     // TODO: Add logic for edit Broadcast Template
+        if(editBcastTemp != null) {
+//        	List<CampaignCategory> campcat = campaignCategoryService.getCategories();        	
+//        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
+//        	model.addAttribute("campaign", campaign);
+//        	model.addAttribute("campcat", campcat);
+        	return "editcampaign";
+        }
+        
+     // TODO: Add logic for show Broadcast Template
+        if(showBcastTemp != null) {
+//        	List<BroadcastTemplate> showBroadcastTemplates = broadcastTemplateService.getAllBroadcasts();
+//        	model.addAttribute("broadcastTemplate", showBroadcastTemplates);
+//        	return "showbcasttemplates";
+        }
+                
+        return "home";
+    }
 }

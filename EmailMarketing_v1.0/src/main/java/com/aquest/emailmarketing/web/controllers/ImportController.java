@@ -46,7 +46,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class ImportController {
 	
 	/** The Constant logger. */
-	final static Logger logger = Logger.getLogger(com.aquest.emailmarketing.web.service.GoogleAnalyticsService.class);
+	final static Logger logger = Logger.getLogger(com.aquest.emailmarketing.web.controllers.ImportController.class);
 	
 	/** The email list service. */
 	private EmailListService emailListService;

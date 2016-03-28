@@ -67,12 +67,12 @@
 </div>
 <div class="prazno"></div>
 <div class="dugme">
-<!-- TODO: Change button labels -->
-<input type="submit" name="newBroadcast" value="New Broadcast" id="new_broadcast" />
-<input type="submit" name="copyBroadcast" value="Copy into new Broadcast" id="copy_broadcast" disabled="disabled" />
-<input type="submit" name="editBroadcast" value="Edit Broadcast" id="edit_broadcast" disabled="disabled" />
-<input type="submit" name="showBroadcast" value="Show Broadcast" id="show_broadcast" disabled="disabled" />
-<input type="submit" name="deleteBroadcast" value="Delete Broadcast" id="delete_broadcast" disabled="disabled" />
-<input type="hidden" name="broadcast_id" id="MainContent_Main_hfRowId" />
+<!-- DONE: Change button labels -->
+<input type="submit" name="newBcastTemp" value="<spring:message code="bcasttemplate.button.new" />" id="new_broadcast" />
+<input type="submit" name="copyBcastTemp" value="<spring:message code="bcasttemplate.button.copy" />" id="copy_broadcast" disabled="disabled" />
+<input type="submit" name="editBcastTemp" value="<spring:message code="bcasttemplate.button.edit" />" id="edit_broadcast" disabled="disabled" />
+<input type="submit" name="showBcastTemp" value="<spring:message code="bcasttemplate.button.show" />" id="show_broadcast" disabled="disabled" />
+<input type="submit" name="deleteBcastTemp" value="<spring:message code="bcasttemplate.button.delete" />" id="delete_broadcast" disabled="disabled" />
+<input type="hidden" name="broadcast_template_id" id="MainContent_Main_hfRowId" />
 </div>
 </sf:form>

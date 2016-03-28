@@ -118,4 +118,17 @@ public class CampaignsDao {
         query.setParameter("id", campaign_id);
         return query.executeUpdate() == 1;
     }
+    
+    /**
+     * isCampaignExist
+     * 
+     *  @param campaign_id the campaign_id
+     *  @return true, if campaign_id exists
+     */
+    public boolean isCampaignExist(String campaign_id) {
+    	Criteria crit = session().createCriteria(Campaigns.class);
+        crit.add(Restrictions.eq("campaign_id", campaign_id));
+        Campaigns campaigns = (Campaigns)crit.uniqueResult();
+    	return campaigns != null;
+    }
 }

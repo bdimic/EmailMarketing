@@ -183,7 +183,7 @@ public class CampaignsController {
 	 */
 	@RequestMapping(value="/test")
 	public String test() {
-		//TODO: Check if bounces process is finished
+		//DONE: Check if bounces process is finished
 		bouncedEmailService.processAllBounces();
 		return "test";
 	}

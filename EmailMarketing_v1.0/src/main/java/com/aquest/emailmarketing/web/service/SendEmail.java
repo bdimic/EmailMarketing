@@ -149,7 +149,7 @@ public class SendEmail {
         }
         
         Config config = configService.getConfig("trackingurl");
-        //TODO: Create jsp page for tracking server url
+        //DONE: Create jsp page for tracking server url
         String serverUrl = config.getValue();
         Base64 base64 = new Base64(true);
         

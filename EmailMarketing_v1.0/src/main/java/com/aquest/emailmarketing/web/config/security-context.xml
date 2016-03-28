@@ -20,6 +20,12 @@
         </security:authentication-manager>-->
 	
 	<security:http pattern="/tracking" security="none"></security:http>
+	<security:http pattern="/api/broadcast" security="none"></security:http>
+	<security:http pattern="/api/emaillist" security="none"></security:http>
+	<security:http pattern="/api/getbcasttemps" security="none"></security:http>
+	<security:http pattern="/api/getcampcat" security="none"></security:http>
+	<security:http pattern="/api/getcampaigns" security="none"></security:http>
+	<security:http pattern="/api/campaign" security="none"></security:http>
 	<security:http use-expressions="true">
 				<security:intercept-url pattern="/openTrack" access="permitAll" />				
 				<security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />

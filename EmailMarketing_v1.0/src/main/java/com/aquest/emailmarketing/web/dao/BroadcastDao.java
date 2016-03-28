@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BroadcastDao {
     
 	/** The Constant logger. */
-	final static Logger logger = Logger.getLogger(com.aquest.emailmarketing.web.service.GoogleAnalyticsService.class);
+	final static Logger logger = Logger.getLogger(com.aquest.emailmarketing.web.dao.BroadcastDao.class);
 	
     /** The session factory. */
     @Autowired
@@ -135,5 +135,19 @@ public class BroadcastDao {
         Query query = session().createQuery("delete Broadcast b where b.id=:id");
         query.setParameter("id", id);
         return query.executeUpdate() == 1;
+    }
+    
+    
+    /**
+     * isBroadcastExist
+     * 
+     *  @param broadcast_id the broadcast_id
+     *  @return true, if broadcast_id exists
+     */
+    public boolean isBroadcastExist(String broadcast_id) {
+    	Criteria crit = session().createCriteria(Broadcast.class);
+        crit.add(Restrictions.eq("broadcast_id", broadcast_id));
+        Broadcast broadcast = (Broadcast)crit.uniqueResult();
+    	return broadcast != null;
     }
 }

@@ -160,10 +160,6 @@ public class BouncedEmailService {
 	public void processBounces(String protocol, String host, String port,
             String userName, String password) {
         Properties properties = getServerProperties(protocol, host, port);
-		//Properties properties = new Properties();
-		//properties.put("mail.pop3.host", "mail.aquest-solutions.com");
-	    //properties.put("mail.pop3.port", "110");
-		//Properties properties = getServerProperties("pop3", "mail.aquest-solutions.com", "110");
         Session session = Session.getDefaultInstance(properties);
         
         List<BounceCode> bounceCodes = bounceCodeService.getAllBounceCodes();
@@ -172,7 +168,12 @@ public class BouncedEmailService {
         try {
             // connects to the message store
             Store store = session.getStore(protocol);
+            System.out.println(userName);
+            System.out.println(password);
+            System.out.println(userName.length());
+            System.out.println(password.length());
             //store.connect(userName, password);
+            //TODO: ispraviti username i password da idu iz poziva a ne hardcoded
             store.connect("bojan.dimic@aquest-solutions.com", "bg181076");
  
             // opens the inbox folder

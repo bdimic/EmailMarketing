@@ -192,4 +192,8 @@ public class EmailListService {
     public void delete(String id) {
     	emailListDao.delete(id);
     }
+    
+    public boolean exists(String broadcast_id, String email) {
+    	return emailListDao.exists(broadcast_id, email);
+    } 
 }

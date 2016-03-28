@@ -124,4 +124,14 @@ public class BroadcastService {
     public boolean delete(int id) {
         return broadcastDao.delete(id);
     }
+    
+    /**
+     * isBroadcastExist
+     * 
+     * @param broadcast_id the broadcast_id
+     * @return true, if broadcast_id exist
+     */
+    public boolean isBroadcastExist(String broadcast_id) {
+    	return broadcastDao.isBroadcastExist(broadcast_id);
+    }
 }
