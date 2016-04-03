@@ -9,12 +9,15 @@ package com.aquest.emailmarketing.web.controllers;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.jasper.tagplugins.jstl.core.Url;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,6 +42,8 @@ import com.aquest.emailmarketing.web.service.CampaignsService;
 import com.aquest.emailmarketing.web.service.EmailConfigService;
 import com.aquest.emailmarketing.web.service.EmailListService;
 import com.aquest.emailmarketing.web.service.TrackingResponseService;
+import com.msiops.premailer.Premailer;
+import com.msiops.premailer.PremailerInterface;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -155,6 +160,7 @@ public class CampaignsController {
 		this.bouncedEmailService = bouncedEmailService;
 	}
 
+
 	/**
 	 * Show home.
 	 *
@@ -183,8 +189,40 @@ public class CampaignsController {
 	 */
 	@RequestMapping(value="/test")
 	public String test() {
+		/* PREMAILER API OPTIONS
+		 * line_length - Line length used by to_plain_text. Boolean, default is 65.
+			warn_level - What level of CSS compatibility warnings to show (see Warnings).
+				NONE = 0
+				SAFE = 1
+				POOR = 2
+				RISKY = 3
+			link_query_string - A string to append to every a href="" link. Do not include the initial ?.
+			base_url - Used to calculate absolute URLs for local files.
+			css - Manually specify CSS stylesheets.
+			css_to_attributes - Copy related CSS attributes into HTML attributes (e.g. background-color to bgcolor)
+			css_string - Pass CSS as a string
+			remove_ids - Remove ID attributes whenever possible and convert IDs used as anchors to hashed to avoid collisions in webmail programs. Default is false.
+			remove_classes - Remove class attributes. Default is false.
+			remove_comments -  Remove html comments. Default is false.
+			preserve_styles - Whether to preserve any link rel=stylesheet and style elements. Default is false.
+			preserve_reset - Whether to preserve styles associated with the MailChimp reset code
+			with_html_string -  Whether the html param should be treated as a raw string.
+			verbose - Whether to print errors and warnings to $stderr. Default is false.
+			adapter - Which HTML parser to use, either :nokogiri or :hpricot. Default is :hpricot.
+		*/
+
 		//DONE: Check if bounces process is finished
-		bouncedEmailService.processAllBounces();
+		//bouncedEmailService.processAllBounces();
+		//String url = "http://studenti.unicreditbank.rs/nl4/type2/index.html";
+		Broadcast broadcast = broadcastService.getBroadcastById(45);
+		Premailer premailer = new Premailer();
+		PremailerInterface premailerInterface = premailer.getPremailerInstance();
+		
+		Map<String,Object> options = new HashMap<String, Object>();
+		options.put("with_html_string", true);
+		premailerInterface.init(broadcast.getHtmlbody(), options);
+		System.out.println(premailerInterface.inline_css());
+		premailer.destroyInstance();
 		return "test";
 	}
     
