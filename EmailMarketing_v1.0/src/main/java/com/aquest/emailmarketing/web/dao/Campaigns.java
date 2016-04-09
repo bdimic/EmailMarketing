@@ -80,51 +80,50 @@ public class Campaigns {
     @JoinColumn(name="category_id")
     private CampaignCategory campaignCategory;
 
-	
+    /**
+     * Instantiates a new campaigns.
+    */ 
+    public Campaigns() {
+   	this.campaignCategory = new CampaignCategory();
+    }
 
-//    /**
-//     * Instantiates a new campaigns.
-//     */
-//    public Campaigns() {
-//    	this.campaignCategory = new CampaignCategory();
-//    }
-//
-//	/**
-//	 * Instantiates a new campaigns.
-//	 *
-//	 * @param id the id
-//	 * @param campaign_id the campaign_id
-//	 * @param campaign_source the campaign_source
-//	 * @param campaign_name the campaign_name
-//	 * @param campaign_description the campaign_description
-//	 * @param campaign_status the campaign_status
-//	 * @param campaign_start_date the campaign_start_date
-//	 * @param campaign_end_date the campaign_end_date
-//	 * @param creation_user the creation_user
-//	 * @param creation_dttm the creation_dttm
-//	 * @param last_change_user the last_change_user
-//	 * @param last_change_dttm the last_change_dttm
-//	 */
-//	public Campaigns(int id, String campaign_id, String campaign_source,
-//			String campaign_name, String campaign_description, 
-//			String campaign_status,	Date campaign_start_date, 
-//			Date campaign_end_date, String creation_user,
-//			Timestamp creation_dttm, String last_change_user,
-//			Timestamp last_change_dttm) {
-//		this.id = id;
-//		this.campaign_id = campaign_id;
-//		this.campaign_source = campaign_source;
-//		this.campaign_name = campaign_name;
-//		this.campaign_description = campaign_description;
-//		this.campaign_status = campaign_status;
-//		this.campaign_start_date = campaign_start_date;
-//		this.campaign_end_date = campaign_end_date;
-//
-//		this.creation_user = creation_user;
-//		this.creation_dttm = creation_dttm;
-//		this.last_change_user = last_change_user;
-//		this.last_change_dttm = last_change_dttm;
-//	}
+	/**
+	 * Instantiates a new campaigns.
+	 *
+	 * @param id the id
+	 * @param campaign_id the campaign_id
+	 * @param campaign_source the campaign_source
+	 * @param campaign_name the campaign_name
+	 * @param campaign_description the campaign_description
+	 * @param campaign_status the campaign_status
+	 * @param campaign_start_date the campaign_start_date
+	 * @param campaign_end_date the campaign_end_date
+	 * @param creation_user the creation_user
+	 * @param creation_dttm the creation_dttm
+	 * @param last_change_user the last_change_user
+	 * @param last_change_dttm the last_change_dttm
+	 */
+    
+	public Campaigns(int id, String campaign_id, String campaign_source,
+			String campaign_name, String campaign_description, 
+			String campaign_status,	Date campaign_start_date, 
+			Date campaign_end_date, String creation_user,
+			Timestamp creation_dttm, String last_change_user,
+			Timestamp last_change_dttm) {
+		this.id = id;
+		this.campaign_id = campaign_id;
+		this.campaign_source = campaign_source;
+		this.campaign_name = campaign_name;
+		this.campaign_description = campaign_description;
+		this.campaign_status = campaign_status;
+		this.campaign_start_date = campaign_start_date;
+		this.campaign_end_date = campaign_end_date;
+
+		this.creation_user = creation_user;
+		this.creation_dttm = creation_dttm;
+		this.last_change_user = last_change_user;
+		this.last_change_dttm = last_change_dttm;
+	}
 
 	/**
 	 * Gets the id.
@@ -269,6 +268,8 @@ public class Campaigns {
 	public void setCampaign_end_date(Date campaign_end_date) {
 		this.campaign_end_date = campaign_end_date;
 	}
+	
+	
 
 	/**
 	 * Gets the category_id.

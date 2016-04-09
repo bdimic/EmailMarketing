@@ -111,56 +111,56 @@ public class Broadcast implements Serializable {
     @Transient
     private int sent_number;
 
-//    /**
-//     * Instantiates a new broadcast.
-//     */
-//    public Broadcast() {
-//    	this.emailConfig = new EmailConfig();
-//    }
-//
-//    /**
-//     * Instantiates a new broadcast.
-//     *
-//     * @param emailConfig the email config
-//     * @param id the id
-//     * @param broadcast_id the broadcast_id
-//     * @param broadcast_name the broadcast_name
-//     * @param bcast_template_id the bcast_template_id
-//     * @param campaign_id the campaign_id
-//     * @param subject the subject
-//     * @param baseurl the baseurl
-//     * @param htmlbody the htmlbody
-//     * @param htmlbody_tracking the htmlbody_tracking
-//     * @param htmlbody_embed the htmlbody_embed
-//     * @param plaintext the plaintext
-//     * @param status the status
-//     * @param creation_dttm the creation_dttm
-//     * @param creation_user the creation_user
-//     * @param last_change_dttm the last_change_dttm
-//     * @param last_change_user the last_change_user
-//     * @param execution_dttm the execution_dttm
-//     * @param execution_user the execution_user
-//     */
-//    public Broadcast(EmailConfig emailConfig, int id, String broadcast_id, String broadcast_name, Integer bcast_template_id, String campaign_id, String subject, String baseurl, String htmlbody, String htmlbody_tracking, String htmlbody_embed, String plaintext, String status, Timestamp creation_dttm, String creation_user, Timestamp last_change_dttm, String last_change_user, Timestamp execution_dttm, String execution_user) {
-//        this.emailConfig = emailConfig;
-//        this.id = id;
-//    	this.broadcast_id = broadcast_id;
-//    	this.bcast_template_id = bcast_template_id;
-//        this.broadcast_name = broadcast_name;
-//        this.campaign_id = campaign_id;
-//        this.subject = subject;
-//        this.htmlbody = htmlbody;
-//        this.htmlbody_tracking = htmlbody_tracking;
-//        this.htmlbody_embed = htmlbody_embed;
-//        this.plaintext = plaintext;
-//        this.status = status;
-//        this.creation_dttm = creation_dttm;
-//        this.creation_user = creation_user;
-//        this.last_change_dttm = last_change_dttm;
-//        this.last_change_user = last_change_user;
-//        this.execution_dttm = execution_dttm;
-//        this.execution_user = execution_user;
-//    }
+    /**
+     * Instantiates a new broadcast.
+     */
+    public Broadcast() {
+    	this.emailConfig = new EmailConfig();
+    }
+
+    /**
+     * Instantiates a new broadcast.
+     *
+     * @param emailConfig the email config
+     * @param id the id
+     * @param broadcast_id the broadcast_id
+     * @param broadcast_name the broadcast_name
+     * @param bcast_template_id the bcast_template_id
+     * @param campaign_id the campaign_id
+     * @param subject the subject
+     * @param baseurl the baseurl
+     * @param htmlbody the htmlbody
+     * @param htmlbody_tracking the htmlbody_tracking
+     * @param htmlbody_embed the htmlbody_embed
+     * @param plaintext the plaintext
+     * @param status the status
+     * @param creation_dttm the creation_dttm
+     * @param creation_user the creation_user
+     * @param last_change_dttm the last_change_dttm
+     * @param last_change_user the last_change_user
+     * @param execution_dttm the execution_dttm
+     * @param execution_user the execution_user
+     */
+    public Broadcast(EmailConfig emailConfig, int id, String broadcast_id, String broadcast_name, Integer bcast_template_id, String campaign_id, String subject, String baseurl, String htmlbody, String htmlbody_tracking, String htmlbody_embed, String plaintext, String status, Timestamp creation_dttm, String creation_user, Timestamp last_change_dttm, String last_change_user, Timestamp execution_dttm, String execution_user) {
+        this.emailConfig = emailConfig;
+        this.id = id;
+    	this.broadcast_id = broadcast_id;
+    	this.bcast_template_id = bcast_template_id;
+        this.broadcast_name = broadcast_name;
+        this.campaign_id = campaign_id;
+        this.subject = subject;
+        this.htmlbody = htmlbody;
+        this.htmlbody_tracking = htmlbody_tracking;
+        this.htmlbody_embed = htmlbody_embed;
+        this.plaintext = plaintext;
+        this.status = status;
+        this.creation_dttm = creation_dttm;
+        this.creation_user = creation_user;
+        this.last_change_dttm = last_change_dttm;
+        this.last_change_user = last_change_user;
+        this.execution_dttm = execution_dttm;
+        this.execution_user = execution_user;
+    }
 
     /**
      * Gets the id.
@@ -503,6 +503,8 @@ public class Broadcast implements Serializable {
 	public void setEmailConfig(EmailConfig emailConfig) {
 		this.emailConfig = emailConfig;
 	}
+	
+	
 	
 	/**
 	 * Gets the profile_id.

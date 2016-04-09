@@ -5,19 +5,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-  <script>
-  $(function() {
-    $( document ).tooltip();
-  });
-  </script>
-
 <h3>Authorised Users Only!</h3>
 
 <sf:form method="POST" action="${pageContext.request.contextPath}/saveEmailConfig" commandName="emailConfig">
 <table class="formtable">
 			<tr>
                 <td class="label"><spring:message code="emailconfig.profilename"/>:</td>
-                <td><sf:input type="text" name="profilename" path="profile_name" title="<spring:message code="emailconfig.tooltip.profilename"/>" />
+                <td><sf:input type="text" name="profilename" path="profile_name" />
                 <br/><sf:errors path="profile_name" cssClass="error"/></td>
             </tr>
  			<tr>

@@ -20,7 +20,7 @@
   });
   
   
-  $('#configuration_table tbody tr').click(function (event) {
+  $('body').on("click", '#configuration_table tbody tr', function (event) {
       if ($(this).hasClass('row_selected')) {
 
       }
@@ -42,7 +42,7 @@
 </br>
 
 
-<sf:form method="POST" action="${pageContext.request.contextPath}/emailconfiguration" commandName="emailconfiguration">
+<sf:form method="POST" action="${pageContext.request.contextPath}/emailconfiguration" commandName="emailconfig">
 <div class="sadrzaj">
 <table id="configuration_table" cellpadding="0" cellspacing="0" border="0"  class="display">
     <thead>
@@ -70,6 +70,6 @@
 <input type="submit" name="createProfile" value="<spring:message code="emailconfig.button.create" />" id="create_profile" />
 <input type="submit" name="editProfile" value="<spring:message code="emailconfig.button.edit" />" id="edit_profile" disabled="disabled" />
 <input type="submit" name="deleteProfile" value="<spring:message code="emailconfig.button.delete" />" id="delete_profile" disabled="disabled" />
-<input type="hidden" name="id" id="MainContent_Main_hfRowId" />
+<input type="hidden" name="id" id="MainContent_Main_hfRowId" value="0" />
 </div>
 </sf:form>

@@ -176,14 +176,13 @@ public class AdminController {
 	 * @param request the request
 	 * @return the string
 	 */
-	@RequestMapping("/emailconfiguration")
+	@RequestMapping(value="/emailconfiguration", method = RequestMethod.POST)
 	public String showEmailConfig(Model model,
 			@RequestParam(value = "createProfile", required = false) String createProfile,
     		@RequestParam(value = "editProfile", required = false) String editProfile,
     		@RequestParam(value = "deleteProfile", required = false) String deleteProfile,
     		@RequestParam(value = "id", required = false) int id,
     		Principal principal, HttpServletRequest request) {
-		
 		if(createProfile != null) {
 			EmailConfig emailConfig = new EmailConfig();
 			model.addAttribute("emailConfig", emailConfig);

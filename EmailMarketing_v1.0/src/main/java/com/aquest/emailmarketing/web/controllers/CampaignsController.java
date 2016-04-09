@@ -6,6 +6,7 @@
 
 package com.aquest.emailmarketing.web.controllers;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -19,6 +20,8 @@ import javax.validation.Valid;
 
 import org.apache.jasper.tagplugins.jstl.core.Url;
 import org.apache.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -186,9 +189,10 @@ public class CampaignsController {
 	 * Test.
 	 *
 	 * @return the string
+	 * @throws IOException 
 	 */
 	@RequestMapping(value="/test")
-	public String test() {
+	public String test() throws IOException {
 		/* PREMAILER API OPTIONS
 		 * line_length - Line length used by to_plain_text. Boolean, default is 65.
 			warn_level - What level of CSS compatibility warnings to show (see Warnings).
@@ -214,13 +218,16 @@ public class CampaignsController {
 		//DONE: Check if bounces process is finished
 		//bouncedEmailService.processAllBounces();
 		//String url = "http://studenti.unicreditbank.rs/nl4/type2/index.html";
+		Document doc = Jsoup.connect("http://studenti.unicreditbank.rs/nl9/index.html").get();
+		String all = doc.outerHtml();
 		Broadcast broadcast = broadcastService.getBroadcastById(45);
 		Premailer premailer = new Premailer();
 		PremailerInterface premailerInterface = premailer.getPremailerInstance();
 		
 		Map<String,Object> options = new HashMap<String, Object>();
 		options.put("with_html_string", true);
-		premailerInterface.init(broadcast.getHtmlbody(), options);
+		//premailerInterface.init(broadcast.getHtmlbody(), options);
+		premailerInterface.init(all, options);
 		System.out.println(premailerInterface.inline_css());
 		premailer.destroyInstance();
 		return "test";
