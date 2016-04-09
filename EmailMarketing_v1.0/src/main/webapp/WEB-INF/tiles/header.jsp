@@ -5,7 +5,7 @@
 <table>
     <tr>
         <td class="header">
-            <a class="title" href="<c:url value='/'/>"><img src="${pageContext.request.contextPath}/static/images/logo.gif"/></a>
+            <a class="title" href="<c:url value='/'/>"><img src="${pageContext.request.contextPath}/static/images/logo_aquest_EM.jpg"/></a>
             <sec:authorize access="!isAuthenticated()">
                 <a class="login" href="<c:url value='/login'/>">Log in</a>
             </sec:authorize>
