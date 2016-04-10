@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `cm_bounce_codes` (
   `type` varchar(20) NOT NULL,
   `explanation` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=63 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=63 ;
 
 --
 -- Dumping data for table `cm_bounce_codes`
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `cm_bounce_email` (
   `bounce_reason` varchar(200) NOT NULL,
   `send_date` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
 
 
 -- --------------------------------------------------------
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `cm_broadcast_template` (
   `last_change_user` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `profile_id` (`profile_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
 --
 -- Constraints for dumped tables
@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `cm_campaign_category` (
   `category_id` int(11) NOT NULL AUTO_INCREMENT,
   `category_description` varchar(50) NOT NULL,
   PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `cm_config` (
   `category` varchar(50) NOT NULL,
   `value` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `cm_email_broadcast` (
   KEY `campaign_id` (`campaign_id`),
   KEY `profile_id` (`profile_id`),
   KEY `broadcast_id` (`broadcast_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=56 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=56 ;
 
 --
 -- Constraints for dumped tables
@@ -249,7 +249,7 @@ CREATE TABLE IF NOT EXISTS `cm_email_broadcast_list` (
   `name10` varchar(50) DEFAULT NULL,
   `value10` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=131 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=131 ;
 
 
 -- --------------------------------------------------------
@@ -275,7 +275,7 @@ CREATE TABLE IF NOT EXISTS `cm_email_communication` (
   PRIMARY KEY (`id`),
   KEY `campaign_category` (`category_id`),
   KEY `campaign_id` (`campaign_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=33 ;
 
 --
 -- Constraints for dumped tables
@@ -313,7 +313,7 @@ CREATE TABLE IF NOT EXISTS `cm_email_config` (
   `bounce_username` varchar(200) DEFAULT NULL,
   `bounce_password` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`profile_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 
 -- --------------------------------------------------------
@@ -328,7 +328,7 @@ CREATE TABLE IF NOT EXISTS `cm_email_embedded_images` (
   `bcast_template_id` int(11) DEFAULT NULL,
   `url` varchar(5000) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=24 ;
 
 
 -- --------------------------------------------------------
@@ -345,7 +345,7 @@ CREATE TABLE IF NOT EXISTS `cm_ga_config` (
   `P12_file` blob,
   `api_email` varchar(100) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
 
 
 -- --------------------------------------------------------
@@ -368,7 +368,7 @@ CREATE TABLE IF NOT EXISTS `cm_tracking_config` (
   `open_pixel_flg` int(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `broadcast_id` (`broadcast_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=24 ;
 
 
 -- --------------------------------------------------------
@@ -388,7 +388,7 @@ CREATE TABLE IF NOT EXISTS `cm_tracking_response` (
   `response_time` timestamp NOT NULL,
   `processed_dttm` timestamp NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=70 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=70 ;
 
 
 -- --------------------------------------------------------
@@ -405,4 +405,4 @@ CREATE TABLE IF NOT EXISTS `users` (
   `enabled` tinyint(1) DEFAULT '1',
   `email` varchar(60) NOT NULL,
   PRIMARY KEY (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

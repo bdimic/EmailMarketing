@@ -51,7 +51,7 @@ public class ConfigDao {
     
     public Config getConfig(String key) {
     	Criteria crit = session().createCriteria(Config.class);
-        crit.add(Restrictions.eq("key", key));
+        crit.add(Restrictions.eq("category", key));
         return (Config)crit.uniqueResult();
     }
     

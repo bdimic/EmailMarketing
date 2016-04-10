@@ -24,12 +24,18 @@ import com.aquest.emailmarketing.web.service.EmbeddedImageService;
 import com.aquest.emailmarketing.web.service.SendEmailService;
 import com.aquest.emailmarketing.web.service.TrackingConfigService;
 import com.aquest.emailmarketing.web.tracking.EmailTrackingService;
+import com.msiops.premailer.Premailer;
+import com.msiops.premailer.PremailerInterface;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -229,6 +235,7 @@ public class BroadcastController {
     						 @RequestParam(value = "campaign_id") String campaign_id,
     						 @RequestParam(value = "old_broadcast_id") String old_broadcast_id) {
     	Timestamp curTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+    	System.out.println(broadcast.getSubject());
     	broadcast.setCreation_user(principal.getName());
         broadcast.setCreation_dttm(curTimestamp);
         broadcast.setBroadcast_source("EM");
@@ -256,12 +263,37 @@ public class BroadcastController {
      * @param result the result
      * @param principal the principal
      * @return the string
+     * @throws IOException 
      */
     @RequestMapping(value= "/defineContent", method = RequestMethod.POST)
-    public String defineContent(Model model,@Valid @ModelAttribute("broadcast") Broadcast broadcast1,BindingResult result, Principal principal) {
+    public String defineContent(Model model,@Valid @ModelAttribute("broadcast") Broadcast broadcast1,
+    							@RequestParam(value = "fromUrl", required = false) String fromUrl,
+    							@RequestParam(value = "optimize", required = false) boolean optimize,
+    							BindingResult result, Principal principal) throws IOException {
+    	String htmlBodyPrep = "";
     	Broadcast broadcast = broadcastService.getBroadcastById(broadcast1.getId());
     	broadcast.setSubject(broadcast1.getSubject());
-    	broadcast.setHtmlbody(broadcast1.getHtmlbody());
+    	if(fromUrl != null) {
+    		Document doc = Jsoup.connect(fromUrl).get();
+    		htmlBodyPrep = doc.outerHtml();
+    		System.out.println(htmlBodyPrep);
+    	}
+    	if(broadcast1.getHtmlbody() != null) {
+    		htmlBodyPrep = broadcast1.getHtmlbody();
+    	}
+    	if(optimize == true) {
+    		Premailer premailer = new Premailer();
+    		PremailerInterface premailerInterface = premailer.getPremailerInstance();
+    		
+    		Map<String,Object> options = new HashMap<String, Object>();
+    		options.put("with_html_string", true);
+    		options.put("base_url", fromUrl);
+    		//premailerInterface.init(broadcast.getHtmlbody(), options);
+    		premailerInterface.init(htmlBodyPrep, options);
+    		broadcast.setHtmlbody(premailerInterface.inline_css());
+    		System.out.println(premailerInterface.inline_css());
+    		premailer.destroyInstance();
+    	} 
     	broadcast.setPlaintext(broadcast1.getPlaintext());
     	broadcastService.SaveOrUpdate(broadcast);
     	// Find URLs in html body and add tracking code

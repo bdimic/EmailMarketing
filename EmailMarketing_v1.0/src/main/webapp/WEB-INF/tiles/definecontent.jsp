@@ -1,19 +1,35 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <script>
-    $(function() {
+	$(document).ready(function() {
+		$("#fromUrl").keyup(function(e) {
+			if($(this).val() != '') {
+				$("#htmlbody").attr('disabled','disabled');
+			} else {
+				$("#htmlbody").removeAttr('disabled');
+			}
+		});
+		$("#htmlbody").keyup(function(e) {
+			if($(this).val() != '') {
+				$("#fromUrl").attr('disabled','disabled');
+			} else {
+				$("#fromUrl").removeAttr('disabled');
+			}
+		});
+	});
+    /* $(function() {
         // Replace all textarea's
         // with SCEditor
         $("#htmlbody").sceditor({
             plugins: "xhtml",
     	style: "css/jquery.sceditor.default.min.css"
         });
-    });
+    }); */
 </script>
 
 <div class="progressbar">
@@ -34,11 +50,16 @@
 <sf:input type="hidden" path="broadcast_id" id="broadcast_id" />
     <table class="kampanja_broadcast">
         <tr>
-            <td class="label"><spring:message code="broadcast.subject"/>:</td>
-            <td><sf:input type="text" name="subject" path="subject" /></td>
+            <td colspan="2"><spring:message code="broadcast.subject"/>:<sf:input type="text" name="subject" path="subject" /></td>
         </tr>
         <tr>
-            <td colspan="2"><sf:textarea name="htmlbody" path="htmlbody" value="${old_broadcast.htmlbody}" /></td>
+        	<td colspan="2">HTML from URL: <input type="text" name="fromUrl" id="fromUrl"></td>
+        </tr>
+        <tr>
+            <td colspan="2"><sf:textarea id="htmlbody" name="htmlbody" path="htmlbody" value="${old_broadcast.htmlbody}" /></td>
+        </tr>
+        <tr>
+        	<td colspan="2"><input type="checkbox" id="optimize" name="optimize">Optimize HTML for email (premailer)</td>
         </tr>
         <tr>
             <td colspan="2"><spring:message code="broadcast.plain.text"/>:</td>
