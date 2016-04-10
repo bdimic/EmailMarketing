@@ -123,17 +123,17 @@ CREATE TABLE IF NOT EXISTS `cm_bounce_email` (
 
 CREATE TABLE IF NOT EXISTS `cm_broadcast_template` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `b_template_name` varchar(255) NOT NULL,
-  `b_template_subject` varchar(255) DEFAULT NULL,
+  `b_template_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `b_template_subject` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `profile_id` int(11) DEFAULT NULL,
-  `htmlbody` blob,
-  `htmlbody_tracking` blob,
-  `htmlbody_embed` blob,
-  `plaintext` blob,
+  `htmlbody` text COLLATE utf8_unicode_ci,
+  `htmlbody_tracking` text COLLATE utf8_unicode_ci,
+  `htmlbody_embed` text COLLATE utf8_unicode_ci,
+  `plaintext` text COLLATE utf8_unicode_ci,
   `creation_dttm` timestamp NULL DEFAULT NULL,
-  `creation_user` varchar(20) DEFAULT NULL,
+  `creation_user` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `last_change_dttm` timestamp NULL DEFAULT NULL,
-  `last_change_user` varchar(20) DEFAULT NULL,
+  `last_change_user` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `profile_id` (`profile_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
@@ -182,29 +182,29 @@ CREATE TABLE IF NOT EXISTS `cm_config` (
 
 CREATE TABLE IF NOT EXISTS `cm_email_broadcast` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `broadcast_id` varchar(20) NOT NULL,
-  `broadcast_source` varchar(10) DEFAULT NULL,
+  `broadcast_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `broadcast_source` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `bcast_template_id` int(11) DEFAULT NULL,
-  `broadcast_name` varchar(255) DEFAULT NULL,
-  `campaign_id` varchar(20) DEFAULT NULL,
-  `subject` varchar(255) DEFAULT NULL,
+  `broadcast_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `campaign_id` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `subject` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `profile_id` int(11) DEFAULT NULL,
-  `htmlbody` blob,
-  `htmlbody_tracking` blob,
-  `htmlbody_embed` blob,
-  `plaintext` blob,
-  `status` varchar(50) DEFAULT NULL,
+  `htmlbody` text COLLATE utf8_unicode_ci,
+  `htmlbody_tracking` text COLLATE utf8_unicode_ci,
+  `htmlbody_embed` text COLLATE utf8_unicode_ci,
+  `plaintext` text COLLATE utf8_unicode_ci,
+  `status` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `creation_dttm` timestamp NULL DEFAULT NULL,
-  `creation_user` varchar(20) DEFAULT NULL,
+  `creation_user` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `last_change_dttm` timestamp NULL DEFAULT NULL,
-  `last_change_user` varchar(20) DEFAULT NULL,
+  `last_change_user` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `execution_dttm` timestamp NULL DEFAULT NULL,
-  `execution_user` varchar(20) DEFAULT NULL,
+  `execution_user` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `campaign_id` (`campaign_id`),
   KEY `profile_id` (`profile_id`),
   KEY `broadcast_id` (`broadcast_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=56 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=65 ;
 
 --
 -- Constraints for dumped tables
