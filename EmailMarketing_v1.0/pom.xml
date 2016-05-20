@@ -253,7 +253,13 @@
 		<artifactId>java-premailer-wrapper</artifactId>
 		<version>1.1_1.8.4</version>
 	</dependency>
-        </dependencies> 
+        </dependencies>
+        <repositories>
+        	<repository>
+    			<id>rubygems-releases</id>
+    			<url>http://rubygems-proxy.torquebox.org/releases</url>
+			</repository>
+        </repositories>
         <build>
             <finalName>EmailMarketing</finalName>  
             <plugins>  
