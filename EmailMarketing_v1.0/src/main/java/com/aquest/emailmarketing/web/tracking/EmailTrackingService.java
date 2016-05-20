@@ -14,8 +14,10 @@ import com.aquest.emailmarketing.web.dao.Urls;
  */
 public class EmailTrackingService {
 	
+	//TODO:get value from config instead of hardcoded
 	private final String SERVER_URL = "localhost:8080/EmailMarketing/"; // samo privremeno
 	// ovo mora da bude definisano u nekoj config tabeli
+	//TODO:get value from someware instead of hardcoded
 	private final String GA_TRACKING_ID = "UA-68393999-1"; //samo privremeno
 	// ovde mora da se doda citanje google analytics tracking ID-ja (tid)
 	// Svi parametri za google analytics treba da se upisuju u tabelu

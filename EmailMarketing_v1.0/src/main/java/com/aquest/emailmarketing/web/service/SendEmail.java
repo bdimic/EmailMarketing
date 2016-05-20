@@ -151,15 +151,22 @@ public class SendEmail {
         Config config = configService.getConfig("trackingurl");
         //DONE: Create jsp page for tracking server url
         String serverUrl = config.getValue();
+        System.out.println(serverUrl);
         Base64 base64 = new Base64(true);
         
         Pattern pattern = Pattern.compile("<%tracking=(.*?)=tracking%>");
         Matcher matcher = pattern.matcher(newHtml);
         while (matcher.find()) {
-            String url = matcher.group(1);      
+            String url = matcher.group(1);
+            System.out.println(url);
+            logger.debug(url);
             String myEncryptedUrl = new String(base64.encode(url.getBytes()));
+            
             String oldurl = "<%tracking="+url+"=tracking%>";
+            logger.debug(oldurl);
+            System.out.println(oldurl);
             String newurl = serverUrl+"tracking?id="+myEncryptedUrl;
+            logger.debug(newurl);
             System.out.println(newurl);
             newHtml = newHtml.replace(oldurl, newurl);
         }

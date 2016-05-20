@@ -33,8 +33,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -276,20 +278,42 @@ public class BroadcastController {
     	if(fromUrl != null) {
     		Document doc = Jsoup.connect(fromUrl).get();
     		htmlBodyPrep = doc.outerHtml();
+    		broadcast.setHtmlbody(htmlBodyPrep);
     		System.out.println(htmlBodyPrep);
     	}
     	if(broadcast1.getHtmlbody() != null) {
     		htmlBodyPrep = broadcast1.getHtmlbody();
     	}
     	if(optimize == true) {
+//    		/* PREMAILER API OPTIONS
+//    		 * line_length - Line length used by to_plain_text. Boolean, default is 65.
+//    			warn_level - What level of CSS compatibility warnings to show (see Warnings).
+//    				NONE = 0
+//    				SAFE = 1
+//    				POOR = 2
+//    				RISKY = 3
+//    			link_query_string - A string to append to every a href="" link. Do not include the initial ?.
+//    			base_url - Used to calculate absolute URLs for local files.
+//    			css - Manually specify CSS stylesheets.
+//    			css_to_attributes - Copy related CSS attributes into HTML attributes (e.g. background-color to bgcolor)
+//    			css_string - Pass CSS as a string
+//    			remove_ids - Remove ID attributes whenever possible and convert IDs used as anchors to hashed to avoid collisions in webmail programs. Default is false.
+//    			remove_classes - Remove class attributes. Default is false.
+//    			remove_comments -  Remove html comments. Default is false.
+//    			preserve_styles - Whether to preserve any link rel=stylesheet and style elements. Default is false.
+//    			preserve_reset - Whether to preserve styles associated with the MailChimp reset code
+//    			with_html_string -  Whether the html param should be treated as a raw string.
+//    			verbose - Whether to print errors and warnings to $stderr. Default is false.
+//    			adapter - Which HTML parser to use, either :nokogiri or :hpricot. Default is :hpricot.
+//    		*/
     		Premailer premailer = new Premailer();
     		PremailerInterface premailerInterface = premailer.getPremailerInstance();
     		
     		Map<String,Object> options = new HashMap<String, Object>();
     		options.put("with_html_string", true);
     		options.put("base_url", fromUrl);
-    		//premailerInterface.init(broadcast.getHtmlbody(), options);
-    		premailerInterface.init(htmlBodyPrep, options);
+    		premailerInterface.init(broadcast.getHtmlbody(), options);
+    		//premailerInterface.init(htmlBodyPrep, options);
     		broadcast.setHtmlbody(premailerInterface.inline_css());
     		System.out.println(premailerInterface.inline_css());
     		premailer.destroyInstance();
@@ -299,7 +323,8 @@ public class BroadcastController {
     	// Find URLs in html body and add tracking code
     	Urls urls = new Urls();
     	String html = broadcast.getHtmlbody();
-    	List<String> urlList = new ArrayList<String>();
+    	//HashSet to avoid duplicates
+    	Set<String> urlList = new HashSet<String>();
     	Document doc = Jsoup.parse(html);
     	Elements links = doc.select("a[href]");
     	for (Element link : links){
@@ -413,7 +438,8 @@ public class BroadcastController {
     	}
     	// find images in html to be able to embed images in email as in-line attachments
     	EmbeddedImage embeddedImage = new EmbeddedImage();
-    	List<String> imgList = new ArrayList<String>();
+    	//HashSet to avoid duplicates
+    	Set<String> imgList = new HashSet<String>();
     	String html = broadcast.getHtmlbody();
     	Document doc = Jsoup.parse(html);
     	Elements media = doc.select("[src]");
