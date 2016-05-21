@@ -32,9 +32,9 @@
 		<property name="defaultLocale" value="en" />
 	</bean>
 
-	<bean class="com.aquest.emailmarketing.web.config.PropertiesUtil">
+	<!-- <bean class="com.aquest.emailmarketing.web.config.PropertiesUtil">
 		<property name="locations" value="classpath:application.properties" />
-	</bean>
+	</bean> -->
 
 	<bean id="TilesViewResolver"
 		class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
