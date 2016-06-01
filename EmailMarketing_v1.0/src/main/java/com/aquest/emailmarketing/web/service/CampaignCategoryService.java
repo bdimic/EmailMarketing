@@ -60,7 +60,7 @@ public class CampaignCategoryService {
 	 * @param category_id the category_id
 	 * @return the category
 	 */
-	public CampaignCategory getCategory(String category_id) {
+	public CampaignCategory getCategory(int category_id) {
 		CampaignCategory campaignCategory = campaignCategoryDao.getCategory(category_id);
         return campaignCategory;
     }
@@ -81,7 +81,7 @@ public class CampaignCategoryService {
      * @param category_id the category_id
      * @return true, if successful
      */
-    public boolean delete(String category_id) {
+    public boolean delete(int category_id) {
         boolean isDeleted = campaignCategoryDao.delete(category_id);
         return isDeleted;
     }

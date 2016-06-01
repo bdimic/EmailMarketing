@@ -29,10 +29,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.aquest.emailmarketing.web.dao.CampaignCategory;
 import com.aquest.emailmarketing.web.dao.Config;
 import com.aquest.emailmarketing.web.dao.EmailConfig;
 import com.aquest.emailmarketing.web.dao.GaConfig;
 import com.aquest.emailmarketing.web.dao.User;
+import com.aquest.emailmarketing.web.service.CampaignCategoryService;
 import com.aquest.emailmarketing.web.service.ConfigService;
 import com.aquest.emailmarketing.web.service.EmailConfigService;
 import com.aquest.emailmarketing.web.service.GaConfigService;
@@ -52,6 +54,9 @@ public class AdminController {
 	
 	/** The email config service. */
 	private EmailConfigService emailConfigService;
+	
+	/** the campaign category service */
+	private CampaignCategoryService campaignCategoryService;
 	
 	/** The ga config service. */
 	private GaConfigService gaConfigService;
@@ -85,6 +90,16 @@ public class AdminController {
 		this.emailConfigService = emailConfigService;
 	}
 	
+	/**
+	 * Sets the campaign category service.
+	 * 
+	 * @param campaignCategoryService the campaignCategoryService to set
+	 */
+	@Autowired
+	public void setCampaignCategoryService(CampaignCategoryService campaignCategoryService) {
+		this.campaignCategoryService = campaignCategoryService;
+	}
+
 	/**
 	 * Sets the ga config service.
 	 *
@@ -165,6 +180,22 @@ public class AdminController {
 	}
 	
 	/**
+	 * Show all campaign category.
+	 *
+	 * @param model the model
+	 * @return the string
+	 */
+	@RequestMapping("/showcampcat")
+	public String showAllCampCat(Model model) {
+		
+		List<CampaignCategory> campcat = campaignCategoryService.getCategories();
+		
+		model.addAttribute("campcat", campcat);
+		
+		return "showcampcat";
+	}
+	
+	/**
 	 * Show email config.
 	 *
 	 * @param model the model
@@ -208,6 +239,72 @@ public class AdminController {
 		return "emailconfig";
 	}
 	
+	/**
+	 * Show email config.
+	 *
+	 * @param model the model
+	 * @param createProfile the create profile
+	 * @param editProfile the edit profile
+	 * @param deleteProfile the delete profile
+	 * @param id the id
+	 * @param principal the principal
+	 * @param request the request
+	 * @return the string
+	 */
+	@RequestMapping(value="/definecampcat", method = RequestMethod.POST)
+	public String defineCampCat(Model model,
+			@RequestParam(value = "addCategory", required = false) String addCategory,
+    		@RequestParam(value = "editCategory", required = false) String editCategory,
+    		@RequestParam(value = "deleteCategory", required = false) String deleteCategory,
+    		@RequestParam(value = "id", required = false) int id,
+    		Principal principal, HttpServletRequest request) {
+		if(addCategory != null) {
+			CampaignCategory campcat = new CampaignCategory();
+			model.addAttribute("campcat", campcat);
+			return "definecampcat";
+		}
+		
+		if(editCategory != null) {
+			CampaignCategory campcat = campaignCategoryService.getCategoryById(id);
+			model.addAttribute("campcat", campcat);
+			return "definecampcat";
+		}
+		
+		if(deleteCategory != null) {
+			boolean isDeleted = campaignCategoryService.delete(id);
+        	if(isDeleted) {
+        		String message = "confirmation.emailconfig.status.deleted";
+            	model.addAttribute("message", message);
+        		return "confirmation";
+        	} else {
+        		return "error";
+        	}
+		}
+		return "showcampcat";
+	}
+	
+	/**
+	 * Save category.
+	 *
+	 * @param campaignCategory the campaign category
+	 * @param result the result
+	 * @param model the model
+	 * @return the string
+	 */
+	@RequestMapping(value="/saveCampaignCategory", method = RequestMethod.POST)
+	public String saveCampaignCategory(@Valid @ModelAttribute("campcat") CampaignCategory campaignCategory, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+    		return "definecampcat";
+    	}
+		System.out.println(campaignCategory.getCategory_id());
+		campaignCategoryService.SaveOrUpdate(campaignCategory);
+		
+		List<CampaignCategory> campcat = campaignCategoryService.getCategories();		
+		model.addAttribute("campcat", campcat);
+		
+		return "showcampcat";
+	}
+	
 	@RequestMapping("/config")
 	public String showConfig(Model model) {
 		List<Config> configs = configService.getAllConfigs();
@@ -243,7 +340,7 @@ public class AdminController {
 	public String saveEmailConfig(@Valid @ModelAttribute("emailConfig") EmailConfig emailConfig, BindingResult result, Model model) {
 		if(result.hasErrors()) {
     		return "emailconfiguration";
-    	}		
+    	}
 		emailConfigService.saveOrUpdate(emailConfig);
 		
 		List<EmailConfig> emailConf = emailConfigService.getAllProfiles();		

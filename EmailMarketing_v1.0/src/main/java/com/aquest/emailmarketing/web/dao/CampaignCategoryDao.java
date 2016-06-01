@@ -68,10 +68,9 @@ public class CampaignCategoryDao {
      * @param category_id the category_id
      * @return the category
      */
-    public CampaignCategory getCategory(String category_id) {
+    public CampaignCategory getCategory(int category_id) {
         Criteria crit = session().createCriteria(CampaignCategory.class);
-        int cat_id = Integer.parseInt(category_id);
-        crit.add(Restrictions.eq("category_id", cat_id));
+        crit.add(Restrictions.eq("category_id", category_id));
         
         return (CampaignCategory)crit.uniqueResult();
     }
@@ -93,10 +92,9 @@ public class CampaignCategoryDao {
      * @param category_id the category_id
      * @return true, if successful
      */
-    public boolean delete(String category_id) {
-    	int cat_id = Integer.parseInt(category_id);
+    public boolean delete(int category_id) {
         Query query = session().createQuery("delete CampaignCategory c where c.category_id=:id");
-        query.setParameter("id", cat_id);
+        query.setParameter("id", category_id);
         return query.executeUpdate() == 1;
     }
 }

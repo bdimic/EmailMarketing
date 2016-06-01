@@ -30,6 +30,7 @@
 				<ul>
 			         <li><a href='config'><span><spring:message code="menu.config"/></span></a></li>
 			         <li><a href='usermanagement'><span><spring:message code="menu.usermanagement"/></span></a></li>
+			         <li><a href='showcampcat'><span><spring:message code="menu.definecampcat"/></span></a></li>
 			         <li><a href='emailconfig'><span><spring:message code="menu.emailconfiguration"/></span></a></li>
 			         <li class='last'><a href='gaconfiguration'><span><spring:message code="menu.gaconfiguration"/></span></a></li>
       			</ul>

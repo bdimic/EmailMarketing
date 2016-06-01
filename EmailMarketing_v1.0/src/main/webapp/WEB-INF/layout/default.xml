@@ -99,6 +99,16 @@
 		<put-attribute name="content" value="/WEB-INF/tiles/config.jsp"></put-attribute>
 	</definition>
 	
+	<definition name="showcampcat" extends="base.definition">
+		<put-attribute name="title" value="campcat.title"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/showcampcat.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="definecampcat" extends="base.definition">
+		<put-attribute name="title" value="campcat.title"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/definecampcat.jsp"></put-attribute>
+	</definition>
+	
 	<definition name="emailconfiguration" extends="base.definition">
 		<put-attribute name="title" value="emailconfiguration.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/emailconfiguration.jsp"></put-attribute>

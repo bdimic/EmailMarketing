@@ -31,6 +31,9 @@
 				<security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
 				<security:intercept-url pattern="/usermanagement" access="hasRole('ROLE_ADMIN')" />
 				<security:intercept-url pattern="/emailconfiguration" access="hasRole('ROLE_ADMIN')" />
+				<security:intercept-url pattern="/showcampcat" access="hasRole('ROLE_ADMIN')" />
+				<security:intercept-url pattern="/definecampcat" access="hasRole('ROLE_ADMIN')" />
+				<security:intercept-url pattern="/saveCampaignCategory" access="hasRole('ROLE_ADMIN')" />
 				<security:intercept-url pattern="/gaconfiguration" access="hasRole('ROLE_ADMIN')" />
 				<security:intercept-url pattern="/saveGaConfig" access="hasRole('ROLE_ADMIN')" />
 				<security:intercept-url pattern="/config" access="hasRole('ROLE_ADMIN')" />
