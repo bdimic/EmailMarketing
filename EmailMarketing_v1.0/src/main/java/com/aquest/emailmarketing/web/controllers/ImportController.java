@@ -14,6 +14,7 @@ import com.aquest.emailmarketing.web.service.EmailListService;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -89,10 +90,12 @@ public class ImportController {
 	 */
 	@RequestMapping(value="/importList", method = RequestMethod.POST)        
 	public String ImportList(Model model, HttpServletRequest request) throws IOException, FileNotFoundException, ParserConfigurationException, TransformerException, ServletException, FileUploadException {
-            String listfilename = "";
+            List<String> copypaste = new ArrayList<String>();
+			String listfilename = "";
             String separator = "";
             String broadcast_id = "";
             String old_broadcast_id = "";
+            String listType = "";
             EmailListForm emailListForm = new EmailListForm();
             
             InputStream fileContent = null;
@@ -103,7 +106,16 @@ public class ImportController {
                     // Process regular form field (input type="text|radio|checkbox|etc", select, etc).
                     String fieldName = item.getFieldName();
                     String fieldValue = item.getString();
-                    if(fieldName.equals("listfilename")) {
+                    if(fieldName.equals("listType")) {
+                    	listType = fieldValue;
+                    	System.out.println(listType);
+                    }
+                    else if(fieldName.equals("copypaste")) {
+                    	for (String line : fieldValue.split("\\n")) {
+                    		copypaste.add(line);
+                    		System.out.println(line);
+                    	}
+                    } else if(fieldName.equals("listfilename")) {
                         listfilename = fieldValue;
                     } else if(fieldName.equals("separator")) {
                         separator = fieldValue;
@@ -120,11 +132,24 @@ public class ImportController {
                 }
                 System.out.println(listfilename);
                 System.out.println(separator);
-            }   
-            List<EmailList> eList = emailListService.importEmailfromFile(fileContent, separator, broadcast_id);
-            emailListForm.setEmailList(eList);
+            }
+            int importCount = 0;
+            if(listType.equals("copy")) {
+            	if(!copypaste.isEmpty()) {
+            		List<EmailList> eList = emailListService.importEmailfromCopy(copypaste, broadcast_id);
+                    emailListForm.setEmailList(eList);
+                    importCount = eList.size();
+                } else {
+                	// sta ako je prazno
+                }
+            }
+            if(listType.equals("fromFile")) {
+            	List<EmailList> eList = emailListService.importEmailfromFile(fileContent, separator, broadcast_id);
+                emailListForm.setEmailList(eList);
+                importCount = eList.size();
+            }
+            
             System.out.println(broadcast_id);
-            int importCount = eList.size();
             model.addAttribute("importCount", importCount);
             model.addAttribute("emailListForm", emailListForm);
             Broadcast broadcast = broadcastService.getBroadcast(broadcast_id);

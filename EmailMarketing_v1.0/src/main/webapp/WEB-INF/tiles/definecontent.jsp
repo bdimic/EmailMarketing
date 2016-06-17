@@ -21,6 +21,10 @@
 				$("#fromUrl").removeAttr('disabled');
 			}
 		});
+		$('#rel2abs').click(function(){
+			var r2a = $('#rel2abs').is(':checked');
+			$('#baseurl').prop('disabled', !r2a);
+		});
 	});
     /* $(function() {
         // Replace all textarea's
@@ -54,6 +58,10 @@
         </tr>
         <tr>
         	<td colspan="2">HTML from URL: <input type="text" name="fromUrl" id="fromUrl"></td>
+        </tr>
+        <tr>
+        	<td colspan="2"><input type="checkbox" id="rel2abs" name="rel2abs">Convert relative 2 absolute url for images </br>
+        	                Base URL: <input type="text" name="baseurl" id="baseurl" disabled></td>
         </tr>
         <tr>
             <td colspan="2"><sf:textarea id="htmlbody" name="htmlbody" path="htmlbody" value="${old_broadcast.htmlbody}" /></td>

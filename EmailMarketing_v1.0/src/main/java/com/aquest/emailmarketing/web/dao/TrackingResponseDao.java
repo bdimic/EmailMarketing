@@ -67,6 +67,32 @@ public class TrackingResponseDao {
     }
     
     /**
+     * Gets the list of opens by broadcast id.
+     *
+     * @param broadcast_id the broadcast_id
+     * @return the opens by broadcast id
+     */
+    public List<TrackingResponse> getOpenedByBroadcast(String broadcast_id) {
+    	Criteria crit = session().createCriteria(TrackingResponse.class);
+        crit.add(Restrictions.eq("broadcast_id", broadcast_id));
+        crit.add(Restrictions.eq("response_type", "Open"));
+        return crit.list();
+    }
+    
+    /**
+     * Gets the list of opens by broadcast id.
+     *
+     * @param broadcast_id the broadcast_id
+     * @return the opens by broadcast id
+     */
+    public List<TrackingResponse> getClickedByBroadcast(String broadcast_id) {
+    	Criteria crit = session().createCriteria(TrackingResponse.class);
+        crit.add(Restrictions.eq("broadcast_id", broadcast_id));
+        crit.add(Restrictions.eq("response_type", "Click"));
+        return crit.list();
+    }
+    
+    /**
      * Gets the tracking response by email.
      *
      * @param email the email

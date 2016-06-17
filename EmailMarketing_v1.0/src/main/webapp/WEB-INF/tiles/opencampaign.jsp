@@ -78,9 +78,9 @@
             <td>${broadcast.broadcast_name}</td>
             <td>${broadcast.status}</td>
             <td>${broadcast.lead_number}</td>
-            <td>${broadcast.sent_number}</td>
-            <td>${broadcast.open_number}</td>
-            <td>${broadcast.click_number}</td>
+            <td><a href="statistics?broadcast_id=${broadcast.broadcast_id}&stat=sent">${broadcast.sent_number}</a></td>
+            <td><a href="statistics?broadcast_id=${broadcast.broadcast_id}&stat=open">${broadcast.open_number}</a></td>
+            <td><a href="statistics?broadcast_id=${broadcast.broadcast_id}&stat=click">${broadcast.click_number}</a></td>
         </tr>
         </c:forEach>
     </tbody>

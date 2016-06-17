@@ -40,6 +40,9 @@ public class BroadcastTemplate implements Serializable {
     /** The b_template_subject. */
     private String b_template_subject;
     
+    /** The status. */
+    private String status;
+    
     /** The htmlbody. */
     private String htmlbody;
     
@@ -92,13 +95,14 @@ public class BroadcastTemplate implements Serializable {
      * @param last_change_dttm the last_change_dttm
      * @param last_change_user the last_change_user
      */
-    public BroadcastTemplate(int id, String b_template_name, String b_template_subject, String htmlbody,
-			String htmlbody_tracking, String htmlbody_embed, String plaintext, EmailConfig emailConfig,
+    public BroadcastTemplate(int id, String b_template_name, String b_template_subject, String status,
+    		String htmlbody,String htmlbody_tracking, String htmlbody_embed, String plaintext, EmailConfig emailConfig,
 			Timestamp creation_dttm, String creation_user, Timestamp last_change_dttm, String last_change_user) {
 		super();
 		this.id = id;
 		this.b_template_name = b_template_name;
 		this.b_template_subject = b_template_subject;
+		this.status = status;
 		this.htmlbody = htmlbody;
 		this.htmlbody_tracking = htmlbody_tracking;
 		this.htmlbody_embed = htmlbody_embed;
@@ -164,6 +168,20 @@ public class BroadcastTemplate implements Serializable {
 	 */
 	public void setB_template_subject(String b_template_subject) {
 		this.b_template_subject = b_template_subject;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public String getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	/**

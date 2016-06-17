@@ -48,6 +48,7 @@
             <th><spring:message code="broadcasttemplate.id"/></th>
             <th><spring:message code="broadcasttemplate.name"/></th>
             <th><spring:message code="broadcasttemplate.subject"/></th>
+            <th><spring:message code="broadcasttemplate.status"/></th>
             <th><spring:message code="broadcasttemplate.creation_dttm"/></th>
             <th><spring:message code="broadcasttemplate.creation_user"/></th>
         </tr>
@@ -58,6 +59,7 @@
             <td>${broadcastTemplate.id}</td>
             <td>${broadcastTemplate.b_template_name}</td>
             <td>${broadcastTemplate.b_template_subject}</td>
+            <td>${broadcastTemplate.status}</td>
             <td>${broadcastTemplate.creation_dttm}</td>
             <td>${broadcastTemplate.creation_user}</td>
         </tr>

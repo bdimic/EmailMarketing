@@ -98,6 +98,26 @@ public class TrackingResponseService {
     }
     
     /**
+     * Gets list of opened emails by broadcast id
+     * 
+     * @param broadcast_id the broadcast_id
+     * @return list of opens by broadcast
+     * */
+    public List<TrackingResponse> getOpenedByBroadcast(String broadcast_id) {
+    	return trackingResponseDao.getOpenedByBroadcast(broadcast_id);
+    }
+    
+    /**
+     * Gets list of clicked links by broadcast id
+     * 
+     * @param broadcast_id the broadcast_id
+     * @return list of clicked links by broadcast
+     * */
+    public List<TrackingResponse> getClickedByBroadcast(String broadcast_id) {
+    	return trackingResponseDao.getClickedByBroadcast(broadcast_id);
+    }
+    
+    /**
      * Gets the no of opens by broadcast.
      *
      * @param broadcast_id the broadcast_id

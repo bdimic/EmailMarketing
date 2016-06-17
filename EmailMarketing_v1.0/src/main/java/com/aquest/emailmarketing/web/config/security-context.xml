@@ -80,6 +80,10 @@
                 <security:intercept-url pattern="/definecontent" access="isAuthenticated()" />
                 <security:intercept-url pattern="/defineContent" access="isAuthenticated()" />
                 <security:intercept-url pattern="/tracking" access="isAuthenticated()" />
+                <security:intercept-url pattern="/statistics" access="isAuthenticated()" />
+                <security:intercept-url pattern="/reportsent" access="isAuthenticated()" />
+                <security:intercept-url pattern="/reportopened" access="isAuthenticated()" />
+                <security:intercept-url pattern="/reportclick" access="isAuthenticated()" />
                 <security:intercept-url pattern="/embeddedimage" access="isAuthenticated()" />
                 <security:intercept-url pattern="/embedImages" access="isAuthenticated()" />
                 <security:intercept-url pattern="/generateUrls" access="isAuthenticated()" />

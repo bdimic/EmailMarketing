@@ -175,6 +175,88 @@ public class EmailListService {
         return eList;
     }
     
+    public List<EmailList> importEmailfromCopy(List<String> copypaste, String broadcast_id) {
+        boolean valid = true;
+        String[] firstLine = null;
+        List<String> notValid = new ArrayList<String>();
+        List<EmailList> eList = new ArrayList<EmailList>();
+        Timestamp curTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+        
+        System.out.println(broadcast_id);
+        
+        firstLine = copypaste.get(0).split(",");
+        for(int k=1; k < copypaste.size(); k++) {
+	    	EmailList emailList = new EmailList();
+	    	String[] nextLine = copypaste.get(k).split(",");
+	        for(int i=0; i < firstLine.length; i++) {                	
+	        	System.out.println(firstLine.length);
+	        	// ovo je dirty verzija. napisati kako treba
+	        	valid = EmailValidator.getInstance().isValid(nextLine[0]);
+	        	for(int j=0;j<nextLine.length;j++){
+	                System.out.println(nextLine[j]);                        
+	            }
+	        	if(valid == true) {
+	                if(i==0){
+	                	//DONE: add email address validation
+	                	emailList.setBroadcast_id(broadcast_id);
+	                	emailList.setEmail(nextLine[i]);
+	                	System.out.println("Email: "+nextLine[i]);
+	                } else if(i==1) {
+	                	emailList.setName1(firstLine[i]);
+	                	System.out.println("Name1: "+firstLine[i]);
+	                	emailList.setValue1(nextLine[i]);
+	                	System.out.println("Value1: "+nextLine[i]);
+	                }  else if(i==2) {
+	                	emailList.setName2(firstLine[i]);
+	                	emailList.setValue2(nextLine[i]);
+	                } else if(i==3) {
+	                	emailList.setName3(firstLine[i]);
+	                	emailList.setValue3(nextLine[i]);
+	                } else if(i==4) {
+	                	emailList.setName4(firstLine[i]);
+	                	emailList.setValue4(nextLine[i]);
+	                } else if(i==5) {
+	                	emailList.setName5(firstLine[i]);
+	                	emailList.setValue5(nextLine[i]);
+	                } else if(i==6) {
+	                	emailList.setName6(firstLine[i]);
+	                	emailList.setValue6(nextLine[i]);
+	                } else if(i==7) {
+	                	emailList.setName7(firstLine[i]);
+	                	emailList.setValue7(nextLine[i]);
+	                } else if(i==8) {
+	                	emailList.setName8(firstLine[i]);
+	                	emailList.setValue8(nextLine[i]);
+	                } else if(i==9) {
+	                	emailList.setName9(firstLine[i]);
+	                	emailList.setValue9(nextLine[i]);
+	                } else if(i==10) {
+	                	emailList.setName10(firstLine[i]);
+	                	emailList.setValue10(nextLine[i]);
+	                }
+	                System.out.println(emailList);
+	                emailList.setStatus("READY");
+	                emailList.setProcess_dttm(curTimestamp);
+	              
+	                
+	        	} else {
+	        		notValid.add(nextLine[0]);
+	        		System.out.println(nextLine[0]);
+	        	}
+	        }      
+	        if(emailList.getBroadcast_id() != null) {
+	            //Save i update ce se raditi u drugoj metodi
+	            //emailListDao.saveOrUpdate(emailList);
+	            eList.add(emailList);
+	        }
+	    }
+	        
+	    for(EmailList elist : eList) {
+	    	System.out.println(elist);
+	    }
+	    return eList;
+    }
+    
     /**
      * Save or update.
      *

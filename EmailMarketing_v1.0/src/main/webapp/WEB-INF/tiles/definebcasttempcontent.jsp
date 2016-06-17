@@ -6,14 +6,37 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <script>
-    $(function() {
+	$(document).ready(function() {
+		$("#fromUrl").keyup(function(e) {
+			if($(this).val() != '') {
+				$("#htmlbody").attr('disabled','disabled');
+			} else {
+				$("#htmlbody").removeAttr('disabled');
+			}
+		});
+		$("#htmlbody").keyup(function(e) {
+			if($(this).val() != '') {
+				$("#fromUrl").attr('disabled','disabled');
+			} else {
+				$("#fromUrl").removeAttr('disabled');
+			}
+		});
+		$('#rel2abs').click(function(){
+			var r2a = $('#rel2abs').is(':checked');
+			$('#baseurl').prop('disabled', !r2a);
+		});
+	});
         // Replace all textarea's
         // with SCEditor
-        $("#htmlbody").sceditor({
+        /* $("#htmlbody").sceditor({
             plugins: "xhtml",
     	style: "css/jquery.sceditor.default.min.css"
         });
-    });
+        $('#rel2abs').click(function(){
+			var r2a = $('#rel2abs').is(':checked');
+			$('#baseurl').prop('disabled', !r2a);
+		}); */
+
 </script>
 
 <div class="progressbar">
@@ -30,11 +53,20 @@
 <sf:input type="hidden" path="id" id="id" />
     <table class="kampanja_broadcast">
         <tr>
-            <td class="label"><spring:message code="broadcasttemplate.content.subject"/>:</td>
-            <td><sf:input type="text" name="b_template_subject" path="b_template_subject" /></td>
+            <td colspan="2"><spring:message code="broadcast.subject"/>:<sf:input type="text" name="subject" path="b_template_subject" /></td>
         </tr>
         <tr>
-            <td colspan="2"><sf:textarea name="htmlbody" path="htmlbody"/></td>
+        	<td colspan="2">HTML from URL: <input type="text" name="fromUrl" id="fromUrl"></td>
+        </tr>
+        <tr>
+        	<td colspan="2"><input type="checkbox" id="rel2abs" name="rel2abs">Convert relative 2 absolute url for images </br>
+        	                Base URL: <input type="text" name="baseurl" id="baseurl" disabled></td>
+        </tr>
+        <tr>
+            <td colspan="2"><sf:textarea id="htmlbody" name="htmlbody" path="htmlbody"/></td>
+        </tr>
+        <tr>
+        	<td colspan="2"><input type="checkbox" id="optimize" name="optimize">Optimize HTML for email (premailer)</td>
         </tr>
         <tr>
             <td colspan="2"><spring:message code="broadcast.plain.text"/>:</td>

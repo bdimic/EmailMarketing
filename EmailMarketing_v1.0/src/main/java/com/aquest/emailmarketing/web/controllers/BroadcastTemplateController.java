@@ -16,13 +16,18 @@ import com.aquest.emailmarketing.web.service.EmailConfigService;
 import com.aquest.emailmarketing.web.service.EmbeddedImageService;
 import com.aquest.emailmarketing.web.service.TrackingConfigService;
 import com.aquest.emailmarketing.web.tracking.EmailTrackingService;
+import com.msiops.premailer.Premailer;
+import com.msiops.premailer.PremailerInterface;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -150,6 +155,7 @@ public class BroadcastTemplateController {
     	broadcastTemplate.setCreation_user(principal.getName());
         broadcastTemplate.setCreation_dttm(curTimestamp);
         broadcastTemplate.getEmailConfig().setProfile_id(profile_id);
+        broadcastTemplate.setStatus("In definition process");
         @SuppressWarnings("unused")
         String bcast_id = broadcastTemplateService.SaveOrUpdate(broadcastTemplate);
         	model.addAttribute("broadcastTemplate",broadcastTemplate);
@@ -164,12 +170,78 @@ public class BroadcastTemplateController {
      * @param result the result
      * @param principal the principal
      * @return the string
+     * @throws IOException 
      */
     @RequestMapping(value= "/defineBcastTemplateContent", method = RequestMethod.POST)
-    public String defineContent(Model model,@Valid @ModelAttribute("broadcastTemplate") BroadcastTemplate broadcastTemplate1,BindingResult result, Principal principal) {
+    public String defineContent(Model model,@Valid @ModelAttribute("broadcastTemplate") BroadcastTemplate broadcastTemplate1,
+    		@RequestParam(value = "fromUrl", required = false) String fromUrl,
+			@RequestParam(value = "optimize", required = false) boolean optimize,
+			@RequestParam(value = "baseurl", required = false) String baseUrl,
+			@RequestParam(value = "rel2abs", required = false) boolean rel2abs,
+			BindingResult result, Principal principal) throws IOException {
+    	String htmlBodyPrep = "";
     	BroadcastTemplate broadcastTemplate = broadcastTemplateService.getBroadcastTemplateById(broadcastTemplate1.getId());
     	broadcastTemplate.setB_template_subject(broadcastTemplate1.getB_template_subject());
-    	broadcastTemplate.setHtmlbody(broadcastTemplate1.getHtmlbody());
+    	if(fromUrl != null) {
+    		Document doc = Jsoup.connect(fromUrl).get();
+    		htmlBodyPrep = doc.outerHtml();
+    		broadcastTemplate.setHtmlbody(htmlBodyPrep);
+    		System.out.println(htmlBodyPrep);
+    	}
+    	if(broadcastTemplate1.getHtmlbody() != null) {
+    		htmlBodyPrep = broadcastTemplate1.getHtmlbody();
+    	}
+    	if(rel2abs == true) {
+    		if(baseUrl != null) {
+    			System.out.println(baseUrl);
+    			Document doc = Jsoup.parse(broadcastTemplate.getHtmlbody(), baseUrl);
+    			System.out.println(doc.toString());
+    			
+    			Elements images = doc.select("img");
+    			for(Element e : images){
+    				e.attr("src", e.absUrl("src"));
+    				System.out.println(e.absUrl("src"));
+    			}
+    			broadcastTemplate.setHtmlbody(doc.outerHtml());
+    			htmlBodyPrep = doc.outerHtml();
+    		} else {
+    			// ovde staviti error handling
+    		}
+    	}
+    	if(optimize == true) {
+//    		/* PREMAILER API OPTIONS
+//    		 * line_length - Line length used by to_plain_text. Boolean, default is 65.
+//    			warn_level - What level of CSS compatibility warnings to show (see Warnings).
+//    				NONE = 0
+//    				SAFE = 1
+//    				POOR = 2
+//    				RISKY = 3
+//    			link_query_string - A string to append to every a href="" link. Do not include the initial ?.
+//    			base_url - Used to calculate absolute URLs for local files.
+//    			css - Manually specify CSS stylesheets.
+//    			css_to_attributes - Copy related CSS attributes into HTML attributes (e.g. background-color to bgcolor)
+//    			css_string - Pass CSS as a string
+//    			remove_ids - Remove ID attributes whenever possible and convert IDs used as anchors to hashed to avoid collisions in webmail programs. Default is false.
+//    			remove_classes - Remove class attributes. Default is false.
+//    			remove_comments -  Remove html comments. Default is false.
+//    			preserve_styles - Whether to preserve any link rel=stylesheet and style elements. Default is false.
+//    			preserve_reset - Whether to preserve styles associated with the MailChimp reset code
+//    			with_html_string -  Whether the html param should be treated as a raw string.
+//    			verbose - Whether to print errors and warnings to $stderr. Default is false.
+//    			adapter - Which HTML parser to use, either :nokogiri or :hpricot. Default is :hpricot.
+//    		*/
+    		Premailer premailer = new Premailer();
+    		PremailerInterface premailerInterface = premailer.getPremailerInstance();
+    		
+    		Map<String,Object> options = new HashMap<String, Object>();
+    		options.put("with_html_string", true);
+    		options.put("base_url", fromUrl);
+    		premailerInterface.init(broadcastTemplate.getHtmlbody(), options);
+    		//premailerInterface.init(htmlBodyPrep, options);
+    		broadcastTemplate.setHtmlbody(premailerInterface.inline_css());
+    		System.out.println(premailerInterface.inline_css());
+    		premailer.destroyInstance();
+    	}
     	broadcastTemplate.setPlaintext(broadcastTemplate1.getPlaintext());
     	System.out.println(broadcastTemplate.toString());
     	String bcast_id = broadcastTemplateService.SaveOrUpdate(broadcastTemplate);
@@ -353,9 +425,11 @@ public class BroadcastTemplateController {
 	    	System.out.println(addedTracking);
     	}
     	broadcastTemplate.setHtmlbody_embed(addedTracking);
+    	broadcastTemplate.setStatus("DEFINED");
 		broadcastTemplateService.SaveOrUpdate(broadcastTemplate);
-		model.addAttribute("broadcastTemplate", broadcastTemplate);
-    	return "sendbroadcast";
+		List<BroadcastTemplate> broadcastTemplate1 = broadcastTemplateService.getAllBroadcasts();
+    	model.addAttribute("broadcastTemplate", broadcastTemplate1);
+    	return "showbcasttemplates";
     }
 
     // DONE: Add logic for pickBroadcastTemplateAction

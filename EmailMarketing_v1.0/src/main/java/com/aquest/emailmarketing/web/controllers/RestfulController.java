@@ -127,7 +127,7 @@ public class RestfulController {
         System.out.println("Creating Broadcast " + broadcast.getBroadcast_id());
  
         if (broadcastService.isBroadcastExist(broadcast.getBroadcast_id())) {
-            System.out.println("A Broatcast with id " + broadcast.getBroadcast_id() + " already exist");
+            System.out.println("A Broadcast with id " + broadcast.getBroadcast_id() + " already exist");
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
         
@@ -161,9 +161,9 @@ public class RestfulController {
     	for(EmailList elist: eList) {
     		boolean doImport = true;
 			System.out.println(elist);
-			if(broadcastService.isBroadcastExist(elist.getBroadcast_id())) {
-				doImport = false;
-			}
+			if(!broadcastService.isBroadcastExist(elist.getBroadcast_id())) {
+				doImport = false;			
+			}			
 			if(emailListService.exists(elist.getBroadcast_id(), elist.getEmail())) {
 				doImport = false;
 			}

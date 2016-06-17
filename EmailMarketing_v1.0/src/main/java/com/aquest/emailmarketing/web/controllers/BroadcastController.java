@@ -12,8 +12,10 @@ import com.aquest.emailmarketing.web.dao.CampaignCategory;
 import com.aquest.emailmarketing.web.dao.Campaigns;
 import com.aquest.emailmarketing.web.dao.EmailConfig;
 import com.aquest.emailmarketing.web.dao.EmailList;
+import com.aquest.emailmarketing.web.dao.EmailListForm;
 import com.aquest.emailmarketing.web.dao.EmbeddedImage;
 import com.aquest.emailmarketing.web.dao.TrackingConfig;
+import com.aquest.emailmarketing.web.dao.TrackingResponse;
 import com.aquest.emailmarketing.web.dao.Urls;
 import com.aquest.emailmarketing.web.service.BroadcastService;
 import com.aquest.emailmarketing.web.service.BroadcastTemplateService;
@@ -23,6 +25,7 @@ import com.aquest.emailmarketing.web.service.EmailListService;
 import com.aquest.emailmarketing.web.service.EmbeddedImageService;
 import com.aquest.emailmarketing.web.service.SendEmailService;
 import com.aquest.emailmarketing.web.service.TrackingConfigService;
+import com.aquest.emailmarketing.web.service.TrackingResponseService;
 import com.aquest.emailmarketing.web.tracking.EmailTrackingService;
 import com.msiops.premailer.Premailer;
 import com.msiops.premailer.PremailerInterface;
@@ -39,8 +42,10 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.codec.binary.Base64;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -89,6 +94,9 @@ public class BroadcastController {
     
     /** The tracking config service. */
     private TrackingConfigService trackingConfigService;
+    
+    /** The tracking response service. */
+    private TrackingResponseService trackingResponseService;
     
     /** The email tracking. */
     EmailTrackingService emailTracking = new EmailTrackingService();
@@ -154,6 +162,16 @@ public class BroadcastController {
     }
     
     /**
+     * Sets the tracking response service.
+     * 
+	 * @param trackingResponseService the trackingResponseService to set
+	 */
+    @Autowired
+	public void setTrackingResponseService(TrackingResponseService trackingResponseService) {
+		this.trackingResponseService = trackingResponseService;
+	}
+
+	/**
      * Sets the embedded image service.
      *
      * @param embeddedImageService the new embedded image service
@@ -271,6 +289,8 @@ public class BroadcastController {
     public String defineContent(Model model,@Valid @ModelAttribute("broadcast") Broadcast broadcast1,
     							@RequestParam(value = "fromUrl", required = false) String fromUrl,
     							@RequestParam(value = "optimize", required = false) boolean optimize,
+    							@RequestParam(value = "baseurl", required = false) String baseUrl,
+    							@RequestParam(value = "rel2abs", required = false) boolean rel2abs,
     							BindingResult result, Principal principal) throws IOException {
     	String htmlBodyPrep = "";
     	Broadcast broadcast = broadcastService.getBroadcastById(broadcast1.getId());
@@ -283,6 +303,23 @@ public class BroadcastController {
     	}
     	if(broadcast1.getHtmlbody() != null) {
     		htmlBodyPrep = broadcast1.getHtmlbody();
+    	}
+    	if(rel2abs == true) {
+    		if(baseUrl != null) {
+    			System.out.println(baseUrl);
+    			Document doc = Jsoup.parse(broadcast.getHtmlbody(), baseUrl);
+    			System.out.println(doc.toString());
+    			
+    			Elements images = doc.select("img");
+    			for(Element e : images){
+    				e.attr("src", e.absUrl("src"));
+    				System.out.println(e.absUrl("src"));
+    			}
+    			broadcast.setHtmlbody(doc.outerHtml());
+    			htmlBodyPrep = doc.outerHtml();
+    		} else {
+    			// ovde staviti error handling
+    		}
     	}
     	if(optimize == true) {
 //    		/* PREMAILER API OPTIONS
@@ -640,4 +677,29 @@ public class BroadcastController {
                 
         return "home";
     }
+    
+    @RequestMapping(value="/statistics", method = RequestMethod.GET)
+	public String getStatistics(Model model, HttpServletRequest request, HttpServletResponse response, 
+			@RequestParam("broadcast_id") String broadcast_id, @RequestParam("stat") String stat) throws IOException {
+    	EmailListForm emailListForm = new EmailListForm();
+		if(stat.equals("sent")) {
+			List<EmailList> eList = emailListService.getSentEmailList(broadcast_id);
+			emailListForm.setEmailList(eList);
+			model.addAttribute("emailListForm", emailListForm);
+			return "reportsent";
+		} else if (stat.equals("open")) {
+			List<TrackingResponse> openResponse = trackingResponseService.getOpenedByBroadcast(broadcast_id);
+			model.addAttribute("openResponse", openResponse);
+			return "reportopened";
+		} else if (stat.equals("click")) {
+			List<TrackingResponse> clickResponse = trackingResponseService.getClickedByBroadcast(broadcast_id);
+			model.addAttribute("clickResponse", clickResponse);
+			return "reportclick";
+		} else {
+			String message = "confirmation.broadcast.no.edit";
+			model.addAttribute("message", message);
+			return "confirmation";
+		}
+		
+	}
 }

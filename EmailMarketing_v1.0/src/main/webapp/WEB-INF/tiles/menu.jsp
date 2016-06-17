@@ -13,6 +13,13 @@
          <li class='last'><a href='createCamp'><span><spring:message code="menu.createcampaign"/></span></a></li>
       </ul>
    </li>
+   <li class='has-sub'><a href='#'><span><spring:message code="menu.broadcasts"/></span></a>
+      <ul>
+         <li><a href='<c:url value='/'/>'><span><spring:message code="menu.showbroadcasts"/></span></a></li>
+         <li><a href='<c:url value='/'/>'><span><spring:message code="menu.sendbroadcast"/></span></a></li>
+         <li class='last'><a href='createCamp'><span><spring:message code="menu.createbroadcast"/></span></a></li>
+      </ul>
+   </li>
    <li class='has-sub'><a href='#'><span><spring:message code="menu.templates"/></span></a>
       <ul>
          <li class='has-sub'><a href='#'><span><spring:message code="menu.broadcasttemplates"/></span></a>

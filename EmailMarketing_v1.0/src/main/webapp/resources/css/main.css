@@ -12,6 +12,10 @@ body {
         background: white;
 }
 
+.hide {
+    display: none;
+}
+
 .formtable {
 	width: 640px;
 	padding: 10px;

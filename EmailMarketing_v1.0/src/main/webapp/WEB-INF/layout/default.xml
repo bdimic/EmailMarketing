@@ -206,4 +206,16 @@
 		<put-attribute name="title" value="definecontent.title"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/pickbcasttemplate.jsp"></put-attribute>
 	</definition>
+	<definition name="reportsent" extends="base.definition">
+		<put-attribute name="title" value="reportsent.title"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/reportsent.jsp"></put-attribute>
+	</definition>
+	<definition name="reportopened" extends="base.definition">
+		<put-attribute name="title" value="reportopen.title"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/reportopened.jsp"></put-attribute>
+	</definition>
+	<definition name="reportclick" extends="base.definition">
+		<put-attribute name="title" value="reportclick.title"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/reportclick.jsp"></put-attribute>
+	</definition>	
 </tiles-definitions>
