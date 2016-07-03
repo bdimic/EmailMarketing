@@ -13,6 +13,7 @@
            "scrollCollapse": true,
            "drawCallback": function (settings) {
                      $("#create_broadcast").attr('disabled', 'disabled');
+                     $("#create_bcast_from_temp").attr('disabled', 'disabled');
                      $("#edit_campaign").attr('disabled', 'disabled');
                      $("#open_campaign").attr('disabled', 'disabled');
                      $("#close_campaign").attr('disabled', 'disabled');
@@ -33,6 +34,7 @@
           var row = $(this).find('td:first').text();
           $("#MainContent_Main_hfRowId").val(row);
           $("#create_broadcast").removeAttr("disabled");
+          $("#create_bcast_from_temp").removeAttr("disabled");
           $("#edit_campaign").removeAttr("disabled");
           $("#open_campaign").removeAttr("disabled");
           $("#close_campaign").removeAttr("disabled");
@@ -75,6 +77,7 @@
 <div class="dugme">
 <input type="submit" name="createCampaign" value="<spring:message code="campaign.button.create" />" id="create_campaign" />
 <input type="submit" name="createBroadcast" value="<spring:message code="campaign.button.createbroadcast" />" id="create_broadcast" disabled="disabled" />
+<input type="submit" name="createBcastFromTemp" value="<spring:message code="campaign.button.createbcastfromtemp" />" id="create_bcast_from_temp" disabled="disabled" />
 <input type="submit" name="editCampaign" value="<spring:message code="campaign.button.edit" />" id="edit_campaign" disabled="disabled" />
 <input type="submit" name="openCampaign" value="<spring:message code="campaign.button.open" />" id="open_campaign" disabled="disabled" />
 <input type="submit" name="closeCampaign" value="<spring:message code="campaign.button.close" />" id="close_campaign" disabled="disabled" />

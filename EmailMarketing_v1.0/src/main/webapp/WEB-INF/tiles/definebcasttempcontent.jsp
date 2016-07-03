@@ -63,7 +63,12 @@
         	                Base URL: <input type="text" name="baseurl" id="baseurl" disabled></td>
         </tr>
         <tr>
-            <td colspan="2"><sf:textarea id="htmlbody" name="htmlbody" path="htmlbody"/></td>
+            <td colspan="2"><sf:textarea id="htmlbody" name="htmlbody" path="htmlbody"/>
+            <script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'htmlbody', {language:'en', fullPage: true} );
+            </script></td>
         </tr>
         <tr>
         	<td colspan="2"><input type="checkbox" id="optimize" name="optimize">Optimize HTML for email (premailer)</td>

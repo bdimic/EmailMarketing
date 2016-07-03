@@ -50,6 +50,17 @@ public class BroadcastTemplateDao {
         return crit.list();
     }
     
+    /**
+     * Gets the defined broadcast templates.
+     *
+     * @return the defined broadcast templates
+     */
+    public List<BroadcastTemplate> getDefinedBroadcastTemplates() {
+        Criteria crit = session().createCriteria(BroadcastTemplate.class);
+        crit.add(Restrictions.eq("status", "DEFINED"));
+        return crit.list();
+    }
+    
     
     /**
      * Gets the broadcast template.

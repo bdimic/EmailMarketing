@@ -143,7 +143,7 @@ public class ImportController {
                 	// sta ako je prazno
                 }
             }
-            if(listType.equals("fromFile")) {
+            if(listType.equals("fromfile")) {
             	List<EmailList> eList = emailListService.importEmailfromFile(fileContent, separator, broadcast_id);
                 emailListForm.setEmailList(eList);
                 importCount = eList.size();

@@ -12,7 +12,6 @@
            "DisplayLength": 10,
            "scrollCollapse": true,
            "drawCallback": function (settings) {
-        	   		$("#copy_broadcast").attr('disabled', 'disabled');
         	   		$("#edit_broadcast").attr('disabled', 'disabled');
         	   		$("#show_broadcast").attr('disabled', 'disabled');
                     $("#delete_broadcast").attr('disabled', 'disabled');
@@ -31,7 +30,6 @@
           $(this).addClass('row_selected');
           var row = $(this).find('td:first').text();
           $("#MainContent_Main_hfRowId").val(row);
-          $("#copy_broadcast").removeAttr("disabled");
           $("#edit_broadcast").removeAttr("disabled");
           $("#show_broadcast").removeAttr("disabled");
           $("#delete_broadcast").removeAttr("disabled");
@@ -71,7 +69,6 @@
 <div class="dugme">
 <!-- DONE: Change button labels -->
 <input type="submit" name="newBcastTemp" value="<spring:message code="bcasttemplate.button.new" />" id="new_broadcast" />
-<input type="submit" name="copyBcastTemp" value="<spring:message code="bcasttemplate.button.copy" />" id="copy_broadcast" disabled="disabled" />
 <input type="submit" name="editBcastTemp" value="<spring:message code="bcasttemplate.button.edit" />" id="edit_broadcast" disabled="disabled" />
 <input type="submit" name="showBcastTemp" value="<spring:message code="bcasttemplate.button.show" />" id="show_broadcast" disabled="disabled" />
 <input type="submit" name="deleteBcastTemp" value="<spring:message code="bcasttemplate.button.delete" />" id="delete_broadcast" disabled="disabled" />

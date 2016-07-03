@@ -44,6 +44,16 @@ public class BroadcastTemplateService {
     }
     
     /**
+     * Gets the defined broadcasts.
+     *
+     * @return the defined broadcasts
+     */
+    public List<BroadcastTemplate> getDefinedBroadcasts() {
+        List<BroadcastTemplate> broadcastTemplate = broadcastTemplateDao.getDefinedBroadcastTemplates();
+        return broadcastTemplate;
+    }
+    
+    /**
      * Gets the broadcast template.
      *
      * @param id the id

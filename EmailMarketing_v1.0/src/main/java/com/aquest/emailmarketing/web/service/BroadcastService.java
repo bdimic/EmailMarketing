@@ -85,6 +85,17 @@ public class BroadcastService {
     }
     
     /**
+     * Gets defined broadcasts by campaign id.
+     *
+     * @param campaign_id the campaign_id
+     * @return the broadcasts by campaign id
+     */
+    public List<Broadcast> getDefinedBroadcastsByCampaignId(String campaign_id) {
+        List<Broadcast> broadcasts = broadcastDao.getDefinedBroadcastsByCampaignId(campaign_id);
+        return broadcasts;
+    }
+    
+    /**
      * Save or update.
      *
      * @param broadcast the broadcast

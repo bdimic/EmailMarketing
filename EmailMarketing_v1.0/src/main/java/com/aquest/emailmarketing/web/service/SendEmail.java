@@ -27,6 +27,7 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 // TODO: Auto-generated Javadoc
@@ -104,6 +105,7 @@ public class SendEmail {
 	 * @throws MalformedURLException the malformed url exception
 	 * @throws InterruptedException the interrupted exception
 	 */
+	@Async
 	public void sendEmail(Broadcast broadcast, EmailConfig emailConfig, EmailList emailList) throws EmailException, MalformedURLException, InterruptedException {   
         
 		Timestamp curTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
@@ -175,6 +177,7 @@ public class SendEmail {
         email.setHtmlMsg(newHtml);
         email.setTextMsg(newPlainText);
         try {
+        	System.out.println("A ovo ovde?");
 			email.send();
 			emailList.setStatus("SENT");
 			emailList.setProcess_dttm(curTimestamp);

@@ -182,7 +182,7 @@ public class BroadcastTemplateController {
     	String htmlBodyPrep = "";
     	BroadcastTemplate broadcastTemplate = broadcastTemplateService.getBroadcastTemplateById(broadcastTemplate1.getId());
     	broadcastTemplate.setB_template_subject(broadcastTemplate1.getB_template_subject());
-    	if(fromUrl != null) {
+    	if(fromUrl != "") {
     		Document doc = Jsoup.connect(fromUrl).get();
     		htmlBodyPrep = doc.outerHtml();
     		broadcastTemplate.setHtmlbody(htmlBodyPrep);
@@ -190,6 +190,7 @@ public class BroadcastTemplateController {
     	}
     	if(broadcastTemplate1.getHtmlbody() != null) {
     		htmlBodyPrep = broadcastTemplate1.getHtmlbody();
+    		broadcastTemplate.setHtmlbody(htmlBodyPrep);
     	}
     	if(rel2abs == true) {
     		if(baseUrl != null) {
@@ -437,14 +438,13 @@ public class BroadcastTemplateController {
     @RequestMapping(value="/pickBroadcastTemplateAction", method = RequestMethod.POST)
     public String createNewBroadcast(Model model, 
     		@RequestParam(value = "newBcastTemp", required = false) String newBcastTemp,
-    		@RequestParam(value = "copyBcastTemp", required = false) String copyBcastTemp,
     		@RequestParam(value = "editBcastTemp", required = false) String editBcastTemp,
     		@RequestParam(value = "showBcastTemp", required = false) String showBcastTemp,
     		@RequestParam(value = "deleteBcastTemp", required = false) String deleteBcastTemp,
-    		@RequestParam(value = "broadcast_template_id", required = false) String broadcast_template_id,
+    		@RequestParam(value = "broadcast_template_id", required = false) int broadcast_template_id,
     		Principal principal, HttpServletRequest request) {
         
-    	BroadcastTemplate broadcastTemplate = broadcastTemplateService.getBroadcastTemplate(broadcast_template_id);
+    	BroadcastTemplate broadcastTemplate = broadcastTemplateService.getBroadcastTemplateById(broadcast_template_id);
     	
         if(newBcastTemp != null) {
         	BroadcastTemplate newBroadcastTemplate = new BroadcastTemplate();
@@ -454,59 +454,39 @@ public class BroadcastTemplateController {
         	return "definebroadcasttemplate";
         }
         
-        // TODO: Add logic for copy Broadcast Template
-        if(copyBcastTemp != null) {
-//        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
-//        	List<EmailConfig> emailconfig = emailConfigService.getAllProfiles();
-//        	model.addAttribute("campaign", campaign);
-//        	model.addAttribute("broadcast", broadcast);
-//        	model.addAttribute("emailconfig", emailconfig);
-        	return "definebroadcast";
-        }
-        
-     // TODO: Add logic for delete Broadcast Template
+     // DONE: Add logic for delete Broadcast Template
         if(deleteBcastTemp != null) {
-//        	
-//        	if(broadcast != null) {
-//        		if(broadcast.getStatus().equals("SENT")) {
-//        			String message = "confirmation.broadcast.status.nodelete";
-//        			model.addAttribute("message", message);
-//        			return "confirmation";
-//        		} else {
-//        			boolean isDeleted = broadcastService.delete(broadcast.getId());
-//            		if(isDeleted) {
-//            			boolean trackingDeleted = trackingConfigService.delete(broadcast_id);
-//            			if(trackingDeleted) {
-//	            			String message = "confirmation.broadcast.status.deleted";
-//	            			model.addAttribute("message", message);
-//	            			return "confirmation";
-//            			} else {
-//            				return "error";
-//            			}
-//            		} else {
-//            			return "error";
-//            		}
-//        		}
-//        		
-//        	} else {
-//        		return "error";
-//        	}
+        	
+        	if(broadcast_template_id != 0) {
+        		boolean isDeleted = broadcastTemplateService.delete(broadcast_template_id);
+        		if(isDeleted) {
+        			String message = "confirmation.broadcastTemplate.status.deleted";
+        			model.addAttribute("message", message);
+        			return "confirmation";
+    			} else {
+    				return "error";
+    			}
+        	} else {
+        		return "error";
+        	}
         }
         
-     // TODO: Add logic for edit Broadcast Template
+     // DONE: Add logic for edit Broadcast Template
         if(editBcastTemp != null) {
 //        	List<CampaignCategory> campcat = campaignCategoryService.getCategories();        	
 //        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
 //        	model.addAttribute("campaign", campaign);
 //        	model.addAttribute("campcat", campcat);
-        	return "editcampaign";
+        	model.addAttribute("broadcastTemplate", broadcastTemplate);
+        	List<EmailConfig> emailconfig = emailConfigService.getAllProfiles();
+        	model.addAttribute("emailconfig", emailconfig);
+        	return "definebroadcasttemplate";
         }
         
-     // TODO: Add logic for show Broadcast Template
+     // DONE: Add logic for show Broadcast Template
         if(showBcastTemp != null) {
-//        	List<BroadcastTemplate> showBroadcastTemplates = broadcastTemplateService.getAllBroadcasts();
-//        	model.addAttribute("broadcastTemplate", showBroadcastTemplates);
-//        	return "showbcasttemplates";
+        	model.addAttribute("broadcastTemplate", broadcastTemplate);
+        	return "showbcasttemplate";
         }
                 
         return "home";

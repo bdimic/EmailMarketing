@@ -54,6 +54,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -69,6 +70,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * The Class BroadcastController.
  */
 @Controller
+@EnableAsync
 public class BroadcastController {
     
     /** The broadcast service. */
@@ -295,7 +297,7 @@ public class BroadcastController {
     	String htmlBodyPrep = "";
     	Broadcast broadcast = broadcastService.getBroadcastById(broadcast1.getId());
     	broadcast.setSubject(broadcast1.getSubject());
-    	if(fromUrl != null) {
+    	if(fromUrl != "") {
     		Document doc = Jsoup.connect(fromUrl).get();
     		htmlBodyPrep = doc.outerHtml();
     		broadcast.setHtmlbody(htmlBodyPrep);
@@ -303,6 +305,8 @@ public class BroadcastController {
     	}
     	if(broadcast1.getHtmlbody() != null) {
     		htmlBodyPrep = broadcast1.getHtmlbody();
+    		broadcast.setHtmlbody(htmlBodyPrep);
+    		System.out.println("Da vidimo: " + htmlBodyPrep);
     	}
     	if(rel2abs == true) {
     		if(baseUrl != null) {
@@ -549,6 +553,14 @@ public class BroadcastController {
     	return "sendbroadcast";
     }
     
+    @RequestMapping(value= "/sendBcast")
+    public String send(Model model, Principal principal) {
+    	Broadcast broadcast = new Broadcast();
+    	model.addAttribute("broadcast", broadcast);
+    	model.addAttribute("message", "alone");
+    	return "sendbroadcast";
+    }
+    
     /**
      * Send it.
      *
@@ -595,6 +607,7 @@ public class BroadcastController {
     @RequestMapping(value="/pickBroadcastAction", method = RequestMethod.POST)
     public String createNewBroadcast(Model model, 
     		@RequestParam(value = "newBroadcast", required = false) String newBroadcast,
+    		@RequestParam(value = "bcastFromTemplate", required = false) String bcastFromTemplate,
     		@RequestParam(value = "copyBroadcast", required = false) String copyBroadcast,
     		@RequestParam(value = "editBroadcast", required = false) String editBroadcast,
     		@RequestParam(value = "showBroadcast", required = false) String showBroadcast,
@@ -614,6 +627,16 @@ public class BroadcastController {
         	model.addAttribute("emailconfig", emailconfig);
         	return "definebroadcast";
         }
+        
+        if(bcastFromTemplate != null) {
+        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
+			model.addAttribute("campaign", campaign);
+			Broadcast broadcast1 = new Broadcast();
+			model.addAttribute("broadcast", broadcast1);
+			List<BroadcastTemplate> broadcastTemplate = broadcastTemplateService.getDefinedBroadcasts();
+			model.addAttribute("broadcastTemplate", broadcastTemplate);
+			return "pickbcasttemplate";
+		}
         
         if(copyBroadcast != null) {
         	Campaigns campaign = campaignsService.getCampaign(campaign_id);

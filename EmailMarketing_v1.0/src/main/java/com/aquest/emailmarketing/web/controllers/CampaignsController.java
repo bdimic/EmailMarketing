@@ -236,6 +236,7 @@ public class CampaignsController {
     		@RequestParam(value = "openCampaign", required = false) String openCampaign,
     		@RequestParam(value = "closeCampaign", required = false) String closeCampaign,
     		@RequestParam(value = "createBroadcast", required = false) String createBroadcast,
+    		@RequestParam(value = "createBcastFromTemp", required = false) String createBcastFromTemp,
     		@RequestParam(value = "campaign_id", required = false) String campaign_id,
     		Principal principal, HttpServletRequest request) {
         
@@ -336,6 +337,16 @@ public class CampaignsController {
         	model.addAttribute("emailconfig", emailconfig);
         	return "definebroadcast";
         }
+        
+        if(createBcastFromTemp != null) {
+        	Campaigns campaign = campaignsService.getCampaign(campaign_id);
+			model.addAttribute("campaign", campaign);
+			Broadcast broadcast1 = new Broadcast();
+			model.addAttribute("broadcast", broadcast1);
+			List<BroadcastTemplate> broadcastTemplate = broadcastTemplateService.getDefinedBroadcasts();
+			model.addAttribute("broadcastTemplate", broadcastTemplate);
+			return "pickbcasttemplate";
+		}
         return "home";
     }
     

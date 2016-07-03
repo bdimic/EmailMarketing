@@ -33,6 +33,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -196,7 +197,7 @@ public class RestfulController {
     @RequestMapping(value = "/api/getbcasttemps", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<BcastTempOutput>> getBcastTemplates() {
-    	List<BroadcastTemplate> bcastTemps = broadcastTemplateService.getAllBroadcasts();
+    	List<BroadcastTemplate> bcastTemps = broadcastTemplateService.getDefinedBroadcasts();
     	List<BcastTempOutput> bcastTempsOutput = new ArrayList<BcastTempOutput>();
     	for(BroadcastTemplate bcastTemp: bcastTemps) {
     		BcastTempOutput bcastTempOutput = new BcastTempOutput();
@@ -222,5 +223,13 @@ public class RestfulController {
     public ResponseEntity<List<Campaigns>> getCampaigns() {
     	List<Campaigns> campaigns = campaignsService.getCampaigns();
     	return new ResponseEntity<List<Campaigns>>(campaigns, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/api/getbroadcasts", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<List<Broadcast>> getBroadcasts(@RequestParam(value="id") String campaign_id) {
+    	System.out.println("Ovo se pokrenulo. Campaign_id je:" + campaign_id);
+    	List<Broadcast> broadcasts = broadcastService.getDefinedBroadcastsByCampaignId(campaign_id);
+    	return new ResponseEntity<List<Broadcast>>(broadcasts, HttpStatus.OK);
     }
 }

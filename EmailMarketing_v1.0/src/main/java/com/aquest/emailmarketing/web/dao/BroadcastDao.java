@@ -115,6 +115,19 @@ public class BroadcastDao {
     }
     
     /**
+     * Gets defined broadcasts by campaign id.
+     *
+     * @param campaign_id the campaign_id
+     * @return the broadcasts by campaign id
+     */
+    public List<Broadcast> getDefinedBroadcastsByCampaignId (String campaign_id) {
+        Criteria crit = session().createCriteria(Broadcast.class);
+        crit.add(Restrictions.eq("campaign_id", campaign_id));
+        crit.add(Restrictions.eq("status", "DEFINED"));
+        return crit.list();
+    }
+    
+    /**
      * Save or update.
      *
      * @param broadcast the broadcast

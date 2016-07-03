@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.aquest.emailmarketing.web.dao.Broadcast;
@@ -71,6 +72,7 @@ public class SendEmailService {
 	 *
 	 * @param broadcast the broadcast
 	 */
+	@Async
 	public void sendEmails(Broadcast broadcast) {
 		List<EmailList> emailLists = emailListService.getAllEmailList(broadcast.getBroadcast_id());
 		for(int i=0;i<emailLists.size();i++) {
@@ -82,11 +84,13 @@ public class SendEmailService {
 			EmailList emailList = emailLists.get(i);
 			try {
 				System.out.println(emailList);
+				System.out.println("Da li se ovo pokrece?");
 				sEmail.sendEmail(broadcast, emailConfig, emailList);
 			} catch (MalformedURLException | EmailException
 					| InterruptedException e) {
 				logger.error(e);
 			}
 		}
+		
 	}
 }

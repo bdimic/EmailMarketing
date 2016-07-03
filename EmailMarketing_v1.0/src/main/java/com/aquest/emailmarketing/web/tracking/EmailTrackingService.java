@@ -24,7 +24,7 @@ public class EmailTrackingService {
 	// za aQuest-solutions je: UA-68393999-1
 	
 	//GA Open Email Tracking
-	public String addGaOpenEmailTracking(String text, Urls urls) {
+	public String addGaOpenEmailTracking(String text, Urls urls) {		
 		String imgOpenTrack = "<img src=\"http://www.google-analytics.com/collect?v=1&tid="+GA_TRACKING_ID+"&cid="+urls.getUtmContent()+"&t=event&ec=email&ea=open&el="+urls.getUtmContent()+"&cs="+urls.getUtmSource()+"&cm=email&cn="+urls.getUtmCampaign()+"\" /></body>";
 		String addedGaOpen = text.replace("</body>", imgOpenTrack);
 		return addedGaOpen;

@@ -25,6 +25,7 @@
 	<security:http pattern="/api/getbcasttemps" security="none"></security:http>
 	<security:http pattern="/api/getcampcat" security="none"></security:http>
 	<security:http pattern="/api/getcampaigns" security="none"></security:http>
+	<security:http pattern="/api/getbroadcasts" security="none"></security:http>
 	<security:http pattern="/api/campaign" security="none"></security:http>
 	<security:http use-expressions="true">
 				<security:intercept-url pattern="/openTrack" access="permitAll" />				
@@ -64,6 +65,7 @@
                 <security:intercept-url pattern="/createCamp" access="isAuthenticated()" />
                 <security:intercept-url pattern="/pickCampaignAction" access="isAuthenticated()" />
                 <security:intercept-url pattern="/pickBroadcastAction" access="isAuthenticated()" />
+                <security:intercept-url pattern="/pickBroadcastTemplateAction" access="isAuthenticated()" />
                 <security:intercept-url pattern="/pickbcasttemplate" access="isAuthenticated()" />
                 <security:intercept-url pattern="/broadcastgenerated" access="isAuthenticated()" />
                 <security:intercept-url pattern="/showbroadcast" access="isAuthenticated()" />
@@ -72,9 +74,11 @@
                 <security:intercept-url pattern="/bcasttempembeddedimage" access="isAuthenticated()" />
                 <security:intercept-url pattern="/bcastTemplateEmbedImages" access="isAuthenticated()" />
                 <security:intercept-url pattern="/showbcasttemplates" access="isAuthenticated()" />
+                <security:intercept-url pattern="/showbcasttemplate" access="isAuthenticated()" />
                 <security:intercept-url pattern="/showBroadcastTemplate" access="isAuthenticated()" />
                 <security:intercept-url pattern="/generateBroadcastFromTemplate" access="isAuthenticated()" />
                 <security:intercept-url pattern="/showbroadcasts" access="isAuthenticated()" />
+                <security:intercept-url pattern="/sendBcast" access="isAuthenticated()" />
                 <security:intercept-url pattern="/deletedbroadcast" access="isAuthenticated()" />
                 <security:intercept-url pattern="/manageBroadcast" access="isAuthenticated()" />
                 <security:intercept-url pattern="/definecontent" access="isAuthenticated()" />

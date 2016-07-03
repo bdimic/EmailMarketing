@@ -88,7 +88,9 @@
 </div>
 <div class="prazno"></div>
 <div class="dugme">
+<!-- TODO: All text need to be in messages file defined -->
 <input type="submit" name="newBroadcast" value="New Broadcast" id="new_broadcast" />
+<input type="submit" name="bcastFromTemplate" value="Create Broadcast From Template" id="bcast_from_template" />
 <input type="submit" name="copyBroadcast" value="Copy into new Broadcast" id="copy_broadcast" disabled="disabled" />
 <input type="submit" name="editBroadcast" value="Edit Broadcast" id="edit_broadcast" disabled="disabled" />
 <input type="submit" name="showBroadcast" value="Show Broadcast" id="show_broadcast" disabled="disabled" />

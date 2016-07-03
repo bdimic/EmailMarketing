@@ -60,11 +60,16 @@
         	<td colspan="2">HTML from URL: <input type="text" name="fromUrl" id="fromUrl"></td>
         </tr>
         <tr>
-        	<td colspan="2"><input type="checkbox" id="rel2abs" name="rel2abs">Convert relative 2 absolute url for images </br>
+        	<td colspan="2"><input type="checkbox" id="rel2abs" name="rel2abs">Convert relative 2 absolute url for images <br>
         	                Base URL: <input type="text" name="baseurl" id="baseurl" disabled></td>
         </tr>
         <tr>
-            <td colspan="2"><sf:textarea id="htmlbody" name="htmlbody" path="htmlbody" value="${old_broadcast.htmlbody}" /></td>
+            <td colspan="2"><sf:textarea id="htmlbody" name="htmlbody" path="htmlbody" value="${old_broadcast.htmlbody}" />
+            <script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'htmlbody', {language:'en', fullPage: true} );
+            </script></td>
         </tr>
         <tr>
         	<td colspan="2"><input type="checkbox" id="optimize" name="optimize">Optimize HTML for email (premailer)</td>

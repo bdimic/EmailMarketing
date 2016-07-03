@@ -39,11 +39,11 @@
 <script type="text/javascript"
 	src="<c:url value='/static/script/jquery.fs.roller.js'/>"></script>
 <script type="text/javascript"
-	src="<c:url value='/static/script/jquery.sceditor.xhtml.min.js'/>"></script>
-<script type="text/javascript"
 	src="<c:url value='/static/script/DataTable/jquery.dataTables.min.js'/>"></script>
 <script type="text/javascript"
 	src="<c:url value='/static/script/selectize.min.js'/>"></script>
+<script type="text/javascript"
+	src="<c:url value='/static/ckeditor/ckeditor.js'/>"></script>
 </head>
 <body>
     <div class="header"><tiles:insertAttribute name="header"></tiles:insertAttribute></div>
