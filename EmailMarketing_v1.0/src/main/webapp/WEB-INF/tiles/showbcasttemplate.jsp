@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
+
 <sf:form method="POST" action="${pageContext.request.contextPath}/generateBroadcast" commandName="broadcastTemplate">
     <div class="banka">
         <sf:input type="hidden" name="id" id="id" path="id" value="${broadcastTemplate.id}"/>
@@ -24,7 +25,12 @@
             </tr>
             <tr>
                 <td class="label"><spring:message code="broadcastTemplate.html.body"/>:</td>
-                <td><sf:textarea id="htmlbody" name="htmlbody" path="htmlbody" rows="9" cols="20"></sf:textarea></td>
+                <td><sf:textarea id="htmlbody" name="htmlbody" path="htmlbody" rows="30" cols="40"></sf:textarea>
+                <script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'htmlbody', {language:'en', fullPage: true, width: 800, height: 500} );
+            </script></td>
             </tr>
             <tr>
                 <td class="label"><spring:message code="broadcastTemplate.plain.text"/>:</td>

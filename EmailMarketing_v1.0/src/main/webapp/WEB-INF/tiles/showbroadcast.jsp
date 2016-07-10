@@ -24,7 +24,12 @@
             </tr>
             <tr>
                 <td class="label"><spring:message code="broadcast.html.body"/>:</td>
-                <td><sf:textarea id="htmlbody" name="htmlbody" path="htmlbody" rows="9" cols="20"></sf:textarea></td>
+                <td><sf:textarea id="htmlbody" name="htmlbody" path="htmlbody" rows="9" cols="20"></sf:textarea>
+                <script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'htmlbody', {language:'en', fullPage: true, width: 800, height: 500} );
+            </script></td>
             </tr>
             <tr>
                 <td class="label"><spring:message code="broadcast.plain.text"/>:</td>

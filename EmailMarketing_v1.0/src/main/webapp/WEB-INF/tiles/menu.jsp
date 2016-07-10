@@ -7,6 +7,7 @@
 <div id='cssmenu'>
 <ul>
    <li class='active'><a href='<c:url value='/'/>'><span><spring:message code="menu.home"/></span></a></li>
+   <sec:authorize access="isAuthenticated()">
    <li class='has-sub'><a href='#'><span><spring:message code="menu.campaigns"/></span></a>
       <ul>
          <li><a href='<c:url value='/'/>'><span><spring:message code="menu.showcampaigns"/></span></a></li>
@@ -20,17 +21,13 @@
          <li class='last'><a href='createCamp'><span><spring:message code="menu.createbroadcast"/></span></a></li>
       </ul>
    </li>
-   <li class='has-sub'><a href='#'><span><spring:message code="menu.templates"/></span></a>
-      <ul>
-         <li class='has-sub'><a href='#'><span><spring:message code="menu.broadcasttemplates"/></span></a>
-         	<ul class='navigation-3'>
+   <li class='has-sub'><a href='#'><span><spring:message code="menu.broadcasttemplates"/></span></a>
+         	<ul>
          		<li><a href='newBroadcastTemplate'><span><spring:message code="menu.newbcasttemplate"/></span></a></li>
          		<li class='last'><a href='showBroadcastTemplate'><span><spring:message code="menu.showbcasttemplates"/></span></a></li>
          	</ul>
-         </li>
-      </ul>
    </li>
-   <li class='active'><a href='#'><span>Contact</span></a></li>
+   </sec:authorize>
    <li class='last has-sub'>
    		<sec:authorize access="hasRole('ROLE_ADMIN')">
 				<a href="<c:url value='/admin'/>"><spring:message code="menu.admin"/></a>
