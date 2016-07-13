@@ -6,7 +6,11 @@
 
 package com.aquest.emailmarketing.web.tracking;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.aquest.emailmarketing.web.dao.Config;
 import com.aquest.emailmarketing.web.dao.Urls;
+import com.aquest.emailmarketing.web.service.ConfigService;
 
 /**
  *
@@ -14,8 +18,21 @@ import com.aquest.emailmarketing.web.dao.Urls;
  */
 public class EmailTrackingService {
 	
-	//TODO:get value from config instead of hardcoded
-	private final String SERVER_URL = "localhost:8080/EmailMarketing/"; // samo privremeno
+	/** The config sevice. */
+	private ConfigService configService;
+	
+	/**
+	 * Sets the config servic.
+	 * 
+	 * @param configService the configService to set
+	 */
+	@Autowired
+	public void setConfigService(ConfigService configService) {
+		this.configService = configService;
+	}
+	
+	//DONE:get value from config instead of hardcoded
+	//private final String SERVER_URL = "localhost:8080/EmailMarketing/"; // samo privremeno
 	// ovo mora da bude definisano u nekoj config tabeli
 	//TODO:get value from someware instead of hardcoded
 	private final String GA_TRACKING_ID = "UA-68393999-1"; //samo privremeno
@@ -31,7 +48,9 @@ public class EmailTrackingService {
 	}
 	//Pixel Image Open Email Tracking
 	public String addPixelOpenEmailTracking(String text) {
-		String imgOpenTrack = "<img src=\"http://"+SERVER_URL+"openTrack?trackingId=[UNIQUE_ID]\" /></body>";
+		Config config = configService.getConfig("trackingurl");
+        String serverUrl = config.getValue();
+		String imgOpenTrack = "<img src=\"http://"+serverUrl+"openTrack?trackingId=[UNIQUE_ID]\" /></body>";
 		String addedPixelOpen = text.replace("</body>", imgOpenTrack);
 		return addedPixelOpen;
 	}
